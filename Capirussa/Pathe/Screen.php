@@ -24,6 +24,11 @@ class Screen
      */
     public function setTheater($theater)
     {
+        // sanity check, we want to make sure empty strings are interpreted as null
+        if (trim($theater) == '') {
+            $theater = null;
+        }
+
         $this->theater = $theater;
     }
 
@@ -34,6 +39,11 @@ class Screen
      */
     public function setScreen($screen)
     {
+        // sanity check, we want to make sure empty strings are interpreted as null
+        if (trim($screen) == '') {
+            $screen = null;
+        }
+
         $this->screen = $screen;
     }
 
