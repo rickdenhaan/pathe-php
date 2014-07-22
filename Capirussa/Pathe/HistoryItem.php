@@ -117,7 +117,7 @@ class HistoryItem
                 $dataRow = str_replace(chr(160), '', html_entity_decode($dataRow, ENT_QUOTES));
                 $rawData = str_getcsv($dataRow, '|');
 
-                if (count($rawData) >= 2) {
+                if (count($rawData) > 2) {
                     $rawShowTime = trim($rawData[0]);
                     $rawScreen   = trim($rawData[1]);
                     $rawEvent    = trim($rawData[2]);
