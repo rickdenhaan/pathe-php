@@ -117,15 +117,17 @@ class HistoryItem
                 $dataRow = str_replace(chr(160), '', html_entity_decode($dataRow, ENT_QUOTES));
                 $rawData = str_getcsv($dataRow, '|');
 
-                $rawShowTime = trim($rawData[0]);
-                $rawScreen   = trim($rawData[1]);
-                $rawEvent    = trim($rawData[2]);
+                if (count($rawData) >= 2) {
+                    $rawShowTime = trim($rawData[0]);
+                    $rawScreen   = trim($rawData[1]);
+                    $rawEvent    = trim($rawData[2]);
 
-                $retValue[] = new static(
-                    \DateTime::createFromFormat('d-m-Y H:i', $rawShowTime),
-                    Screen::createFromString($rawScreen),
-                    Event::createFromMovieName($rawEvent)
-                );
+                    $retValue[] = new static(
+                        \DateTime::createFromFormat('d-m-Y H:i', $rawShowTime),
+                        Screen::createFromString($rawScreen),
+                        Event::createFromMovieName($rawEvent)
+                    );
+                }
             }
         }
 
