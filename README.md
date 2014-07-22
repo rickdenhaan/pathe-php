@@ -3,7 +3,7 @@ Pathe PHP client
 
 This PHP client connects to the Pathé Client Panel at [onlinetickets2.pathe.nl](https://onlinetickets2.pathe.nl/ticketweb.php?sign=30&UserCenterId=1) to retrieve information about an Unlimited or Gold Member's history.
 
-Many thanks to [Robbert Noordzij](http://www.robbertnoordzij.nl) for his efforts in getting this project started!
+Many thanks to [Robbert Noordzij](https://github.com/robbertnoordzij) for his efforts in getting this project started!
 
 
 Usage
