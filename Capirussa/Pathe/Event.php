@@ -17,6 +17,11 @@ class Event
      */
     public function setMovieName($movieName)
     {
+        // sanity check, we want to make sure empty strings are interpreted as null
+        if (trim($movieName) == '') {
+            $movieName = null;
+        }
+
         $this->movieName = $movieName;
     }
 
