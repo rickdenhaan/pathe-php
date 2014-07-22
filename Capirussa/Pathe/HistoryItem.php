@@ -118,15 +118,17 @@ class HistoryItem
                 $rawData = str_getcsv($dataRow, '|');
 
                 if (count($rawData) > 2) {
-                    $rawShowTime = trim($rawData[0]);
+                    $rawShowTime = \DateTime::createFromFormat('d-m-Y H:i', trim($rawData[0]));
                     $rawScreen   = trim($rawData[1]);
                     $rawEvent    = trim($rawData[2]);
 
-                    $retValue[] = new static(
-                        \DateTime::createFromFormat('d-m-Y H:i', $rawShowTime),
-                        Screen::createFromString($rawScreen),
-                        Event::createFromMovieName($rawEvent)
-                    );
+                    if ($rawShowTime instanceof \DateTime) {
+                        $retValue[] = new static(
+                            $rawShowTime,
+                            Screen::createFromString($rawScreen),
+                            Event::createFromMovieName($rawEvent)
+                        );
+                    }
                 }
             }
         }
