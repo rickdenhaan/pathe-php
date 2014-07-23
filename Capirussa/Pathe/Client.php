@@ -200,15 +200,10 @@ class Client
         $request->setCookieJar($this->getCookieJar());
         $request->addPostParameter(Request::LOGIN_USERNAME, $this->getUsername());
         $request->addPostParameter(Request::LOGIN_PASSWORD, $this->getPassword());
-        $request->send();
-
-        // now perform another GET request on the dashboard, to make sure we were logged in
-        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
-        $request->setCookieJar($this->getCookieJar());
         $response = $request->send();
 
-        // if the response contains a link to delete the current user, we know we're logged into the dashboard
-        if (stripos($response->getRawBody(), 'href="javascript: DelUser();"') < 1) {
+        // make sure the username and password were correct
+        if (stripos($response->getRawBody(), 'Uw gebruikersnaam en/of wachtwoord is onjuist.') > 0) {
             throw new \LogicException(
                 sprintf(
                     '%1$s: Unable to login to the Path&ecaute; Client Panel',
@@ -216,6 +211,11 @@ class Client
                 )
             );
         }
+
+        // now perform another GET request on the dashboard, to make sure we were logged in
+        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
+        $request->setCookieJar($this->getCookieJar());
+        $response = $request->send();
 
         // the response should have several links that contain the user's customer ID, find one
         $matches = array();
