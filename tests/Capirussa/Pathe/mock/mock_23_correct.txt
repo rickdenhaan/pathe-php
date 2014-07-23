@@ -1,0 +1,15 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 302 Moved Temporarily
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html; charset=UTF-8
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Location: ticketweb.php?sign=30&
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Date: Wed, 23 Jul 2014 21:50:47 GMT
+Content-Length: 149
+
+<head><title>Document Moved</title></head>
+<body><h1>Object Moved</h1>This document may be found <a HREF="ticketweb.php?sign=30&amp;">here</a></body>
