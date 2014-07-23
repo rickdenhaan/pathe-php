@@ -190,20 +190,20 @@ class Client
     protected function authenticate()
     {
         // first perform a GET request on the dashboard to initialize a remote session
-        $request = new Request(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
         $request->send();
 
         // now perform a POST request with the login credentials
-        $request = new Request(Request::SIGN_LOGIN, Request::METHOD_POST, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_LOGIN, Request::METHOD_POST);
         $request->setCookieJar($this->getCookieJar());
         $request->addPostParameter(Request::LOGIN_USERNAME, $this->getUsername());
         $request->addPostParameter(Request::LOGIN_PASSWORD, $this->getPassword());
         $request->send();
 
         // now perform another GET request on the dashboard, to make sure we were logged in
-        $request = new Request(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $response = $request->send();
 
@@ -239,7 +239,7 @@ class Client
      */
     protected function logout()
     {
-        $request = new Request(Request::SIGN_LOGOUT, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_LOGOUT, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->send();
 
@@ -258,7 +258,7 @@ class Client
         $this->authenticate();
 
         // get the customer history page
-        $request = new Request(Request::SIGN_CUSTOMER_HISTORY, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_CUSTOMER_HISTORY, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
         $request->addQueryParameter(Request::QUERY_TEMPLATE, Request::TEMPLATE_CARD_HISTORY);
@@ -282,7 +282,7 @@ class Client
         }
 
         // we need to call a SOAP method that will generate the data file
-        $request = new Request(Request::SIGN_SOAP_CUSTOMER_HISTORY, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_SOAP_CUSTOMER_HISTORY, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addQueryParameter(Request::QUERY_HISTORY, true);
         $request->addQueryParameter(Request::QUERY_CUSTOMER_ID, $this->getCustomerId());
@@ -290,7 +290,7 @@ class Client
         $request->send();
 
         // now we can request the text file that contains the customer history
-        $request = new Request(Request::SIGN_DATA_CUSTOMER_HISTORY, Request::METHOD_GET, $this->validateSsl);
+        $request = $this->getRequest(Request::SIGN_DATA_CUSTOMER_HISTORY, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addUrlParameter($dataFile);
         $response = $request->send();
@@ -302,5 +302,17 @@ class Client
         $this->logout();
 
         return $retValue;
+    }
+
+    /**
+     * Returns a new Request object
+     *
+     * @param int    $sign          (Optional) Defaults to null
+     * @param string $requestMethod (Optional) Defaults to Request::METHOD_GET
+     * @return Request
+     */
+    protected function getRequest($sign = null, $requestMethod = Request::METHOD_GET)
+    {
+        return new Request($sign, $requestMethod, $this->validateSsl);
     }
 }
