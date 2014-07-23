@@ -101,7 +101,7 @@ class Client
     public function setCustomerId($customerId)
     {
         // the customer ID must be numeric
-        if (preg_match('/[^0-9]/', $customerId)) {
+        if (mb_strlen($customerId) == 0 || preg_match('/[^0-9]/', $customerId)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     '%1$s: Invalid customer ID "%2$s", must be numeric',
