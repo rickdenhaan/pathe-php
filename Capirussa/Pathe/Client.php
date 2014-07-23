@@ -222,13 +222,6 @@ class Client
         preg_match('/<a.*href=\".*CustomerID=([0-9]+)\"/i', $response->getRawBody(), $matches);
         if (isset($matches[1])) {
             $this->setCustomerId($matches[1]);
-        } else {
-            throw new \LogicException(
-                sprintf(
-                    '%1$s: Logged in successfully, but failed to determine the user\'s customer ID',
-                    __METHOD__
-                )
-            );
         }
     }
 
