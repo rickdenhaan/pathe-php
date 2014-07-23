@@ -265,13 +265,6 @@ class Client
         preg_match('/SearchCustomerHistory\(.*\'(.*)\'\);/i', $response->getRawBody(), $matches);
         if (isset($matches[1])) {
             $dataFile = $matches[1];
-        } else {
-            throw new \LogicException(
-                sprintf(
-                    '%1$s: Failed to determine the unique history hash',
-                    __METHOD__
-                )
-            );
         }
 
         // we need to call a SOAP method that will generate the data file
@@ -303,6 +296,9 @@ class Client
      * @param int    $sign          (Optional) Defaults to null
      * @param string $requestMethod (Optional) Defaults to Request::METHOD_GET
      * @return Request
+     *
+     * Unittests overwrite this method to retrieve a mock request, so
+     * @codeCoverageIgnore
      */
     protected function getRequest($sign = null, $requestMethod = Request::METHOD_GET)
     {
