@@ -42,6 +42,14 @@ class EventTest extends PHPUnit_Framework_TestCase
         Event::createFromMovieName();
     }
 
+    public function testCreateFromMovieNameWithEmptyMovieName()
+    {
+        $event = Event::createFromMovieName('');
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\Event', $event);
+        $this->assertNull($event->getMovieName());
+    }
+
     public function testCreateFromMovieNameWithMovieName()
     {
         $event = Event::createFromMovieName('testMovieName');
