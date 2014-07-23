@@ -175,7 +175,7 @@ class Client
      */
     protected function clearCookieJar()
     {
-        if ($this->cookieJar === null) {
+        if ($this->cookieJar !== null) {
             unlink($this->cookieJar);
             $this->cookieJar = null;
         }
