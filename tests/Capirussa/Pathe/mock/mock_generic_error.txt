@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Set-Cookie: PHPSESSID=1ubtevn0hkb5icqimfsclldre4; path=/
+Date: Wed, 23 Jul 2014 20:38:45 GMT
+Content-Length: 52
+
+Timeout. Please login again, and enter UserCenterID
