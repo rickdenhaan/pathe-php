@@ -202,9 +202,21 @@ class Request
      * Sets the cookie jar file name
      *
      * @param string $cookieJar
+     * @throws \InvalidArgumentException
      */
     public function setCookieJar($cookieJar)
     {
+        // validate that the given file name actually exists and is both writable and readable
+        if (!file_exists($cookieJar) || !is_file($cookieJar) || !is_readable($cookieJar) || !is_writable($cookieJar)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid cookie jar \'%2$s\' given, file does not exist or read/write access is missing',
+                    __METHOD__,
+                    $cookieJar
+                )
+            );
+        }
+
         $this->cookieJar = $cookieJar;
     }
 
@@ -275,6 +287,9 @@ class Request
      *
      * @throws \Exception
      * @return Response
+     *
+     * Unittests should never talk to the live Pathe panel, they use a mock request, so:
+     * @codeCoverageIgnore
      */
     protected function doRequest()
     {
