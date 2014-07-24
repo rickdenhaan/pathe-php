@@ -341,7 +341,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertFileNotExists($cookieJar);
     }
 
-    public function testFindCustomerHistory()
+    public function testGetCustomerHistory()
     {
         $client = new MockClient('test@example.com', 'testPassword');
 
@@ -354,7 +354,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $cookieJar = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
-        $history = $client->findCustomerHistory();
+        $history = $client->getCustomerHistory();
 
         $this->assertInternalType('array', $history);
         $this->assertCount(9, $history);

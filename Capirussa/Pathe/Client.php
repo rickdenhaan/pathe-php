@@ -245,7 +245,7 @@ class Client
      * @throws \LogicException
      * @return HistoryItem[]
      */
-    public function findCustomerHistory()
+    public function getCustomerHistory()
     {
         // log into the client panel
         $this->authenticate();

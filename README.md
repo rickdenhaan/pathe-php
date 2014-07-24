@@ -18,7 +18,7 @@ use Capirussa\Pathe;
 try {
     $client = new Pathe\Client('username', 'password');
 
-    $movieHistory = $client->findCustomerHistory();
+    $movieHistory = $client->getCustomerHistory();
 } catch (\Exception $exception) {
     // something went wrong, fix it and try again!
 }
@@ -32,7 +32,7 @@ You need to supply your Mijn Pathé username and password when initializing the 
 
 On some servers, usually localhost development servers, you might encounter SSL errors. To skip the SSL validation, call $client->disableSslVerification().
 
-For now, the only thing you can fetch is your movie history, by calling $client->findCustomerHistory(). This will return an array of HistoryItem entities.
+For now, the only thing you can fetch is your movie history, by calling $client->getCustomerHistory(). This will return an array of HistoryItem entities.
 
 
 Pathe\HistoryItem
