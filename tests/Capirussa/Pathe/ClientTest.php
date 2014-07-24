@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__) . '/../../init.php');
 
 use Capirussa\Pathe\Client;
+use Capirussa\Pathe\PersonalData;
 
 /**
  * Tests Capirussa\Pathe\Client
@@ -376,6 +377,46 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Frozen', $history[7]->getEvent()->getMovieName());
         $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[8]);
         $this->assertEquals('Hobbit, The: The Desolation of Smaug', $history[8]->getEvent()->getMovieName());
+
+        $this->assertFileNotExists($cookieJar);
+    }
+
+    public function testGetPersonalData()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $personalData = $client->getPersonalData();
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\PersonalData', $personalData);
+
+        $this->assertEquals('test@example.com', $personalData->getUsername());
+        $this->assertEquals(PersonalData::PASSWORD_NO_CHANGE, $personalData->getPassword());
+        $this->assertEquals(PersonalData::GENDER_MALE, $personalData->getGender());
+        $this->assertEquals('testFirstName', $personalData->getFirstName());
+        $this->assertEquals('testMiddleName', $personalData->getMiddleName());
+        $this->assertEquals('testLastName', $personalData->getLastName());
+        $this->assertEquals('test@example.com', $personalData->getEmailAddress());
+        $this->assertEquals(PersonalData::COUNTRY_NETHERLANDS, $personalData->getCountry());
+
+        $this->assertInstanceOf('DateTime', $personalData->getBirthDate());
+        $this->assertEquals('1980-01-01', $personalData->getBirthDate()->format('Y-m-d'));
+
+        $this->assertEquals('testStreet', $personalData->getStreetName());
+        $this->assertEquals('1', $personalData->getHouseNumber());
+        $this->assertEquals('a', $personalData->getHouseNumberSuffix());
+        $this->assertEquals('1234 AB', $personalData->getPostalCode());
+        $this->assertEquals('testCity', $personalData->getCity());
+        $this->assertEquals('0612345678', $personalData->getMobilePhoneNumber());
+        $this->assertTrue($personalData->getNewsletter());
 
         $this->assertFileNotExists($cookieJar);
     }

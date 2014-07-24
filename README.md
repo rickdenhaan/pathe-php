@@ -18,7 +18,8 @@ use Capirussa\Pathe;
 try {
     $client = new Pathe\Client('username', 'password');
 
-    $movieHistory = $client->getCustomerHistory();
+    $customerDetails = $client->getPersonalData();
+    $movieHistory    = $client->getCustomerHistory();
 } catch (\Exception $exception) {
     // something went wrong, fix it and try again!
 }
@@ -32,7 +33,35 @@ You need to supply your Mijn Pathé username and password when initializing the 
 
 On some servers, usually localhost development servers, you might encounter SSL errors. To skip the SSL validation, call $client->disableSslVerification().
 
-For now, the only thing you can fetch is your movie history, by calling $client->getCustomerHistory(). This will return an array of HistoryItem entities.
+There are several pieces of information you can retrieve from Pathé:
+
+* Your personal details. Calling $client->getPersonalData() will return a Pathe\PersonalData object.
+* The last 100 movies you watched. Calling $client->getCustomerHistory() will return an array of Pathe\HistoryItem entities
+
+More options will be added soon!
+
+
+Pathe\PersonalData
+------------------
+
+The Pathe\PersonalData entity contains your Pathé customer details:
+
+* Username - a string containing your username (not actually fetched from Pathé, but inserted into this object from your Pathe\Client configuration
+* Password - does *not* contain your password, but is reserved for future use for *changing* your password. Contains Pathe\PersonalData::PASSWORD_NO_CHANGE unless you call setPassword()
+* Gender - a numeric key to indicate your gender, matches either Pathe\PersonalData::GENDER_MALE or Pathe\PersonalData::GENDER_FEMALE
+* FirstName - a string containing your first name
+* MiddleName - a string containing the prefix for your last name (e.g. "van", "de", "van der", etc.) or null if your name does not have one
+* LastName - a string containing your last name
+* EmailAddress - a string containing your email address
+* Country - a numeric identifier for your country, for now only matches Pathe\PersonalData::COUNTRY_NETHERLANDS
+* BirthDate - a DateTime object containing your birth date
+* StreetName - a string containing your street
+* HouseNumber - an integer containing your house number
+* HouseNumberSuffix - an optional string that is part of your house number, for example if you live on number 1a, HouseNumber will be 1 and HouseNumberSuffix will be "a"
+* PostalCode - the postal code of your address
+* City - your city
+* MobilePhoneNumber - a 10-digit string of your mobile phone number, or null if not known
+* Newsletter - a boolean indicating whether or not you want to receive the weekly Pathé newsletters
 
 
 Pathe\HistoryItem

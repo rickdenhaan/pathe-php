@@ -298,6 +298,23 @@ class Client
     }
 
     /**
+     * Returns the personal information for the current user
+     *
+     * @return PersonalData
+     */
+    public function getPersonalData()
+    {
+        $this->authenticate();
+
+        $retValue = PersonalData::parsePersonalDataFromHtmlForm($this->getLastResponse()->getRawBody());
+        $retValue->setUsername($this->getUsername());
+
+        $this->logout();
+
+        return $retValue;
+    }
+
+    /**
      * Returns a new Request object
      *
      * @param int    $sign          (Optional) Defaults to null
