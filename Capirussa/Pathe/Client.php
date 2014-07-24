@@ -39,6 +39,13 @@ class Client
     protected $cookieJar = null;
 
     /**
+     * Response for the last request
+     *
+     * @type Response
+     */
+    protected $response;
+
+    /**
      * Constructor. Sets the username and password
      *
      * @param string $username
@@ -215,11 +222,11 @@ class Client
         // now perform another GET request on the dashboard, to make sure we were logged in
         $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
-        $response = $request->send();
+        $this->response = $request->send();
 
         // the response should have several links that contain the user's customer ID, find one
         $matches = array();
-        preg_match('/<a.*href=\".*CustomerID=([0-9]+)\"/i', $response->getRawBody(), $matches);
+        preg_match('/<a.*href=\".*CustomerID=([0-9]+)\"/i', $this->response->getRawBody(), $matches);
         if (isset($matches[1])) {
             $this->setCustomerId($matches[1]);
         }
@@ -279,10 +286,10 @@ class Client
         $request = $this->getRequest(Request::SIGN_DATA_CUSTOMER_HISTORY, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addUrlParameter($dataFile);
-        $response = $request->send();
+        $this->response = $request->send();
 
         // parse the text file into an array of history items
-        $retValue = HistoryItem::parseHistoryItemsFromDataFile($response->getRawBody());
+        $retValue = HistoryItem::parseHistoryItemsFromDataFile($this->response->getRawBody());
 
         // to be nice to Pathé and not flood their servers with session files, log the user out properly
         $this->logout();
@@ -303,5 +310,15 @@ class Client
     protected function getRequest($sign = null, $requestMethod = Request::METHOD_GET)
     {
         return new Request($sign, $requestMethod, $this->validateSsl);
+    }
+
+    /**
+     * Returns the Response to the last executed request
+     *
+     * @return Response|null
+     */
+    public function getLastResponse()
+    {
+        return $this->response;
     }
 }

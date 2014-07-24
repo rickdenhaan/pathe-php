@@ -379,4 +379,30 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $this->assertFileNotExists($cookieJar);
     }
+
+    public function testGetLastResponse()
+    {
+        $client = new MockClient('test@example.com', 'testPassword');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $this->assertNull($client->getLastResponse());
+
+        $history = $client->getCustomerHistory();
+
+        $response = $client->getLastResponse();
+        $this->assertNotNull($response);
+        $this->assertInstanceof('Capirussa\\Pathe\\Response', $response);
+
+        $history2 = \Capirussa\Pathe\HistoryItem::parseHistoryItemsFromDataFile($response->getRawBody());
+
+        $this->assertEquals($history, $history2);
+    }
 }
