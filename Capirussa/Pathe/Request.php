@@ -6,10 +6,11 @@ class Request
     /**
      * Page identifiers
      */
-    const SIGN_LOGIN            = 23;
-    const SIGN_LOGOUT           = 3023;
-    const SIGN_PERSONAL_DATA    = 30;
-    const SIGN_CUSTOMER_HISTORY = 70;
+    const SIGN_LOGIN                = 23;
+    const SIGN_LOGOUT               = 3023;
+    const SIGN_PERSONAL_DATA        = 30;
+    const SIGN_UPDATE_PERSONAL_DATA = 31;
+    const SIGN_CUSTOMER_HISTORY     = 70;
 
     /**
      * SOAP identifiers
@@ -34,10 +35,27 @@ class Request
     /**
      * Post parameters
      */
-    const LOGIN_USERNAME = 'Login';
-    const LOGIN_PASSWORD = 'Password';
-    const LOGIN_SUBMIT_X = 'submitButton.x';
-    const LOGIN_SUBMIT_Y = 'submitButton.y';
+    const LOGIN_USERNAME                    = 'Login';
+    const LOGIN_PASSWORD                    = 'Password';
+    const LOGIN_SUBMIT_X                    = 'submitButton.x';
+    const LOGIN_SUBMIT_Y                    = 'submitButton.y';
+    const PERSONAL_DATA_GENDER              = 'Gender';
+    const PERSONAL_DATA_FIRST_NAME          = 'FirstName';
+    const PERSONAL_DATA_MIDDLE_NAME         = 'MiddleName';
+    const PERSONAL_DATA_LAST_NAME           = 'LastName';
+    const PERSONAL_DATA_EMAIL_ADDRESS       = 'Email';
+    const PERSONAL_DATA_COUNTRY             = 'CountryID';
+    const PERSONAL_DATA_BIRTH_DAY           = 'BirthDay';
+    const PERSONAL_DATA_BIRTH_MONTH         = 'BirthMonth';
+    const PERSONAL_DATA_BIRTH_YEAR          = 'BirthYear';
+    const PERSONAL_DATA_STREET_NAME         = 'Address1';
+    const PERSONAL_DATA_HOUSE_NUMBER        = 'HouseNbr';
+    const PERSONAL_DATA_HOUSE_NUMBER_SUFFIX = 'HouseNbrPostFix';
+    const PERSONAL_DATA_POSTAL_CODE         = 'ZIP';
+    const PERSONAL_DATA_CITY                = 'City';
+    const PERSONAL_DATA_MOBILE_PHONE_NUMBER = 'Mobile';
+    const PERSONAL_DATA_PASSWORD            = 'LoginPassword';
+    const PERSONAL_DATA_NEWSLETTER          = 'InfoWanted';
 
     /**
      * Possible user centers
@@ -71,6 +89,7 @@ class Request
         self::SIGN_LOGIN                 => 'ticketweb.php?sign=%1$s',
         self::SIGN_LOGOUT                => 'CRM/logout.php',
         self::SIGN_PERSONAL_DATA         => 'ticketweb.php?sign=%1$s',
+        self::SIGN_UPDATE_PERSONAL_DATA  => 'ticketweb.php?sign=%1$s',
         self::SIGN_CUSTOMER_HISTORY      => 'ticketweb.php?sign=%1$s',
         self::SIGN_SOAP_CUSTOMER_HISTORY => 'CRM/soap.php',
         self::SIGN_DATA_CUSTOMER_HISTORY => 'CRM/UD/Cache/tickets_%%1$s.txt',

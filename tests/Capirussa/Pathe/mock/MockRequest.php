@@ -45,6 +45,10 @@ class MockRequest extends Pathe\Request
                 $simulatedResponse = $this->loadMockResponse('mock_30_logged_in.txt');
                 break;
 
+            case 'pathe://mock/ticketweb.php?sign=31':
+                $simulatedResponse = $this->loadMockResponse('mock_31.txt');
+                break;
+
             case 'pathe://mock/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.history.&CustomerID=12345678&LoadCards=0':
                 $simulatedResponse = $this->loadMockResponse('mock_70.txt');
                 break;

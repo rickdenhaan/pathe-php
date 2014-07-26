@@ -421,6 +421,65 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertFileNotExists($cookieJar);
     }
 
+    public function testUpdatePersonalData()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $personalData = $client->getPersonalData();
+
+        $personalData->setGender(PersonalData::GENDER_FEMALE);
+        $personalData->setFirstName('testNewFirstName');
+        $personalData->setMiddleName('testNewMiddleName');
+        $personalData->setLastName('testNewLastName');
+        $personalData->setEmailAddress('testnew@example.com');
+        $personalData->setCountry(PersonalData::COUNTRY_NETHERLANDS);
+        $personalData->setBirthDay(2);
+        $personalData->setBirthMonth(2);
+        $personalData->setBirthYear(1981);
+        $personalData->setStreetName('testNewStreet');
+        $personalData->setHouseNumber(2);
+        $personalData->setHouseNumberSuffix('b');
+        $personalData->setPostalCode('2345bc');
+        $personalData->setCity('testNewCity');
+        $personalData->setMobilePhoneNumber('0623456789');
+        $personalData->setNewsletter(false);
+
+        $updatedPersonalData = $client->updatePersonalData($personalData);
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\PersonalData', $updatedPersonalData);
+
+        $this->assertEquals('test@example.com', $updatedPersonalData->getUsername());
+        $this->assertEquals(PersonalData::PASSWORD_NO_CHANGE, $updatedPersonalData->getPassword());
+        $this->assertEquals(PersonalData::GENDER_FEMALE, $updatedPersonalData->getGender());
+        $this->assertEquals('testNewFirstName', $updatedPersonalData->getFirstName());
+        $this->assertEquals('testNewMiddleName', $updatedPersonalData->getMiddleName());
+        $this->assertEquals('testNewLastName', $updatedPersonalData->getLastName());
+        $this->assertEquals('testnew@example.com', $updatedPersonalData->getEmailAddress());
+        $this->assertEquals(PersonalData::COUNTRY_NETHERLANDS, $updatedPersonalData->getCountry());
+
+        $this->assertInstanceOf('DateTime', $updatedPersonalData->getBirthDate());
+        $this->assertEquals('1981-02-02', $updatedPersonalData->getBirthDate()->format('Y-m-d'));
+
+        $this->assertEquals('testNewStreet', $updatedPersonalData->getStreetName());
+        $this->assertEquals('2', $updatedPersonalData->getHouseNumber());
+        $this->assertEquals('b', $updatedPersonalData->getHouseNumberSuffix());
+        $this->assertEquals('2345 BC', $updatedPersonalData->getPostalCode());
+        $this->assertEquals('testNewCity', $updatedPersonalData->getCity());
+        $this->assertEquals('0623456789', $updatedPersonalData->getMobilePhoneNumber());
+        $this->assertFalse($updatedPersonalData->getNewsletter());
+
+        $this->assertFileNotExists($cookieJar);
+    }
+
     public function testGetLastResponse()
     {
         $client = new MockClient('test@example.com', 'testPassword');

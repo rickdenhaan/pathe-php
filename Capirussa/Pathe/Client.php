@@ -268,7 +268,7 @@ class Client
 
         // on this page, JavaScript calls a SearchCustomerHistory method with a random hash, we need that hash
         $dataFile = null;
-        $matches = array();
+        $matches  = array();
         preg_match('/SearchCustomerHistory\(.*\'(.*)\'\);/i', $response->getRawBody(), $matches);
         if (isset($matches[1])) {
             $dataFile = $matches[1];
@@ -310,6 +310,50 @@ class Client
         $retValue->setUsername($this->getUsername());
 
         $this->logout();
+
+        return $retValue;
+    }
+
+    /**
+     * Updates the personal information for the current user
+     *
+     * @param PersonalData $personalData
+     * @return PersonalData
+     */
+    public function updatePersonalData(PersonalData $personalData)
+    {
+        $this->authenticate();
+
+        // build the request to update the personal data
+        $request = $this->getRequest(Request::SIGN_UPDATE_PERSONAL_DATA, Request::METHOD_POST);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addPostParameter(Request::PERSONAL_DATA_GENDER, $personalData->getGender());
+        $request->addPostParameter(Request::PERSONAL_DATA_FIRST_NAME, $personalData->getFirstName());
+        $request->addPostParameter(Request::PERSONAL_DATA_MIDDLE_NAME, $personalData->getMiddleName());
+        $request->addPostParameter(Request::PERSONAL_DATA_LAST_NAME, $personalData->getLastName());
+        $request->addPostParameter(Request::PERSONAL_DATA_EMAIL_ADDRESS, $personalData->getEmailAddress());
+        $request->addPostParameter(Request::PERSONAL_DATA_COUNTRY, $personalData->getCountry());
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_DAY, $personalData->getBirthDate()->format('j'));
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_MONTH, $personalData->getBirthDate()->format('n'));
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_YEAR, $personalData->getBirthDate()->format('Y'));
+        $request->addPostParameter(Request::PERSONAL_DATA_STREET_NAME, $personalData->getStreetName());
+        $request->addPostParameter(Request::PERSONAL_DATA_HOUSE_NUMBER, $personalData->getHouseNumber());
+        $request->addPostParameter(Request::PERSONAL_DATA_HOUSE_NUMBER_SUFFIX, $personalData->getHouseNumberSuffix());
+        $request->addPostParameter(Request::PERSONAL_DATA_POSTAL_CODE, $personalData->getPostalCode());
+        $request->addPostParameter(Request::PERSONAL_DATA_CITY, $personalData->getCity());
+        $request->addPostParameter(Request::PERSONAL_DATA_MOBILE_PHONE_NUMBER, $personalData->getMobilePhoneNumber());
+        $request->addPostParameter(Request::PERSONAL_DATA_PASSWORD, $personalData->getPassword());
+
+        if ($personalData->getNewsletter()) {
+            $request->addPostParameter(Request::PERSONAL_DATA_NEWSLETTER, 'on');
+        }
+
+        $this->response = $request->send();
+
+        $this->logout();
+
+        $retValue = PersonalData::parsePersonalDataFromHtmlForm($this->response->getRawBody());
+        $retValue->setUsername($this->getUsername());
 
         return $retValue;
     }
