@@ -77,8 +77,8 @@ class Screen
     {
         $retValue = new static();
 
-        $retValue->setTheater(trim(preg_replace('/[Z|z]aal[ ]{1,2}[0-9]{1,2}/s', '', $screenString)));
-        $retValue->setScreen(trim(str_replace($retValue->getTheater(), '', $screenString)));
+        $retValue->setTheater(trim(preg_replace('/\/?[Z|z]aal[ ]{1,2}[0-9]{1,2}/s', '', $screenString)));
+        $retValue->setScreen(trim(str_replace(array($retValue->getTheater(), '/'), '', $screenString)));
 
         return $retValue;
     }

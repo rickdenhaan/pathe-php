@@ -92,4 +92,13 @@ class ScreenTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('testTheater', $screen->getTheater());
         $this->assertEquals('Zaal 1', $screen->getScreen());
     }
+
+    public function testCreateFromStringWithTheaterAndScreenSeparatedBySlash()
+    {
+        $screen = Screen::createFromString('testTheater/Zaal 1');
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\Screen', $screen);
+        $this->assertEquals('testTheater', $screen->getTheater());
+        $this->assertEquals('Zaal 1', $screen->getScreen());
+    }
 }

@@ -3,6 +3,7 @@ require_once(dirname(__FILE__) . '/../../init.php');
 
 use Capirussa\Pathe\Client;
 use Capirussa\Pathe\PersonalData;
+use Capirussa\Pathe\Reservation;
 
 /**
  * Tests Capirussa\Pathe\Client
@@ -478,6 +479,155 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($updatedPersonalData->getNewsletter());
 
         $this->assertFileNotExists($cookieJar);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid number of weeks
+     */
+    public function testGetReservationHistoryWithInvalidWeekCount()
+    {
+        $client = new MockClient('test@example.com', 'testPassword');
+
+        $client->getReservationHistory(10);
+    }
+
+    public function testGetReservationHistoryWithValidWeekCount()
+    {
+        $client = new MockClient('test@example.com', 'testPassword');
+
+        $historyItems = $client->getReservationHistory(150);
+
+        // this should have given us 9 history items, all with reservation details
+
+        $this->assertInternalType('array', $historyItems);
+        $this->assertCount(9, $historyItems);
+
+        $historyItem = $historyItems[0];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-18 21:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  9', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Dawn of the Planet of the', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[1];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-12 19:50:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  3', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('How To Train Your Dragon', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(22, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(23, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(24, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[2];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-06-20 22:45:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  6', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Transcendence', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(19, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(20, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(21, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[3];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-05-29 21:20:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  5', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Edge of Tomorrow', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(16, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(17, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(18, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[4];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-05-23 21:20:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  6', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('X-Men: Days of Future Pas', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(3, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(13, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(14, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(15, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[5];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-04-29 18:40:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal 10', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Need for Speed', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(10, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(11, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(12, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[6];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-03-02 20:05:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal 10', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('LEGO Movie, The', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(7, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(8, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(9, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[7];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2013-12-22 18:15:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  7', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Frozen', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(4, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(5, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(6, $historyItem->getReservation()->getCollectionNumber());
+
+        $historyItem = $historyItems[8];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2013-12-11 20:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  9', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Hobbit, The: The Desolati', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
+        $this->assertEquals(1, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(2, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(3, $historyItem->getReservation()->getCollectionNumber());
     }
 
     public function testGetLastResponse()

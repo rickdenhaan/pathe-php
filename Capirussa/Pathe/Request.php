@@ -8,6 +8,7 @@ class Request
      */
     const SIGN_LOGIN                = 23;
     const SIGN_LOGOUT               = 3023;
+    const SIGN_RESERVATION_HISTORY  = 24;
     const SIGN_PERSONAL_DATA        = 30;
     const SIGN_UPDATE_PERSONAL_DATA = 31;
     const SIGN_CUSTOMER_HISTORY     = 70;
@@ -56,6 +57,7 @@ class Request
     const PERSONAL_DATA_MOBILE_PHONE_NUMBER = 'Mobile';
     const PERSONAL_DATA_PASSWORD            = 'LoginPassword';
     const PERSONAL_DATA_NEWSLETTER          = 'InfoWanted';
+    const RESERVATION_HISTORY_WEEK_COUNT    = 'Weeks';
 
     /**
      * Possible user centers
@@ -93,6 +95,7 @@ class Request
         self::SIGN_CUSTOMER_HISTORY      => 'ticketweb.php?sign=%1$s',
         self::SIGN_SOAP_CUSTOMER_HISTORY => 'CRM/soap.php',
         self::SIGN_DATA_CUSTOMER_HISTORY => 'CRM/UD/Cache/tickets_%%1$s.txt',
+        self::SIGN_RESERVATION_HISTORY   => 'ticketweb.php?sign=%1$s',
     );
 
     /**

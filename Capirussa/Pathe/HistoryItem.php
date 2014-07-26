@@ -25,6 +25,13 @@ class HistoryItem
     protected $event;
 
     /**
+     * The reservation details for this history item
+     *
+     * @type Reservation
+     */
+    protected $reservation;
+
+    /**
      * Constructs a new HistoryItem
      *
      * @param \DateTime $showTime
@@ -99,6 +106,26 @@ class HistoryItem
     }
 
     /**
+     * Sets the reservation details
+     *
+     * @param Reservation $reservation
+     */
+    public function setReservation(Reservation $reservation)
+    {
+        $this->reservation = $reservation;
+    }
+
+    /**
+     * Returns the reservation details for this history item
+     *
+     * @return Reservation|null
+     */
+    public function getReservation()
+    {
+        return $this->reservation;
+    }
+
+    /**
      * Parses a pipe-delimited data file into an array of history items
      *
      * @param string $dataFile
@@ -130,6 +157,127 @@ class HistoryItem
                         );
                     }
                 }
+            }
+        }
+
+        return $retValue;
+    }
+
+    /**
+     * Parses the HTML response from the reservation history
+     *
+     * @param string $htmlContent
+     * @return HistoryItem[]
+     */
+    public static function parseHistoryItemsFromReservationHistory($htmlContent)
+    {
+        $retValue = array();
+        /* @type $retValue HistoryItem[] */
+
+        // parse the document
+        libxml_use_internal_errors(true);
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML($htmlContent);
+
+        // get the reservation details table
+        $reservationTable = null;
+        $tables = $dom->getElementsByTagName('table');
+        for ($table = 0; $table < $tables->length; $table++) {
+            $testTable = $tables->item($table);
+            /* @type $testTable \DOMElement */
+
+            if (stripos($testTable->getAttribute('class'), 'chooseCardTable') > -1) {
+                $reservationTable = $testTable;
+            }
+        }
+
+        if ($reservationTable !== null) {
+            $tableRows = $reservationTable->getElementsByTagName('tr');
+
+            // keep track of which list we're in (there are two in this one table)
+            $list = 0;
+            $idx  = 0;
+
+            for ($row = 0; $row < $tableRows->length; $row++) {
+                $tableRow = $tableRows->item($row);
+                /* @type $tableRow \DOMElement */
+
+                // check whether this row contains any headers
+                $headers = $tableRow->getElementsByTagName('th');
+                if ($headers->length > 0) {
+                    $list++;
+                    $idx = 0;
+                    continue;
+                }
+
+                // get the cells in this row
+                $cells = $tableRow->getElementsByTagName('td');
+                if ($cells->length < 3) {
+                    continue;
+                }
+
+                switch ($list) {
+                    case 1:
+                        $showTime = \DateTime::createFromFormat('j-n-Y  H:i', preg_replace('/[^0-9:\-]/', ' ', html_entity_decode($cells->item(0)->textContent)));
+                        $screen   = Screen::createFromString($cells->item(1)->textContent);
+                        $event    = Event::createFromMovieName($cells->item(2)->textContent);
+
+                        $reservation = new Reservation();
+                        $reservation->setTicketCount(preg_replace('/[^0-9]/', '', $cells->item(3)->textContent));
+
+                        $retValue[$idx] = new HistoryItem($showTime, $screen, $event);
+                        $retValue[$idx]->setReservation($reservation);
+                        break;
+
+                    case 2:
+                        if (!isset($retValue[$idx])) {
+                            break;
+                        }
+
+                        $showTime = \DateTime::createFromFormat('j-n-Y  H:i', preg_replace('/[^0-9:\-]/', ' ', html_entity_decode($cells->item(0)->textContent)));
+                        $event    = Event::createFromMovieName($cells->item(2)->textContent);
+
+                        // try to find this reservation in the first list we processed, because not all entries have a matching reservation
+                        $reservationFound = ($retValue[$idx]->getShowTime()->format('Y-m-d H:i') == $showTime->format('Y-m-d H:i') && $event->getMovieName() == $retValue[$idx]->getEvent()->getMovieName());
+                        $testIdx = $idx;
+                        while ($testIdx < count($retValue) && !$reservationFound) {
+                            $testIdx++;
+                            if (!isset($retValue[$testIdx])) {
+                                break;
+                            }
+                            $reservationFound = ($retValue[$testIdx]->getShowTime()->format('Y-m-d H:i') == $showTime->format('Y-m-d H:i') && $event->getMovieName() == $retValue[$testIdx]->getEvent()->getMovieName());
+                        }
+
+                        if ($reservationFound && $testIdx != $idx) {
+                            $idx = $testIdx;
+                        } elseif (!$reservationFound) {
+                            break;
+                        }
+
+                        // the reservation details are in a javascript link in the fourth cell
+                        $cell = $cells->item(3);
+                        /* @type $cell \DOMElement */
+
+                        $links = $cell->getElementsByTagName('a');
+                        $link = $links->item(0);
+                        /* @type $link \DOMElement */
+
+                        $status = trim($link->textContent);
+
+                        $matches = array();
+                        preg_match('/GetReservationDetails\(\'([0-9a-z]+)\',[ ]?\'([0-9a-z]+)\',[ ]?\'([0-9a-z]+)\',[ ]?\'[^\']*\'\);/i', $link->getAttribute('href'), $matches);
+
+                        $reservation = $retValue[$idx]->getReservation();
+                        $reservation->setStatus($status);
+                        $reservation->setShowIdentifier($matches[1]);
+                        $reservation->setReservationSetIdentifier($matches[2]);
+                        $reservation->setCollectionNumber($matches[3]);
+                        $retValue[$idx]->setReservation($reservation);
+                        break;
+                }
+
+                $idx++;
             }
         }
 

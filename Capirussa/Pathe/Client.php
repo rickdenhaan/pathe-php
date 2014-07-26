@@ -359,6 +359,40 @@ class Client
     }
 
     /**
+     * Retrieves the user's reservations for the given period
+     *
+     * @param int $weekCount (Optional) Defaults to 3, possible values: 3, 4, 9, 13, 26, 52, 105, 150
+     * @throws \InvalidArgumentException
+     * @return HistoryItem[]
+     */
+    public function getReservationHistory($weekCount = 3)
+    {
+        // sanity check
+        if (!in_array($weekCount, array(3, 4, 9, 13, 26, 52, 105, 150))) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid number of weeks, must be one of 3, 4, 9, 13, 26, 52, 105 or 150',
+                    __METHOD__
+                )
+            );
+        }
+
+        $this->authenticate();
+
+        // build the request to retrieve the reservation history
+        $request = $this->getRequest(Request::SIGN_RESERVATION_HISTORY, Request::METHOD_POST);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addPostParameter(Request::RESERVATION_HISTORY_WEEK_COUNT, $weekCount);
+        $this->response = $request->send();
+
+        $retValue = HistoryItem::parseHistoryItemsFromReservationHistory($this->response->getRawBody());
+
+        $this->logout();
+
+        return $retValue;
+    }
+
+    /**
      * Returns a new Request object
      *
      * @param int    $sign          (Optional) Defaults to null

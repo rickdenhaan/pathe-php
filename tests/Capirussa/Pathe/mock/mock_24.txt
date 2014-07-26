@@ -1,0 +1,404 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Date: Sat, 26 Jul 2014 16:38:22 GMT
+Content-Length: 13030
+
+<Main><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="nl" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="Author" content="Poort80 Amsterdam - http://www.poort80.nl" />
+
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/reservering.css" media="screen" />
+    <!--[if ie 6]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie6.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+<!--[if ie 7]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie7.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/print.css" media="print" />
+
+	<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/common.js"></script>
+
+    <title>Path&eacute;.nl</title>
+<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/form.js"></script>
+
+<script language="javascript" type="text/javascript" src="https://static.onlinetickets.pathe.nl/js/prototype.js"></script>
+<script language="javascript" type="text/javascript" src="../JS/ajax.js"></script>
+<script language="javascript" type="text/javascript" src="https://static.onlinetickets.pathe.nl/JS/dolphin.js"></script>
+<script language="javascript" type="text/javascript" src="https://static.onlinetickets.pathe.nl/JS/Lokris.js"></script>
+<style>
+	 .Logout {
+		font-size:13px;
+		font-weight:bold;
+		text-decoration:none;
+		width:51px;
+		height:19px;
+		color:#CCC;
+	}
+	.Logout:hover{
+		text-decoration:none;
+		color:#FEBB19;
+	}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NJ5HXC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJ5HXC');</script>
+<!-- End Google Tag Manager -->
+<div class="siteFrame">
+  <table border="0" cellspacing="0" cellpadding="0" align="center" class="centerTable">
+    <tr>
+      <td>
+ 	<div class="header"></div>
+        <table border="0" cellspacing="0" cellpadding="0" class="reserveerTable">
+          <tr>
+            <td><table cellspacing="0" cellpadding="0" border="0" class="tweeCols">
+                <tr>
+					<td class="navTD">	<script language="JavaScript" type="text/javascript">
+	function DelUser() {
+		var delUser = confirm('Wilt u uw Mijn Path' + String.fromCharCode(233) + ' gebruikersaccount verwijderen?\n\r\n\rLet op: u kunt alleen uw gebruikersaccount verwijderen als er geen klantenkaart aan gekoppeld is.');
+		if (delUser) {
+			window.location.href = '/ticketweb.php?sign=91&UserCenterID=1';
+		}
+	}
+</script>
+						<!-- navBlock -->
+       <!--------------------------------------  -->
+<!--                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=KAARTEN" class="header"/>
+                          </div>
+                        </div>
+                        <div class="navBlock">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=24">Bestaande reservering verwijderen
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+-->
+       <!--------------------------------------  -->
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=MIJN GEGEVENS" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=30">Persoonlijke gegevens
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=24">Historie
+                            </a>
+                          </div>
+												  <div class="link">
+                            <a class="" href="javascript: DelUser();">Gebruikersaccount verwijderen
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+       <!--------------------------------------  -->
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=KLANTENKAART" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/crm/cardTransactions.php?UserCenterID=1">Overzicht klantenkaart
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cardsadmin.&CustomerID=12345678">Onderhoud Klantenkaart
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+       <!--------------------------------------   -->
+
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=UNLIMITED" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.contracts.&CustomerID=12345678&LoadCards=0">Contract
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.overview.&CustomerID=12345678&LoadCards=0">Kaart
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.history.&CustomerID=12345678&LoadCards=0">Bezoekhistorie
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.invoices.&CustomerID=12345678&LoadCards=0">Facturen
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.payments.&CustomerID=12345678&LoadCards=0">Betalingen
+                            </a>
+                          </div>
+
+                        </div>
+                        <div class="footer">
+                        </div>
+
+
+
+                  </td>
+                  <td class="elf"><img src="https://www.pathe.nl/ti2007/reserveringsmodule/gfx/transparent.gif" width="11" height="11" alt="" border="0" /></td>
+                  <td class="content">
+                    <div class="titleBalk">
+                    	<div class="titleWrap" style="float:left; width:300px;"><img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=600&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=HISTORIE" class="header" /></div>
+						<div style="height:10px;"></div>
+						<div style="padding-right:20px;" align="right">
+							<a class="Logout" href="/CRM/logout.php">uitloggen</a>
+						</div>
+                    </div>
+                    <!-- titleBalk -->
+                    <div class="content">
+                    <div class="pagesNav">
+						<div class="questionMark"><a href="https://www.pathe.nl/klantenservice" onclick="window.open('https://www.pathe.nl/klantenservice','helpPopup', 'width=1000 , height=600, scrollbars=yes , directories=no, status=no ,resizable=no , toolbar=no , location=no'); return false">?</a></div>
+									<h1>Hieronder een overzicht van uw historie.</h1><br><br>
+										<form action="ticketweb.php?sign=24" name="weekselection" method="post">
+											 Overzicht &nbsp;&nbsp;<select name="Weeks" onchange="document.forms.weekselection.submit()">
+											<option value="3" selected>t/m 3 weken terug</option>
+											<option value="4">t/m 4 weken terug</option>
+											<option value="9">t/m 2 maanden terug</option>
+											<option value="13">t/m 3 maanden terug</option>
+											<option value="26">t/m 6 maanden terug</option>
+											<option value="52">t/m 1 jaar terug</option>
+											<option value="105">t/m 2 jaar terug</option>
+											<option value="150">volledig overzicht</option>
+											</select>
+										</form>		<br>
+
+										<div class="cardType">
+													<table width="450" border="0" cellspacing="0" cellpadding="0" class="chooseCardTable stripe">
+
+													<tr>
+														<th width="100">DATUM + TIJD</th>
+														<th width="100">BIOSCOOP/ZAAL</th>
+														<th width="150">TITEL</th>
+														<th width="100">KAARTEN</th>
+													</tr>
+
+													<tr>
+														<td>18-7-2014&nbsp;21:30</td>
+														<td>Path&eacute; de Kuip/Zaal  9</td>
+														<td>Dawn of the Planet of the</td>
+														<td>2 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>12-7-2014&nbsp;19:50</td>
+														<td>Path&eacute; de Kuip/Zaal  3</td>
+														<td>How To Train Your Dragon </td>
+														<td>4 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>20-6-2014&nbsp;22:45</td>
+														<td>Path&eacute; de Kuip/Zaal  6</td>
+														<td>Transcendence</td>
+														<td>4 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>29-5-2014&nbsp;21:20</td>
+														<td>Path&eacute; de Kuip/Zaal  5</td>
+														<td>Edge of Tomorrow</td>
+														<td>1 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>23-5-2014&nbsp;21:20</td>
+														<td>Path&eacute; de Kuip/Zaal  6</td>
+														<td>X-Men: Days of Future Pas</td>
+														<td>3 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>29-4-2014&nbsp;18:40</td>
+														<td>Path&eacute; de Kuip/Zaal 10</td>
+														<td>Need for Speed</td>
+														<td>2 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>2-3-2014&nbsp;20:05</td>
+														<td>Path&eacute; de Kuip/Zaal 10</td>
+														<td>LEGO Movie, The</td>
+														<td>4 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>22-12-2013&nbsp;18:15</td>
+														<td>Path&eacute; de Kuip/Zaal  7</td>
+														<td>Frozen</td>
+														<td>2 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<td>11-12-2013&nbsp;20:30</td>
+														<td>Path&eacute; de Kuip/Zaal  9</td>
+														<td>Hobbit, The: The Desolati</td>
+														<td>4 Kaart(en)<br></td>
+													</tr>
+
+													<tr>
+														<th width="100">DATUM + TIJD</th>
+														<th width="100">BIOSCOOP/ZAAL</th>
+														<th width="150">TITEL</th>
+														<th width="100">KAARTEN</th>
+													</tr>
+
+													<tr>
+										 			   <td>18-7-2014&nbsp;21:30</td>
+										 			   <td>KuiR/Zaal  9</td>
+													    <td>Dawn of the Planet of the</td>
+													    <td><!--ResNr. 27<br>--><a href="javascript:GetReservationDetails('25', '26', '27', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation26"></div></td></tr>
+
+													<tr>
+										 			   <td>12-7-2014&nbsp;19:50</td>
+										 			   <td>KuiR/Zaal  3</td>
+													    <td>How To Train Your Dragon </td>
+													    <td><!--ResNr. 24<br>--><a href="javascript:GetReservationDetails('22', '23', '24', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation23"></div></td></tr>
+
+													<tr>
+										 			   <td>20-6-2014&nbsp;22:45</td>
+										 			   <td>KuiR/Zaal  6</td>
+													    <td>Transcendence</td>
+													    <td><!--ResNr. 21<br>--><a href="javascript:GetReservationDetails('19', '20', '21', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation20"></div></td></tr>
+
+													<tr>
+										 			   <td>29-5-2014&nbsp;21:20</td>
+										 			   <td>KuiR/Zaal  5</td>
+													    <td>Edge of Tomorrow</td>
+													    <td><!--ResNr. 18<br>--><a href="javascript:GetReservationDetails('16', '17', '18', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation17"></div></td></tr>
+
+													<tr>
+										 			   <td>23-5-2014&nbsp;21:20</td>
+										 			   <td>KuiR/Zaal  6</td>
+													    <td>X-Men: Days of Future Pas</td>
+													    <td><!--ResNr. 15<br>--><a href="javascript:GetReservationDetails('13', '14', '15', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation14"></div></td></tr>
+
+													<tr>
+										 			   <td>29-4-2014&nbsp;18:40</td>
+										 			   <td>KuiR/Zaal 10</td>
+													    <td>Need for Speed</td>
+													    <td><!--ResNr. 12<br>--><a href="javascript:GetReservationDetails('10', '11', '12', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation11"></div></td></tr>
+
+													<tr>
+										 			   <td>2-3-2014&nbsp;20:05</td>
+										 			   <td>KuiR/Zaal 10</td>
+													    <td>LEGO Movie, The</td>
+													    <td><!--ResNr. 9<br>--><a href="javascript:GetReservationDetails('7', '8', '9', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation8"></div></td></tr>
+
+													<tr>
+										 			   <td>22-12-2013&nbsp;18:15</td>
+										 			   <td>KuiR/Zaal  7</td>
+													    <td>Frozen</td>
+													    <td><!--ResNr. 6<br>--><a href="javascript:GetReservationDetails('4', '5', '6', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation5"></div></td></tr>
+
+													<tr>
+										 			   <td>11-12-2013&nbsp;20:30</td>
+										 			   <td>KuiR/Zaal  9</td>
+													    <td>Hobbit, The: The Desolati</td>
+													    <td><!--ResNr. 3<br>--><a href="javascript:GetReservationDetails('1', '2', '3', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
+
+										</tr>
+											<tr><td colspan=4><div id="Reservation2"></div></td></tr>
+											<tr>
+
+												</table>
+
+										</div><!-- cardType -->
+									</div><!-- content -->
+								</td>
+							</tr>
+						</table>
+
+						<div class="arrowNavFooter">
+							<span style="float:right"><img src="https://www.pathe.nl/ti/gfx/transparent.gif" alt="" border="0" /></span>
+							<span style=""><img src="https://www.pathe.nl/ti/gfx/transparent.gif" alt="" border="0" /></span>
+						</div>
+
+					</td>
+				</tr>
+			</table>
+
+
+		<div class="algVoorw">Op ieder bezoek aan een Path&eacute; bioscoop zijn de <a href="https://www.pathe.nl/artikel/61-pathe-bezoekersvoorwaarden" target="_blank">Bezoekersvoorwaarden</a>
+ van toepassing</div>
+
+
+    		</td>
+    	</tr>
+    </table><!-- centerTable -->
+
+
+</div><!-- Siteframe -->
+
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-693301-1");
+pageTracker._trackPageview(); }
+catch(err) {}
+</script>
+
+</body>
+</html>
+</Main>
