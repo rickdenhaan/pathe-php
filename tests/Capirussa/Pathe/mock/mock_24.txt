@@ -323,40 +323,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 											<tr><td colspan=4><div id="Reservation14"></div></td></tr>
 
 													<tr>
-										 			   <td>29-4-2014&nbsp;18:40</td>
+										 			   <td>2-3-2014&nbsp;20:05</td>
 										 			   <td>KuiR/Zaal 10</td>
-													    <td>Need for Speed</td>
+													    <td>LEGO Movie, The</td>
 													    <td><!--ResNr. 12<br>--><a href="javascript:GetReservationDetails('10', '11', '12', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
 
 										</tr>
 											<tr><td colspan=4><div id="Reservation11"></div></td></tr>
 
 													<tr>
-										 			   <td>2-3-2014&nbsp;20:05</td>
-										 			   <td>KuiR/Zaal 10</td>
-													    <td>LEGO Movie, The</td>
+										 			   <td>22-12-2013&nbsp;18:15</td>
+										 			   <td>KuiR/Zaal  7</td>
+													    <td>Frozen</td>
 													    <td><!--ResNr. 9<br>--><a href="javascript:GetReservationDetails('7', '8', '9', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
 
 										</tr>
 											<tr><td colspan=4><div id="Reservation8"></div></td></tr>
 
 													<tr>
-										 			   <td>22-12-2013&nbsp;18:15</td>
-										 			   <td>KuiR/Zaal  7</td>
-													    <td>Frozen</td>
+										 			   <td>11-12-2013&nbsp;20:30</td>
+										 			   <td>KuiR/Zaal  9</td>
+													    <td>Hobbit, The: The Desolati</td>
 													    <td><!--ResNr. 6<br>--><a href="javascript:GetReservationDetails('4', '5', '6', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
 
 										</tr>
 											<tr><td colspan=4><div id="Reservation5"></div></td></tr>
 
 													<tr>
-										 			   <td>11-12-2013&nbsp;20:30</td>
-										 			   <td>KuiR/Zaal  9</td>
-													    <td>Hobbit, The: The Desolati</td>
+										 			   <td>1-12-2013&nbsp;00:20</td>
+										 			   <td>KuiR/Zaal  2</td>
+													    <td>Insidious: Chapter 2</td>
 													    <td><!--ResNr. 3<br>--><a href="javascript:GetReservationDetails('1', '2', '3', 'dvarmb1ng45bh7mi9iovgsioh3');">Opgehaald</a></td>
 
 										</tr>
-											<tr><td colspan=4><div id="Reservation2"></div></td></tr>
+											<tr><td colspan=4><div id="Reservation5"></div></td></tr>
 											<tr>
 
 												</table>

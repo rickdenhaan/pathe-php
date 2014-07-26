@@ -582,10 +582,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Zaal 10', $historyItem->getScreen()->getScreen());
         $this->assertEquals('Need for Speed', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
-        $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
-        $this->assertEquals(10, $historyItem->getReservation()->getShowIdentifier());
-        $this->assertEquals(11, $historyItem->getReservation()->getReservationSetIdentifier());
-        $this->assertEquals(12, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
 
         $historyItem = $historyItems[6];
 
@@ -597,9 +597,9 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('LEGO Movie, The', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
         $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
-        $this->assertEquals(7, $historyItem->getReservation()->getShowIdentifier());
-        $this->assertEquals(8, $historyItem->getReservation()->getReservationSetIdentifier());
-        $this->assertEquals(9, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertEquals(10, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(11, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(12, $historyItem->getReservation()->getCollectionNumber());
 
         $historyItem = $historyItems[7];
 
@@ -611,9 +611,9 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Frozen', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
         $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
-        $this->assertEquals(4, $historyItem->getReservation()->getShowIdentifier());
-        $this->assertEquals(5, $historyItem->getReservation()->getReservationSetIdentifier());
-        $this->assertEquals(6, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertEquals(7, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(8, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(9, $historyItem->getReservation()->getCollectionNumber());
 
         $historyItem = $historyItems[8];
 
@@ -625,9 +625,9 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Hobbit, The: The Desolati', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(4, $historyItem->getReservation()->getTicketCount());
         $this->assertEquals(Reservation::STATUS_COLLECTED, $historyItem->getReservation()->getStatus());
-        $this->assertEquals(1, $historyItem->getReservation()->getShowIdentifier());
-        $this->assertEquals(2, $historyItem->getReservation()->getReservationSetIdentifier());
-        $this->assertEquals(3, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertEquals(4, $historyItem->getReservation()->getShowIdentifier());
+        $this->assertEquals(5, $historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertEquals(6, $historyItem->getReservation()->getCollectionNumber());
     }
 
     public function testGetLastResponse()
