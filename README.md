@@ -38,6 +38,8 @@ There are several pieces of information you can retrieve from Pathé:
 * Your personal details. Calling $client->getPersonalData() will return a Pathe\PersonalData object.
 * The last 100 movies you watched. Calling $client->getCustomerHistory() will return an array of Pathe\HistoryItem entities
 
+It is also possible to update your Pathé user details by calling $client->updatePersonalData() with a modified Pathe\PersonalData object. This will return a new Pathe\PersonalData object, freshly retrieved from Pathé after sending the updated information.
+
 More options will be added soon!
 
 
@@ -47,7 +49,7 @@ Pathe\PersonalData
 The Pathe\PersonalData entity contains your Pathé customer details:
 
 * Username - a string containing your username (not actually fetched from Pathé, but inserted into this object from your Pathe\Client configuration
-* Password - does *not* contain your password, but is reserved for future use for *changing* your password. Contains Pathe\PersonalData::PASSWORD_NO_CHANGE unless you call setPassword()
+* Password - does *not* contain your current password, but is used for *changing* your password. Contains Pathe\PersonalData::PASSWORD_NO_CHANGE until you change it
 * Gender - a numeric key to indicate your gender, matches either Pathe\PersonalData::GENDER_MALE or Pathe\PersonalData::GENDER_FEMALE
 * FirstName - a string containing your first name
 * MiddleName - a string containing the prefix for your last name (e.g. "van", "de", "van der", etc.) or null if your name does not have one
