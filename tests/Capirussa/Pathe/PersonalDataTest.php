@@ -974,6 +974,6 @@ class PersonalDataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1234 AB', $personalData->getPostalCode());
         $this->assertEquals('testCity', $personalData->getCity());
         $this->assertEquals('0612345678', $personalData->getMobilePhoneNumber());
-        $this->assertTrue($personalData->getNewsletter());
+        $this->assertFalse($personalData->getNewsletter());
     }
 }
