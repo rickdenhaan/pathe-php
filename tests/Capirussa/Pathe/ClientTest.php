@@ -416,7 +416,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1234 AB', $personalData->getPostalCode());
         $this->assertEquals('testCity', $personalData->getCity());
         $this->assertEquals('0612345678', $personalData->getMobilePhoneNumber());
-        $this->assertTrue($personalData->getNewsletter());
+        $this->assertFalse($personalData->getNewsletter());
 
         $this->assertFileNotExists($cookieJar);
     }
@@ -451,7 +451,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $personalData->setPostalCode('2345bc');
         $personalData->setCity('testNewCity');
         $personalData->setMobilePhoneNumber('0623456789');
-        $personalData->setNewsletter(false);
+        $personalData->setNewsletter(true);
 
         $updatedPersonalData = $client->updatePersonalData($personalData);
 
@@ -475,7 +475,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2345 BC', $updatedPersonalData->getPostalCode());
         $this->assertEquals('testNewCity', $updatedPersonalData->getCity());
         $this->assertEquals('0623456789', $updatedPersonalData->getMobilePhoneNumber());
-        $this->assertFalse($updatedPersonalData->getNewsletter());
+        $this->assertTrue($updatedPersonalData->getNewsletter());
 
         $this->assertFileNotExists($cookieJar);
     }

@@ -384,7 +384,7 @@ Het wachtwoord moet minimaal zes tekens lang zijn en moet minstens &eacute;&eacu
 												<td class="inputCell"><input class="typeText" type="password" class="typeText"  name="LoginPassword" value="ticket.international" style="width:283px; height:17px;"></td>
 											</tr>
 											<tr class="verplicht">
-												<td class="nameCell" colspan="2"><input checked type="checkbox" name="InfoWanted">Ja, ik ontvang graag de wekelijkse nieuwsbrief van Path&eacute; per e-mail.</td>
+												<td class="nameCell" colspan="2"><input type="checkbox" name="InfoWanted">Ja, ik ontvang graag de wekelijkse nieuwsbrief van Path&eacute; per e-mail.</td>
 											</tr>
 
 						</table>
