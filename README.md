@@ -18,8 +18,14 @@ use Capirussa\Pathe;
 try {
     $client = new Pathe\Client('username', 'password');
 
-    $customerDetails = $client->getPersonalData();
-    $movieHistory    = $client->getCustomerHistory();
+    $customerDetails    = $client->getPersonalData();
+    $movieHistory       = $client->getCustomerHistory();
+    $reservationHistory = $client->getReservationHistory();
+
+    $customerDetails->setNewsletter(true);
+    $customerDetails->setPassword('newPassword123');
+
+    $updatedCustomerDetails = $client->updatePersonalData($customerDetails);
 } catch (\Exception $exception) {
     // something went wrong, fix it and try again!
 }
@@ -37,6 +43,7 @@ There are several pieces of information you can retrieve from Pathé:
 
 * Your personal details. Calling $client->getPersonalData() will return a Pathe\PersonalData object.
 * The last 100 movies you watched. Calling $client->getCustomerHistory() will return an array of Pathe\HistoryItem entities
+* Your reservation history. Calling $client->getReservationHistory() will return an array of Pathe\HistoryItem entities
 
 It is also possible to update your Pathé user details by calling $client->updatePersonalData() with a modified Pathe\PersonalData object. This will return a new Pathe\PersonalData object, freshly retrieved from Pathé after sending the updated information.
 
@@ -74,6 +81,7 @@ The Pathe\HistoryItem entity contains three properties:
 * ShowTime - a DateTime object containing the date and time at which the movie started
 * Screen - a Screen object containing the theater and screen at which the movie played
 * Event - an Event object containing the name of the movie that you watched
+* Reservation - a Reservation object containing details of the reservation (only if fetched via $client->getReservationHistory())
 
 
 Pathe\Screen
@@ -91,6 +99,21 @@ Pathe\Event
 The Pathe\Event entity for now only contains the name of the movie you watched:
 
 * MovieName - the name of the movie that you watched
+
+
+Pathe\Reservation
+-----------------
+
+The Pathe\Reservation entity contains details about a past reservation:
+
+* TicketCount - the number of tickets in this reservation
+* Status - the status of this reservation, can be one of Pathe\Reservation::STATUS_UNKNOWN, Pathe\Reservation::STATUS_COLLECTED or Pathe\Reservation::STATUS_DELETED
+* ShowIdentifier - not sure yet what this is, but I think it's a unique identifier for the movie
+* ReservationSetIdentifier - appears to be the unique reservation identifier
+* CollectionNumber - not sure what this is used for, but we might need it in the future
+
+Note that the Reservation object has not yet been tested against active reservations (which have not yet been collected and have not been deleted) so if you have one of those, calling $client->getReservationHistory() will throw an InvalidArgumentException saying the status is invalid. This will be fixed soon.
+
 
 If you find any bugs or have any feature requests, please raise an issue on Github or fork this project and create a pull request.
 
