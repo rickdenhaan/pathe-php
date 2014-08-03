@@ -102,6 +102,31 @@ class ResponseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $response->getRawBody());
     }
 
+    public function testConstructWithDoubleHeaders()
+    {
+        $response = new Response(
+            'HTTP/1.1 100 Continue' . "\r\n" .
+            "\r\n" .
+            'HTTP/1.1 200 OK' . "\r\n" .
+            'Connection: Close' . "\r\n" .
+            "\r\n" .
+            'This should be the body'
+        );
+
+        $this->assertNotNull($response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertNotNull($response->getRawHeaders());
+        $this->assertInternalType('array', $response->getRawHeaders());
+        $this->assertCount(1, $response->getRawHeaders());
+        $this->assertArrayHasKey('Connection', $response->getRawHeaders());
+        $this->assertEquals('Close', $this->getObjectAttribute((object)$response->getRawHeaders(), 'Connection'));
+
+        $this->assertNotNull($response->getRawBody());
+        $this->assertInternalType('string', $response->getRawBody());
+        $this->assertEquals('This should be the body', $response->getRawBody());
+    }
+
     public function testConstructWithBody()
     {
         $response = new Response(

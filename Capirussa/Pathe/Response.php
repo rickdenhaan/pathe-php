@@ -53,6 +53,11 @@ class Response
 
             if (strtoupper(substr($responseLine, 0, 5)) == 'HTTP/') {
                 $this->statusCode = substr($responseLine, 9, 3);
+
+                if ($this->statusCode == 100) {
+                    $this->__construct($this->rawBody);
+                    return;
+                }
             } else {
                 $header = explode(':', $responseLine, 2);
 
