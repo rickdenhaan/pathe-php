@@ -482,6 +482,86 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testForgotPasswordWithoutEmailAddress()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        /** @noinspection PhpParamsInspection (this is intentional) */
+        $client->forgotPassword();
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid email address
+     */
+    public function testForgotPasswordWithInvalidEmailAddress()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $client->forgotPassword('incorrect');
+    }
+
+    public function testForgotPasswordWithUnknownEmailAddress()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $success = $client->forgotPassword('nosuch@example.com');
+
+        $this->assertFalse($success);
+
+        $this->assertFileNotExists($cookieJar);
+    }
+
+    public function testForgotPasswordWithValidEmailAddress()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $success = $client->forgotPassword('test@example.com');
+
+        $this->assertTrue($success);
+
+        $this->assertFileNotExists($cookieJar);
+    }
+
+    /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid number of weeks
      */

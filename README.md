@@ -26,6 +26,8 @@ try {
     $customerDetails->setPassword('newPassword123');
 
     $updatedCustomerDetails = $client->updatePersonalData($customerDetails);
+
+    $success = $client->forgotPassword('email@example.com');
 } catch (\Exception $exception) {
     // something went wrong, fix it and try again!
 }
@@ -46,6 +48,8 @@ There are several pieces of information you can retrieve from Pathé:
 * Your reservation history. Calling $client->getReservationHistory() will return an array of Pathe\HistoryItem entities
 
 It is also possible to update your Pathé user details by calling $client->updatePersonalData() with a modified Pathe\PersonalData object. This will return a new Pathe\PersonalData object, freshly retrieved from Pathé after sending the updated information.
+
+If you've forgotten your password, you can also request a reset link by calling $client->forgotPassword() with your email address. This will return a boolean true or false, depending on whether the request was successful.
 
 More options will be added soon!
 

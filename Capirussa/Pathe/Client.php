@@ -359,6 +359,48 @@ class Client
     }
 
     /**
+     * Requests a password reminder from Pathé
+     *
+     * @param string $email
+     * @throws \InvalidArgumentException
+     * @return bool
+     */
+    public function forgotPassword($email)
+    {
+        // validate that the email address is in fact an email address
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid email address',
+                    __METHOD__
+                )
+            );
+        }
+
+        // first perform a GET request on the dashboard to initialize a remote session
+        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
+        $request->send();
+
+        // now build a POST request to request the password reminder
+        $request = $this->getRequest(Request::SIGN_LOGIN, Request::METHOD_POST);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addPostParameter(Request::LOGIN_EMAIL_ADDRESS, $email);
+        $this->response = $request->send();
+
+        $this->clearCookieJar();
+
+        // check whether the request was successful
+        $retValue = false;
+        if (preg_match('/Een e\-mail met uw wachtwoord(.*)<br>' . $email . '/i', $this->response->getRawBody())) {
+            $retValue = true;
+        }
+
+        return $retValue;
+    }
+
+    /**
      * Retrieves the user's reservations for the given period
      *
      * @param int $weekCount (Optional) Defaults to 3, possible values: 3, 4, 9, 13, 26, 52, 105, 150

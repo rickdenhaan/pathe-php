@@ -38,6 +38,7 @@ class Request
      */
     const LOGIN_USERNAME                    = 'Login';
     const LOGIN_PASSWORD                    = 'Password';
+    const LOGIN_EMAIL_ADDRESS               = 'Email';
     const LOGIN_SUBMIT_X                    = 'submitButton.x';
     const LOGIN_SUBMIT_Y                    = 'submitButton.y';
     const PERSONAL_DATA_GENDER              = 'Gender';

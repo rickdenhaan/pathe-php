@@ -34,8 +34,12 @@ class MockRequest extends Pathe\Request
 
             case 'pathe://mock/ticketweb.php?sign=23':
                 $postData = $this->getPostParameters();
-                if ($postData[self::LOGIN_PASSWORD] == 'testIncorrectPassword') {
+                if (isset($postData[self::LOGIN_PASSWORD]) && $postData[self::LOGIN_PASSWORD] == 'testIncorrectPassword') {
                     $simulatedResponse = $this->loadMockResponse('mock_23_incorrect.txt');
+                } elseif (isset($postData[self::LOGIN_EMAIL_ADDRESS]) && $postData[self::LOGIN_EMAIL_ADDRESS] == 'nosuch@example.com') {
+                    $simulatedResponse = $this->loadMockResponse('mock_23_forgot_incorrect.txt');
+                } elseif (isset($postData[self::LOGIN_EMAIL_ADDRESS])) {
+                    $simulatedResponse = $this->loadMockResponse('mock_23_forgot_correct.txt');
                 } else {
                     $simulatedResponse = $this->loadMockResponse('mock_23_correct.txt');
                 }
