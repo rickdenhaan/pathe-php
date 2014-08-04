@@ -324,6 +324,9 @@ class Client
     {
         $this->authenticate();
 
+        // validate the required fields
+        $personalData->assertValidForRegistrationAndUpdate();
+
         // build the request to update the personal data
         $request = $this->getRequest(Request::SIGN_UPDATE_PERSONAL_DATA, Request::METHOD_POST);
         $request->setCookieJar($this->getCookieJar());
@@ -410,50 +413,7 @@ class Client
     public function registerAccount(PersonalData $personalData)
     {
         // sanity check, some information is required
-        if (trim($personalData->getFirstName()) == '') {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '%1$s: Invalid data object: first name is not set',
-                    __METHOD__
-                )
-            );
-        }
-
-        if (trim($personalData->getLastName()) == '') {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '%1$s: Invalid data object: last name is not set',
-                    __METHOD__
-                )
-            );
-        }
-
-        if (trim($personalData->getEmailAddress()) == '') {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '%1$s: Invalid data object: email address is not set',
-                    __METHOD__
-                )
-            );
-        }
-
-        if (intval($personalData->getBirthDate()->setTimezone(new \DateTimeZone(date_default_timezone_get()))->format('Ymd')) >= intval(date('Ymd'))) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '%1$s: Invalid data object: birth date must be in the past',
-                    __METHOD__
-                )
-            );
-        }
-
-        if (trim($personalData->getPassword()) == '' || $personalData->getPassword() == PersonalData::PASSWORD_NO_CHANGE) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '%1$s: Invalid data object: password is not set',
-                    __METHOD__
-                )
-            );
-        }
+        $personalData->assertValidForRegistrationAndUpdate(true);
 
         // first perform a GET request on the dashboard to initialize a remote session
         $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
@@ -467,8 +427,8 @@ class Client
         $request->addPostParameter(Request::PERSONAL_DATA_FIRST_NAME, $personalData->getFirstName());
         $request->addPostParameter(Request::PERSONAL_DATA_MIDDLE_NAME, $personalData->getMiddleName());
         $request->addPostParameter(Request::PERSONAL_DATA_LAST_NAME, $personalData->getLastName());
-        $request->addPostParameter(Request::LOGIN_EMAIL_ADDRESS, $personalData->getEmailAddress());
-        $request->addPostParameter(Request::LOGIN_CONFIRM_EMAIL_ADDRESS, $personalData->getEmailAddress());
+        $request->addPostParameter(Request::LOGIN_EMAIL_ADDRESS, $personalData->getUsername());
+        $request->addPostParameter(Request::LOGIN_CONFIRM_EMAIL_ADDRESS, $personalData->getUsername());
         $request->addPostParameter(Request::PERSONAL_DATA_GENDER, $personalData->getGender());
         $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_DAY, $personalData->getBirthDate()->format('j'));
         $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_MONTH, $personalData->getBirthDate()->format('n'));
@@ -488,6 +448,21 @@ class Client
         $retValue = false;
         if (preg_match('/Uw gegevens zijn succesvol geregistreerd/i', $this->response->getRawBody())) {
             $retValue = true;
+        }
+
+        // if the registration was successful, immediately update the user details because during registration some
+        // fields were not submitted (like the address and possibly the differing email address)
+        if ($retValue === true) {
+            $oldUsername = $this->getUsername();
+            $oldPassword = $this->getPassword();
+
+            $this->setUsername($personalData->getUsername());
+            $this->setPassword($personalData->getPassword());
+
+            $this->updatePersonalData($personalData);
+
+            $this->setUsername($oldUsername);
+            $this->setPassword($oldPassword);
         }
 
         return $retValue;

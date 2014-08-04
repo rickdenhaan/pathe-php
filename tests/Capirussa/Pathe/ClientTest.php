@@ -582,7 +582,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException LogicException
      * @expectedExceptionMessage first name is not set
      */
     public function testRegisterAccountWithoutFirstName()
@@ -605,7 +605,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException LogicException
      * @expectedExceptionMessage last name is not set
      */
     public function testRegisterAccountWithoutLastName()
@@ -629,7 +629,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException LogicException
      * @expectedExceptionMessage email address is not set
      */
     public function testRegisterAccountWithoutEmailAddress()
@@ -654,7 +654,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException LogicException
      * @expectedExceptionMessage birth date must be in the past
      */
     public function testRegisterAccountWithInvalidBirthDate()
@@ -680,7 +680,34 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException LogicException
+     * @expectedExceptionMessage username is not set
+     */
+    public function testRegisterAccountWithoutUsername()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException LogicException
      * @expectedExceptionMessage password is not set
      */
     public function testRegisterAccountWithoutPassword()
@@ -702,6 +729,129 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $personalData->setLastName('testLastName');
         $personalData->setEmailAddress('test@example.com');
         $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage street name is not set
+     */
+    public function testRegisterAccountWithoutStreetName()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage house number is not set
+     */
+    public function testRegisterAccountWithoutHouseNumber()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage postal code is not set
+     */
+    public function testRegisterAccountWithoutPostalCode()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage city is not set
+     */
+    public function testRegisterAccountWithoutCity()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
 
         $client->registerAccount($personalData);
     }
@@ -725,7 +875,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $personalData->setLastName('testLastName');
         $personalData->setEmailAddress('test@example.com');
         $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
         $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
+        $personalData->setCity('testCity');
 
         $client->registerAccount($personalData);
     }

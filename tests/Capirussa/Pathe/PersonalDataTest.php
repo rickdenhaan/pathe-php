@@ -15,12 +15,12 @@ class PersonalDataTest extends PHPUnit_Framework_TestCase
 
         $this->assertNull($this->getObjectAttribute($personalData, 'username'));
         $this->assertEquals(PersonalData::PASSWORD_NO_CHANGE, $this->getObjectAttribute($personalData, 'password'));
-        $this->assertNull($this->getObjectAttribute($personalData, 'gender'));
+        $this->assertEquals(PersonalData::GENDER_MALE, $this->getObjectAttribute($personalData, 'gender'));
         $this->assertNull($this->getObjectAttribute($personalData, 'firstName'));
         $this->assertNull($this->getObjectAttribute($personalData, 'middleName'));
         $this->assertNull($this->getObjectAttribute($personalData, 'lastName'));
         $this->assertNull($this->getObjectAttribute($personalData, 'emailAddress'));
-        $this->assertNull($this->getObjectAttribute($personalData, 'country'));
+        $this->assertEquals(PersonalData::COUNTRY_NETHERLANDS, $this->getObjectAttribute($personalData, 'country'));
         $this->assertNull($this->getObjectAttribute($personalData, 'birthDate'));
         $this->assertNull($this->getObjectAttribute($personalData, 'streetName'));
         $this->assertNull($this->getObjectAttribute($personalData, 'houseNumber'));
@@ -186,7 +186,7 @@ class PersonalDataTest extends PHPUnit_Framework_TestCase
     {
         $personalData = new PersonalData();
 
-        $this->assertNull($this->getObjectAttribute($personalData, 'gender'));
+        $this->assertEquals(PersonalData::GENDER_MALE, $this->getObjectAttribute($personalData, 'gender'));
 
         $personalData->setGender(PersonalData::GENDER_FEMALE);
 
@@ -413,6 +413,14 @@ class PersonalDataTest extends PHPUnit_Framework_TestCase
     public function testSetCountryWithValidCountry()
     {
         $personalData = new PersonalData();
+
+        // since the default country is the only one we can set, use reflection to set it to something else first
+        $this->assertEquals(PersonalData::COUNTRY_NETHERLANDS, $this->getObjectAttribute($personalData, 'country'));
+
+        $reflectionObject = new ReflectionObject($personalData);
+        $reflectionProperty = $reflectionObject->getProperty('country');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($personalData, null);
 
         $this->assertNull($this->getObjectAttribute($personalData, 'country'));
 
@@ -975,5 +983,290 @@ class PersonalDataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('testCity', $personalData->getCity());
         $this->assertEquals('0612345678', $personalData->getMobilePhoneNumber());
         $this->assertFalse($personalData->getNewsletter());
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage first name is not set
+     */
+    public function testAssertValidForRegistrationWithoutFirstName()
+    {
+        $personalData = new PersonalData();
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage last name is not set
+     */
+    public function testAssertValidForRegistrationWithoutLastName()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage email address is not set
+     */
+    public function testAssertValidForRegistrationWithoutEmailAddress()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage birth date must be in the past
+     */
+    public function testAssertValidForRegistrationWithoutBirthDate()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage username is not set
+     */
+    public function testAssertValidForRegistrationWithoutUsername()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage password is not set
+     */
+    public function testAssertValidForRegistrationWithoutPassword()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage street name is not set
+     */
+    public function testAssertValidForRegistrationWithoutStreetName()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage house number is not set
+     */
+    public function testAssertValidForRegistrationWithoutHouseNumber()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage postal code is not set
+     */
+    public function testAssertValidForRegistrationWithoutPostalCode()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage city is not set
+     */
+    public function testAssertValidForRegistrationWithoutCity()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    public function testAssertValidForRegistrationWithAllRequired()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setUsername('test@example.com');
+        $personalData->setPassword('testPassword1');
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
+        $personalData->setCity('testCity');
+
+        $personalData->assertValidForRegistrationAndUpdate(true);
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage first name is not set
+     */
+    public function testAssertValidForUpdateWithoutFirstName()
+    {
+        $personalData = new PersonalData();
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage last name is not set
+     */
+    public function testAssertValidForUpdateWithoutLastName()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage email address is not set
+     */
+    public function testAssertValidForUpdateWithoutEmailAddress()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage birth date must be in the past
+     */
+    public function testAssertValidForUpdateWithoutBirthDate()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage street name is not set
+     */
+    public function testAssertValidForUpdateWithoutStreetName()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage house number is not set
+     */
+    public function testAssertValidForUpdateWithoutHouseNumber()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setStreetName('testStreet');
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage postal code is not set
+     */
+    public function testAssertValidForUpdateWithoutPostalCode()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    /**
+     * @expectedException LogicException
+     * @expectedExceptionMessage city is not set
+     */
+    public function testAssertValidForUpdateWithoutCity()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
+        $personalData->assertValidForRegistrationAndUpdate();
+    }
+
+    public function testAssertValidForUpdateWithAllRequired()
+    {
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new DateTime('1980-01-01'));
+        $personalData->setStreetName('testStreet');
+        $personalData->setHouseNumber(1);
+        $personalData->setPostalCode('1234ab');
+        $personalData->setCity('testCity');
+
+        $personalData->assertValidForRegistrationAndUpdate();
     }
 }

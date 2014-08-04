@@ -59,7 +59,7 @@ class PersonalData
      *
      * @type int
      */
-    protected $gender;
+    protected $gender = self::GENDER_MALE;
 
     /**
      * The user's first name
@@ -94,7 +94,7 @@ class PersonalData
      *
      * @type int
      */
-    protected $country;
+    protected $country = self::COUNTRY_NETHERLANDS;
 
     /**
      * The user's birth date
@@ -955,5 +955,104 @@ class PersonalData
         }
 
         return $retValue;
+    }
+
+    /**
+     * Makes sure all values that are required for registration and/or a personal information update are filled
+     *
+     * @param bool $newRegistration if TRUE will make sure the username is set and the password is not set to the NO_CHANGE password
+     * @throws \LogicException
+     */
+    public function assertValidForRegistrationAndUpdate($newRegistration = false)
+    {
+        if (trim($this->getFirstName()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: first name is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getLastName()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: last name is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getEmailAddress()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: email address is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (intval($this->getBirthDate()->setTimezone(new \DateTimeZone(date_default_timezone_get()))->format('Ymd')) >= intval(date('Ymd'))) {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: birth date must be in the past',
+                    __METHOD__
+                )
+            );
+        }
+
+        if ($newRegistration && trim($this->getUsername()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: username is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getPassword()) == '' || ($newRegistration && $this->getPassword() == PersonalData::PASSWORD_NO_CHANGE)) {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: password is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getStreetName()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: street name is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getHouseNumber()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: house number is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getPostalCode()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: postal code is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($this->getCity()) == '') {
+            throw new \LogicException(
+                sprintf(
+                    '%1$s: Validation error: city is not set',
+                    __METHOD__
+                )
+            );
+        }
     }
 }
