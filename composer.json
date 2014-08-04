@@ -2,7 +2,7 @@
     "name": "capirussa/pathe-php",
     "type": "library",
     "description": "A PHP library for retrieving and updating Pathé Unlimited and Pathé Gold member history and information from Mijn Pathé",
-    "keywords": ["php", "pathe", "pathé"],
+    "keywords": ["php", "pathe"],
     "homepage": "http://github.com/rickdenhaan/pathe-php",
     "authors": [
         {
