@@ -18,6 +18,8 @@ use Capirussa\Pathe;
 try {
     $client = new Pathe\Client('username', 'password');
 
+    $client->register(new Pathe\PersonalData()); // note: you really do need to fill this PersonalData object first!
+
     $customerDetails    = $client->getPersonalData();
     $movieHistory       = $client->getCustomerHistory();
     $reservationHistory = $client->getReservationHistory();
@@ -50,6 +52,8 @@ There are several pieces of information you can retrieve from Pathé:
 It is also possible to update your Pathé user details by calling $client->updatePersonalData() with a modified Pathe\PersonalData object. This will return a new Pathe\PersonalData object, freshly retrieved from Pathé after sending the updated information.
 
 If you've forgotten your password, you can also request a reset link by calling $client->forgotPassword() with your email address. This will return a boolean true or false, depending on whether the request was successful.
+
+If you do not have an account yet, you can now call $client->registerAccount() with a (filled) PersonalData object to register for a new account. Unfortunately, it is not possible to also request an Unlimited or Gold membership with Pathé, you will need to physically visit one of the theaters to do that.
 
 More options will be added soon!
 
