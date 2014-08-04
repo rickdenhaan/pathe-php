@@ -36,6 +36,8 @@ class MockRequest extends Pathe\Request
                 $postData = $this->getPostParameters();
                 if (isset($postData[self::LOGIN_PASSWORD]) && $postData[self::LOGIN_PASSWORD] == 'testIncorrectPassword') {
                     $simulatedResponse = $this->loadMockResponse('mock_23_incorrect.txt');
+                } elseif (isset($postData[self::LOGIN_CONFIRM_EMAIL_ADDRESS])) {
+                    $simulatedResponse = $this->loadMockResponse('mock_23_registered.txt');
                 } elseif (isset($postData[self::LOGIN_EMAIL_ADDRESS]) && $postData[self::LOGIN_EMAIL_ADDRESS] == 'nosuch@example.com') {
                     $simulatedResponse = $this->loadMockResponse('mock_23_forgot_incorrect.txt');
                 } elseif (isset($postData[self::LOGIN_EMAIL_ADDRESS])) {

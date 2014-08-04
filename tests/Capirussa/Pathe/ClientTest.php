@@ -562,6 +562,175 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function testRegisterAccountWithoutData()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        /** @noinspection PhpParamsInspection (this is intentional) */
+        $client->registerAccount();
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage first name is not set
+     */
+    public function testRegisterAccountWithoutFirstName()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage last name is not set
+     */
+    public function testRegisterAccountWithoutLastName()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage email address is not set
+     */
+    public function testRegisterAccountWithoutEmailAddress()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage birth date must be in the past
+     */
+    public function testRegisterAccountWithInvalidBirthDate()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage password is not set
+     */
+    public function testRegisterAccountWithoutPassword()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+
+        $client->registerAccount($personalData);
+    }
+
+    public function testRegisterAccountWithValidData()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        // build the personal data object
+        $personalData = new PersonalData();
+        $personalData->setFirstName('testFirstName');
+        $personalData->setLastName('testLastName');
+        $personalData->setEmailAddress('test@example.com');
+        $personalData->setBirthDate(new \DateTime('1980-01-01'));
+        $personalData->setPassword('testPassword1');
+
+        $client->registerAccount($personalData);
+    }
+
+    /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid number of weeks
      */

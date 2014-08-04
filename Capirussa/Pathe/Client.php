@@ -401,6 +401,99 @@ class Client
     }
 
     /**
+     * Allows a user to register a new client account at Mijn Pathé
+     *
+     * @param PersonalData $personalData with which to register
+     * @throws \InvalidArgumentException
+     * @return bool
+     */
+    public function registerAccount(PersonalData $personalData)
+    {
+        // sanity check, some information is required
+        if (trim($personalData->getFirstName()) == '') {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid data object: first name is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($personalData->getLastName()) == '') {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid data object: last name is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($personalData->getEmailAddress()) == '') {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid data object: email address is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (intval($personalData->getBirthDate()->setTimezone(new \DateTimeZone(date_default_timezone_get()))->format('Ymd')) >= intval(date('Ymd'))) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid data object: birth date must be in the past',
+                    __METHOD__
+                )
+            );
+        }
+
+        if (trim($personalData->getPassword()) == '' || $personalData->getPassword() == PersonalData::PASSWORD_NO_CHANGE) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid data object: password is not set',
+                    __METHOD__
+                )
+            );
+        }
+
+        // first perform a GET request on the dashboard to initialize a remote session
+        $request = $this->getRequest(Request::SIGN_PERSONAL_DATA, Request::METHOD_GET);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
+        $request->send();
+
+        // now build a POST request to request the password reminder
+        $request = $this->getRequest(Request::SIGN_LOGIN, Request::METHOD_POST);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addPostParameter(Request::PERSONAL_DATA_FIRST_NAME, $personalData->getFirstName());
+        $request->addPostParameter(Request::PERSONAL_DATA_MIDDLE_NAME, $personalData->getMiddleName());
+        $request->addPostParameter(Request::PERSONAL_DATA_LAST_NAME, $personalData->getLastName());
+        $request->addPostParameter(Request::LOGIN_EMAIL_ADDRESS, $personalData->getEmailAddress());
+        $request->addPostParameter(Request::LOGIN_CONFIRM_EMAIL_ADDRESS, $personalData->getEmailAddress());
+        $request->addPostParameter(Request::PERSONAL_DATA_GENDER, $personalData->getGender());
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_DAY, $personalData->getBirthDate()->format('j'));
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_MONTH, $personalData->getBirthDate()->format('n'));
+        $request->addPostParameter(Request::PERSONAL_DATA_BIRTH_YEAR, $personalData->getBirthDate()->format('Y'));
+        $request->addPostParameter(Request::LOGIN_PASSWORD, $personalData->getPassword());
+        $request->addPostParameter(Request::LOGIN_CONFIRM_PASSWORD, $personalData->getPassword());
+
+        if ($personalData->getNewsletter()) {
+            $request->addPostParameter(Request::LOGIN_NEWSLETTER, 'on');
+        }
+
+        $this->response = $request->send();
+
+        $this->clearCookieJar();
+
+        // check whether the request was successful
+        $retValue = false;
+        if (preg_match('/Uw gegevens zijn succesvol geregistreerd/i', $this->response->getRawBody())) {
+            $retValue = true;
+        }
+
+        return $retValue;
+    }
+
+    /**
      * Retrieves the user's reservations for the given period
      *
      * @param int $weekCount (Optional) Defaults to 3, possible values: 3, 4, 9, 13, 26, 52, 105, 150
