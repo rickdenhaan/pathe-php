@@ -881,6 +881,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $personalData->setHouseNumber(1);
         $personalData->setPostalCode('1234ab');
         $personalData->setCity('testCity');
+        $personalData->setNewsletter(true);
 
         $client->registerAccount($personalData);
     }
