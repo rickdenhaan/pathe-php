@@ -886,6 +886,43 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client->registerAccount($personalData);
     }
 
+    public function testDeleteAccountWithCardAttached()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $client->prepareRequest('deleteAccount', 'addUrlParameter', array('force_fail'));
+        $success = $client->deleteAccount();
+
+        $this->assertFalse($success);
+    }
+
+    public function testDeleteAccountWithoutCardAttached()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        // getCookieJar is a protected method, so we need to use reflection to call it
+        $reflectionClient = new ReflectionObject($client);
+        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet->setAccessible(true);
+
+        // add the cookie jar to the files to delete in tearDown()
+        $cookieJar = $reflectionGet->invoke($client);
+        $this->filesToDelete[] = $cookieJar;
+
+        $success = $client->deleteAccount();
+
+        $this->assertTrue($success);
+    }
+
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid number of weeks

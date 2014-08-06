@@ -469,6 +469,48 @@ class Client
     }
 
     /**
+     * Deletes the user's account (note: only possible if no active Unlimited or Gold card is linked to the account)
+     *
+     * @return bool
+     */
+    public function deleteAccount()
+    {
+        $retValue = true;
+
+        $this->authenticate();
+
+        // build the request to access the delete page
+        $request = $this->getRequest(Request::SIGN_DELETE_ACCOUNT, Request::METHOD_GET);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
+        $this->response = $request->send();
+
+        // if the user has an Unlimited or Gold card linked to it, it cannot be deleted:
+        if (stripos($this->response->getRawBody(), 'UserNotDeleteConnectedCard') > 0) {
+            $retValue = false;
+        }
+
+        // if all is still well, actually delete the account
+        if ($retValue) {
+            // build the request to actually delete the account
+            $request = $this->getRequest(Request::SIGN_DELETE_ACCOUNT, Request::METHOD_POST);
+            $request->setCookieJar($this->getCookieJar());
+            $request->addPostParameter(Request::DELETE_PASSWORD, $this->getPassword());
+            $request->addPostParameter(Request::DELETE_CONFIRM, 'on');
+            $this->response = $request->send();
+
+            $retValue = (stripos($this->response->getRawBody(), 'Voor het gebruik van Mijn Path&eacute; dient u hieronder in te loggen.') > 0);
+        }
+
+        // if deleting the account was successful, we were automatically logged out. Otherwise, log out manually.
+        if (!$retValue) {
+            $this->logout();
+        }
+
+        return $retValue;
+    }
+
+    /**
      * Retrieves the user's reservations for the given period
      *
      * @param int $weekCount (Optional) Defaults to 3, possible values: 3, 4, 9, 13, 26, 52, 105, 150

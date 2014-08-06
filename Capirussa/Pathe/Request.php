@@ -12,6 +12,7 @@ class Request
     const SIGN_PERSONAL_DATA        = 30;
     const SIGN_UPDATE_PERSONAL_DATA = 31;
     const SIGN_CUSTOMER_HISTORY     = 70;
+    const SIGN_DELETE_ACCOUNT       = 91;
 
     /**
      * SOAP identifiers
@@ -36,6 +37,8 @@ class Request
     /**
      * Post parameters
      */
+    const DELETE_PASSWORD                   = 'Password';
+    const DELETE_CONFIRM                    = 'Check';
     const LOGIN_USERNAME                    = 'Login';
     const LOGIN_PASSWORD                    = 'Password';
     const LOGIN_CONFIRM_PASSWORD            = 'PasswordConfirm';
@@ -100,6 +103,7 @@ class Request
         self::SIGN_SOAP_CUSTOMER_HISTORY => 'CRM/soap.php',
         self::SIGN_DATA_CUSTOMER_HISTORY => 'CRM/UD/Cache/tickets_%%1$s.txt',
         self::SIGN_RESERVATION_HISTORY   => 'ticketweb.php?sign=%1$s',
+        self::SIGN_DELETE_ACCOUNT        => 'ticketweb.php?sign=%1$s',
     );
 
     /**

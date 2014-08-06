@@ -30,6 +30,7 @@ try {
     $updatedCustomerDetails = $client->updatePersonalData($customerDetails);
 
     $success = $client->forgotPassword('email@example.com');
+    $success = $client->deleteAccount();
 } catch (\Exception $exception) {
     // something went wrong, fix it and try again!
 }
@@ -54,6 +55,8 @@ It is also possible to update your Pathé user details by calling $client->updat
 If you've forgotten your password, you can also request a reset link by calling $client->forgotPassword() with your email address. This will return a boolean true or false, depending on whether the request was successful.
 
 If you do not have an account yet, you can now call $client->registerAccount() with a (filled) PersonalData object to register for a new account. Unfortunately, it is not possible to also request an Unlimited or Gold membership with Pathé, you will need to physically visit one of the theaters to do that.
+
+If you do not have an Unlimited or Gold card, it is also possible to delete your account by calling $client->deleteAccount(). This will return a boolean true or false, depending on whether or not your account was successfully deleted.
 
 More options will be added soon!
 

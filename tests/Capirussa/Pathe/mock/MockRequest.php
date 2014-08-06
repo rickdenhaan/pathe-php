@@ -74,6 +74,18 @@ class MockRequest extends Pathe\Request
             case 'pathe://mock/CRM/logout.php':
                 $simulatedResponse = $this->loadMockResponse('mock_3023.txt');
                 break;
+
+            case 'pathe://mock/ticketweb.php?sign=91':
+                $simulatedResponse = $this->loadMockResponse('mock_91_success.txt');
+                break;
+
+            case 'pathe://mock/ticketweb.php?sign=91&UserCenterID=1':
+                if (count($this->getUrlParameters()) > 0 && current($this->getUrlParameters()) == 'force_fail') {
+                    $simulatedResponse = $this->loadMockResponse('mock_91_failure.txt');
+                } else {
+                    $simulatedResponse = $this->loadMockResponse('mock_91_get.txt');
+                }
+                break;
         }
 
         // the response should contain \r\n line endings, but Git sometimes screws that up
