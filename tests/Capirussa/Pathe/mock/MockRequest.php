@@ -22,6 +22,9 @@ class MockRequest extends Pathe\Request
         // build the request URL
         $requestUrl = $this->buildRequestUrl();
 
+        // get the post data
+        $postData = $this->getPostParameters();
+
         // read file contents
         switch ($requestUrl) {
             default:
@@ -33,7 +36,6 @@ class MockRequest extends Pathe\Request
                 break;
 
             case 'pathe://mock/ticketweb.php?sign=23':
-                $postData = $this->getPostParameters();
                 if (isset($postData[self::LOGIN_PASSWORD]) && $postData[self::LOGIN_PASSWORD] == 'testIncorrectPassword') {
                     $simulatedResponse = $this->loadMockResponse('mock_23_incorrect.txt');
                 } elseif (isset($postData[self::LOGIN_CONFIRM_EMAIL_ADDRESS])) {
@@ -84,6 +86,20 @@ class MockRequest extends Pathe\Request
                     $simulatedResponse = $this->loadMockResponse('mock_91_failure.txt');
                 } else {
                     $simulatedResponse = $this->loadMockResponse('mock_91_get.txt');
+                }
+                break;
+
+            case 'pathe://mock/crm/cardTransactions.php?UserCenterID=1':
+                if ($this->getRequestMethod() == self::METHOD_POST && isset($postData[self::CARD_HISTORY_CARD_NUMBER]) && $postData[self::CARD_HISTORY_CARD_NUMBER] == '2345678901234567') {
+                    $simulatedResponse = $this->loadMockResponse('mock_69_unknown_card.txt');
+                } elseif ($this->getRequestMethod() == self::METHOD_POST && isset($postData[self::CARD_HISTORY_PIN_CODE]) && $postData[self::CARD_HISTORY_PIN_CODE] == '2345') {
+                    $simulatedResponse = $this->loadMockResponse('mock_69_incorrect_pin.txt');
+                } elseif ($this->getRequestMethod() == self::METHOD_POST && isset($postData[self::CARD_HISTORY_MONTH]) && $postData[self::CARD_HISTORY_MONTH] == 7 && isset($postData[self::CARD_HISTORY_YEAR]) && $postData[self::CARD_HISTORY_YEAR] == 2014) {
+                    $simulatedResponse = $this->loadMockResponse('mock_69_history_month.txt');
+                } elseif ($this->getRequestMethod() == self::METHOD_POST) {
+                    $simulatedResponse = $this->loadMockResponse('mock_69_history.txt');
+                } else {
+                    $simulatedResponse = $this->loadMockResponse('mock_69_form.txt');
                 }
                 break;
         }

@@ -46,6 +46,13 @@ class Reservation
     protected $collectNumber;
 
     /**
+     * Date/time the tickets for this reservation were picked up
+     *
+     * @type \DateTime
+     */
+    protected $pickupDateTime;
+
+    /**
      * Sets the number of tickets
      *
      * @param int $ticketCount
@@ -89,8 +96,8 @@ class Reservation
     {
         // sanity check, status must be defined
         $reflectionClass = new \ReflectionClass(get_class());
-        $constants = $reflectionClass->getConstants();
-        $isValid = false;
+        $constants       = $reflectionClass->getConstants();
+        $isValid         = false;
 
         foreach ($constants as $constantName => $constantValue) {
             if (strtoupper(substr($constantName, 0, 7)) == 'STATUS_' && $constantValue == $status) {
@@ -179,5 +186,25 @@ class Reservation
     public function getCollectionNumber()
     {
         return $this->collectNumber;
+    }
+
+    /**
+     * Sets the date/time at which the tickets for this reservation were picked up
+     *
+     * @param \DateTime $pickupDateTime
+     */
+    public function setPickupDateTime(\DateTime $pickupDateTime)
+    {
+        $this->pickupDateTime = $pickupDateTime;
+    }
+
+    /**
+     * Returns the date/time at which the tickets for this reservation were picked up
+     *
+     * @return \DateTime|null
+     */
+    public function getPickupDateTime()
+    {
+        return $this->pickupDateTime;
     }
 }

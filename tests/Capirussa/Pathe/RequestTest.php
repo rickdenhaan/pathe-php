@@ -61,11 +61,15 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $validSignsByConstant = array(
             Request::SIGN_DATA_CUSTOMER_HISTORY,
-            Request::SIGN_CUSTOMER_HISTORY,
+            Request::SIGN_CARD_RELATED_DATA,
             Request::SIGN_LOGIN,
             Request::SIGN_LOGOUT,
             Request::SIGN_PERSONAL_DATA,
             Request::SIGN_SOAP_CUSTOMER_HISTORY,
+            Request::SIGN_RESERVATION_HISTORY,
+            Request::SIGN_UPDATE_PERSONAL_DATA,
+            Request::SIGN_CARD_HISTORY,
+            Request::SIGN_DELETE_ACCOUNT,
         );
 
         foreach ($validSignsByConstant as $sign) {
@@ -85,10 +89,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(Request::isValidSign($sign));
         }
 
-        for ($idx=0; $idx<1000; $idx++) {
+        for ($idx = 0; $idx < 1000; $idx++) {
             $sign = '';
 
-            for ($chr=0; $chr<mt_rand(0,5); $chr++) {
+            for ($chr = 0; $chr < mt_rand(0, 5); $chr++) {
                 $sign .= ord(mt_rand(0, 255));
             }
 
@@ -97,7 +101,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
             }
         }
     }
-
 
     /**
      * @expectedException PHPUnit_Framework_Error_Warning
@@ -128,10 +131,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(Request::isValidRequestMethod($requestMethod));
         }
 
-        for ($idx=0; $idx<1000; $idx++) {
+        for ($idx = 0; $idx < 1000; $idx++) {
             $requestMethod = '';
 
-            for ($chr=0; $chr<mt_rand(0,10); $chr++) {
+            for ($chr = 0; $chr < mt_rand(0, 10); $chr++) {
                 $requestMethod .= ord(mt_rand(0, 255));
             }
 
@@ -473,6 +476,4 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Timeout. Please login again, and enter UserCenterID', $response->getRawBody());
     }
-
-    // test getLastResponse using mock request
 }

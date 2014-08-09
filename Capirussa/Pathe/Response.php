@@ -38,7 +38,7 @@ class Response
     {
         $this->statusCode = 0;
         $this->rawHeaders = array();
-        $this->rawBody = '';
+        $this->rawBody    = '';
 
         // parse the API response into sections
         $responseSections = explode("\r\n\r\n", $apiResponse);
@@ -49,13 +49,16 @@ class Response
 
         $headerLines = explode("\r\n", $headerSection);
         foreach ($headerLines as $responseLine) {
-            if (empty($responseLine)) continue;
+            if (empty($responseLine)) {
+                continue;
+            }
 
             if (strtoupper(substr($responseLine, 0, 5)) == 'HTTP/') {
                 $this->statusCode = substr($responseLine, 9, 3);
 
-                if ($this->statusCode == 100) {
+                if (in_array($this->statusCode, array(100, 301, 302, 303))) {
                     $this->__construct($this->rawBody);
+
                     return;
                 }
             } else {

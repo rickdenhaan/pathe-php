@@ -1,0 +1,568 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Date: Sat, 09 Aug 2014 19:43:32 GMT
+Content-Length: 56221
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="nl" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="Author" content="Poort80 Amsterdam - http://www.poort80.nl" />
+
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/reservering.css" media="screen" />
+    <!--[if ie 6]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie6.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+<!--[if ie 7]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie7.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/print.css" media="print" />
+
+	<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/common.js"></script>
+
+    <title>Path&eacute;.nl</title>
+<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/form.js"></script>
+<style>
+	 .Logout {
+		font-size:13px;
+		font-weight:bold;
+		text-decoration:none;
+		width:51px;
+		height:19px;
+		color:#CCC;
+	}
+	.Logout:hover{
+		text-decoration:none;
+		color:#FEBB19;
+	}
+</style>
+
+</head>
+<body>
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NJ5HXC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJ5HXC');</script>
+<!-- End Google Tag Manager --> 
+<div class="siteFrame">
+  <table border="0" cellspacing="0" cellpadding="0" align="center" class="centerTable">
+    <tr>
+      <td>
+ 	<div class="header"></div>
+        <table border="0" cellspacing="0" cellpadding="0" class="reserveerTable">
+          <tr>
+            <td><table cellspacing="0" cellpadding="0" border="0" class="tweeCols">
+                <tr>
+					<td class="navTD">	<script language="JavaScript" type="text/javascript">
+	function DelUser() {
+		var delUser = confirm('Wilt u uw Mijn Path' + String.fromCharCode(233) + ' gebruikersaccount verwijderen?\n\r\n\rLet op: u kunt alleen uw gebruikersaccount verwijderen als er geen klantenkaart aan gekoppeld is.');
+		if (delUser) {
+			window.location.href = '/ticketweb.php?sign=91&UserCenterID=1';
+		}
+	}
+</script>
+						<!-- navBlock -->
+       <!--------------------------------------  -->
+<!--                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=KAARTEN" class="header"/>
+                          </div>
+                        </div>
+                        <div class="navBlock">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=24">Bestaande reservering verwijderen
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+-->
+       <!--------------------------------------  -->
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=MIJN GEGEVENS" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=30">Persoonlijke gegevens
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=24">Historie
+                            </a>
+                          </div>
+												  <div class="link">
+                            <a class="" href="javascript: DelUser();">Gebruikersaccount verwijderen
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+       <!--------------------------------------  -->
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=KLANTENKAART" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/crm/cardTransactions.php?UserCenterID=1">Overzicht klantenkaart
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cardsadmin.&CustomerID=0">Onderhoud Klantenkaart
+                            </a>
+                          </div>
+                        </div>
+                        <div class="footer">
+                        </div>
+       <!--------------------------------------   -->
+<CARDINVOICE>
+                        <div class="titleBalk">
+                          <div class="titleWrap">
+                            <img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=200&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=UNLIMITED" class="header"/>
+                          </div>
+                        </div>
+                        <!-- titleBalk -->
+                        <div class="navBlock follow">
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.contracts.&CustomerID=0&LoadCards=0">Contract
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.overview.&CustomerID=0&LoadCards=0">Kaart
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.history.&CustomerID=0&LoadCards=0">Bezoekhistorie
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.invoices.&CustomerID=0&LoadCards=0">Facturen
+                            </a>
+                          </div>
+                          <div class="link">
+                            <a class="" href="/ticketweb.php?sign=70&UserCenterID=1&template=0.cards.payments.&CustomerID=0&LoadCards=0">Betalingen
+                            </a>
+                          </div>
+
+                        </div>
+                        <div class="footer">
+                        </div>	</CARDINVOICE>
+
+
+
+                    <!-- navBlock -->
+                  </td>
+                  <td class="elf"><img src="https://www.pathe.nl/ti2007/reserveringsmodule/gfx/transparent.gif" width="11" height="11" alt="" border="0" /></td>
+                  <td class="content">
+                    <div class="titleBalk">
+                    	<div class="titleWrap" style="float:left; width:300px;"><img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=600&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=KLANTENKAART%20-%20OVERZICHT" class="header" /></div>
+						<div style="height:10px;">
+						</div>
+						<div style="padding-right:20px;" align="right">
+							<a class="Logout" href="/CRM/logout.php">uitloggen</a>
+						</div>
+                    </div>
+                    <!-- titleBalk -->
+                    <div class="content">
+                    <div class="pagesNav">
+<div class="questionMark"><a href="https://www.pathe.nl/klantenservice" onclick="window.open('https://www.pathe.nl/klantenservice','helpPopup', 'width=1000 , height=600, scrollbars=yes , directories=no, status=no ,resizable=no , toolbar=no , location=no'); return false">?</a></div>
+									<div class="cardType">
+									<table width="450" border="0" cellspacing="0" cellpadding="0" class="chooseCardTable stripe">
+										<TR>
+											<Th colspan="2"><b>Overzicht aankopen klantenkaart</b></td>
+										</tr>
+										<tr>
+											<td width="200">
+												<table border=0>
+													<tr><td>Rick Haan</td></tr>
+													<tr><td>Klantenkaart: 1234567890123456  activated</td></tr>
+
+													
+													<tr><td>Saldo: -38 kaart(en)</td></tr>
+													<tr><td>Geldig tot: 1-1-2030</td></tr>
+													
+												</table>
+											</td>
+											<td valign="top">Akties tonen voor:<br>
+												<form action="cardtransactions.php?UserCenterID=1" Method="post">
+												<select name="Month">
+
+												<option value="0" selected>Maand</option>
+												<option value="9999">Totaal</option>
+												<option value="1">(01) januari</option>
+												<option value="2">(02) februari</option>
+												<option value="3">(03) maart</option>
+												<option value="4">(04) april</option>
+												<option value="5">(05) mei</option>
+												<option value="6">(06) juni</option>
+												<option value="7">(07) juli</option>
+												<option value="8">(08) augustus</option>
+												<option value="9">(09) september</option>
+												<option value="10">(10) oktober</option>
+												<option value="11">(11) november</option>
+												<option value="12">(12) december</option>
+
+											</select>
+											<select name="Year">
+												<option value="0" selected>Jaar</option>
+											<option value="9999">Totaal</option>
+												<option value="2006">2006</option>
+												<option value="2007">2007</option>
+												<option value="2008">2008</option>
+												<option value="2009">2009</option>
+												<option value="2010">2010</option>
+												<option value="2011">2011</option>
+												<option value="2012">2012</option>
+												<option value="2013">2013</option>
+												<option value="2014">2014</option>
+
+											</select><br>
+											<input type="hidden" name="PIN" Value="1234">
+											<input type="hidden" name="CustomerCardNumber" Value="12345667890123456">
+											<input type="submit" name="senden" value="tonen">
+											</form>
+											</td>
+										</tr>
+
+												</table>
+												<table>
+													<tr>
+														<td>Met uw klantenkaart heeft u de volgende aankopen gedaan.</td>
+													</tr>
+												</table>
+
+												<table width="450" border="0" cellspacing="0" cellpadding="0"  class="chooseCardTable stripe">
+													<tr>
+														<th>DATUM+TIJD</th>
+														<th>BIOSCOOP/ZAAL</th>
+														<th colspan="2">ACTIE/TITEL</th>
+														<th class="price">KAARTEN</th>
+													</tr>
+									
+													<tr>
+														<td>&nbsp;</td>
+														<td> </td>
+														<td>aangeschaft</td><td>  &nbsp;</td>
+														<td class="price" style="padding-right:40px;"></td>
+													</tr>
+									
+													<tr>
+														<td>21-8-2012&nbsp;22:18:47</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Expendables 2, The <br>2012-08-21 22:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>3-9-2012&nbsp;20:59:56</td>
+														<td><br>Pathe de Kuip Zaal  7</td>
+														<td>1 gebruikt</td><td><br>Red Lights <br>2012-09-03 21:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>2-10-2012&nbsp;20:26:58</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>End of Watch <br>2012-10-02 21:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>6-10-2012&nbsp;21:00:38</td>
+														<td><br>Pathe Delft Zaal 7</td>
+														<td>1 gebruikt</td><td><br>Bellicher: Cel <br>2012-10-06 21:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>30-10-2012&nbsp;20:32:11</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Argo <br>2012-10-30 21:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>2-11-2012&nbsp;21:46:56</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Skyfall <br>2012-11-02 22:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>29-11-2012&nbsp;20:03:22</td>
+														<td><br>Pathe de Kuip Zaal 14</td>
+														<td>1 gebruikt</td><td><br>Marathon, De <br>2012-11-29 20:50 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>15-12-2012&nbsp;21:45:00</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Hobbit, The: An Unexpected Journey <br>2012-12-15 22:15 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>29-12-2012&nbsp;21:04:32</td>
+														<td><br>Pathe Delft Zaal 3</td>
+														<td>1 gebruikt</td><td><br>Jack Reacher <br>2012-12-29 21:40 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>2-2-2013&nbsp;20:50:35</td>
+														<td><br>Pathe Delft Zaal 3</td>
+														<td>1 gebruikt</td><td><br>Django Unchained <br>2013-02-02 21:10 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>10-3-2013&nbsp;00:25:24</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Mama <br>2013-03-10 00:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>31-3-2013&nbsp;00:00:54</td>
+														<td><br>Pathe de Kuip Zaal 13</td>
+														<td>1 gebruikt</td><td><br>Dark Skies <br>2013-03-31 00:05 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>2-5-2013&nbsp;20:02:36</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Iron Man 3 <br>2013-05-02 20:40 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>4-5-2013&nbsp;21:08:51</td>
+														<td><br>Pathe Schouwburgplein Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Oblivion <br>2013-05-04 21:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>22-5-2013&nbsp;19:53:45</td>
+														<td><br>Pathe de Kuip Zaal  7</td>
+														<td>1 gebruikt</td><td><br>Fast & Furious 6 <br>2013-05-22 20:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>26-5-2013&nbsp;20:18:29</td>
+														<td><br>Pathe de Kuip Zaal  8</td>
+														<td>1 gebruikt</td><td><br>Great Gatsby, The <br>2013-05-26 20:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>1-6-2013&nbsp;22:46:18</td>
+														<td><br>Pathe de Kuip Zaal  7</td>
+														<td>1 gebruikt</td><td><br>Star Trek Into Darkness <br>2013-06-01 23:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>23-6-2013&nbsp;20:14:42</td>
+														<td><br>Pathe de Kuip Zaal  8</td>
+														<td>1 gebruikt</td><td><br>Despicable Me 2 <br>2013-06-23 20:45 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>3-7-2013&nbsp;20:25:54</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>Now You See Me <br>2013-07-03 21:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>22-7-2013&nbsp;19:52:11</td>
+														<td><br>Pathe Scheveningen Zaal  4</td>
+														<td>1 gebruikt</td><td><br>Lone Ranger, The <br>2013-07-22 20:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>30-7-2013&nbsp;18:02:09</td>
+														<td><br>Pathe Tuschinski Zaal  5</td>
+														<td>1 gebruikt</td><td><br>Monsters University <br>2013-07-30 19:00 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>13-9-2013&nbsp;20:13:38</td>
+														<td><br>Pathe de Kuip Zaal 14</td>
+														<td>1 gebruikt</td><td><br>Riddick <br>2013-09-13 20:40 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>20-10-2013&nbsp;21:01:34</td>
+														<td><br>Pathe de Kuip Zaal 11</td>
+														<td>1 gebruikt</td><td><br>Rush <br>2013-10-20 21:40 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>23-10-2013&nbsp;19:27:16</td>
+														<td><br>Pathe de Kuip Zaal 14</td>
+														<td>1 gebruikt</td><td><br>Nieuwe Wildernis, De <br>2013-10-23 19:45 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>9-11-2013&nbsp;23:15:43</td>
+														<td><br>Pathe de Kuip Zaal  7</td>
+														<td>1 gebruikt</td><td><br>Carrie <br>2013-11-09 23:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>11-12-2013&nbsp;19:44:55</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Hobbit, The: The Desolation of Smaug <br>2013-12-11 20:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>22-12-2013&nbsp;17:49:15</td>
+														<td><br>Pathe de Kuip Zaal  7</td>
+														<td>1 gebruikt</td><td><br>Frozen <br>2013-12-22 18:15 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>8-1-2014&nbsp;19:56:48</td>
+														<td><br>Pathe de Kuip Zaal  8</td>
+														<td>1 gebruikt</td><td><br>Wolf of Wall Street, The <br>2014-01-08 20:35 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>18-1-2014&nbsp;00:12:12</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Ender's Game <br>2014-01-18 00:25 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>2-3-2014&nbsp;19:19:04</td>
+														<td><br>Pathe de Kuip Zaal 10</td>
+														<td>1 gebruikt</td><td><br>LEGO Movie, The <br>2014-03-02 20:05 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>11-4-2014&nbsp;20:27:43</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Noah <br>2014-04-11 20:50 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>29-4-2014&nbsp;18:17:41</td>
+														<td><br>Pathe de Kuip Zaal 10</td>
+														<td>1 gebruikt</td><td><br>Need for Speed <br>2014-04-29 18:40 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+
+													<tr>
+														<td>23-5-2014&nbsp;20:57:45</td>
+														<td><br>Pathe de Kuip Zaal  6</td>
+														<td>1 gebruikt</td><td><br>X-Men: Days of Future Past <br>2014-05-23 21:20 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>29-5-2014&nbsp;20:38:26</td>
+														<td><br>Pathe de Kuip Zaal  5</td>
+														<td>1 gebruikt</td><td><br>Edge of Tomorrow <br>2014-05-29 21:20 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+
+													<tr>
+														<td>12-7-2014&nbsp;19:14:22</td>
+														<td><br>Pathe de Kuip Zaal  3</td>
+														<td>1 gebruikt</td><td><br>How To Train Your Dragon 2 <br>2014-07-12 19:50 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>18-7-2014&nbsp;21:01:26</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Dawn of the Planet of the Apes <br>2014-07-18 21:30 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>20-7-2014&nbsp;20:08:34</td>
+														<td><br>Pathe de Kuip Zaal  2</td>
+														<td>1 gebruikt</td><td><br>Begin Again <br>2014-07-20 20:50 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+													<tr>
+														<td>1-8-2014&nbsp;20:30:38</td>
+														<td><br>Pathe de Kuip Zaal  9</td>
+														<td>1 gebruikt</td><td><br>Lucy <br>2014-08-01 21:10 &nbsp;</td>
+														<td class="price" style="padding-right:40px;">1</td>
+													</tr>
+									
+												</table>
+
+										</div>
+		</td>
+	</tr>
+</table>	</td>
+							</tr>
+						</table>
+
+
+					</td>
+				</tr>
+			</table>
+
+
+		<div class="algVoorw">Op ieder bezoek aan een Path&eacute; bioscoop zijn de <a href="https://www.pathe.nl/artikel/61-pathe-bezoekersvoorwaarden" target="_blank">Bezoekersvoorwaarden</a>
+ van toepassing</div>
+
+
+    		</td>
+    	</tr>
+    </table><!-- centerTable -->
+
+</div><!-- Siteframe -->
+
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-693301-1");
+pageTracker._trackPageview(); }
+catch(err) {}
+</script>
+
+</body>
+</html>

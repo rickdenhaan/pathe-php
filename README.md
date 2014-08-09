@@ -23,6 +23,7 @@ try {
     $customerDetails    = $client->getPersonalData();
     $movieHistory       = $client->getCustomerHistory();
     $reservationHistory = $client->getReservationHistory();
+    $cardHistory        = $client->getCardHistory('cardNumber', 'pinCode');
 
     $customerDetails->setNewsletter(true);
     $customerDetails->setPassword('newPassword123');
@@ -49,6 +50,7 @@ There are several pieces of information you can retrieve from Pathé:
 * Your personal details. Calling $client->getPersonalData() will return a Pathe\PersonalData object.
 * The last 100 movies you watched. Calling $client->getCustomerHistory() will return an array of Pathe\HistoryItem entities
 * Your reservation history. Calling $client->getReservationHistory() will return an array of Pathe\HistoryItem entities
+* Your Unlimited/Gold Card usage history. Calling $client->getCardHistory() with a card number and PIN code will return an array of Pathe\HistoryItem entities, of which the Reservation contains the date/time at which the tickets were picked up. It is possible to filter the result by month, by supplying the month as a third argument and the year as a fourth argument.
 
 It is also possible to update your Pathé user details by calling $client->updatePersonalData() with a modified Pathe\PersonalData object. This will return a new Pathe\PersonalData object, freshly retrieved from Pathé after sending the updated information.
 
@@ -122,6 +124,7 @@ The Pathe\Reservation entity contains details about a past reservation:
 * ShowIdentifier - not sure yet what this is, but I think it's a unique identifier for the movie
 * ReservationSetIdentifier - appears to be the unique reservation identifier
 * CollectionNumber - not sure what this is used for, but we might need it in the future
+* PickupDateTime - the date/time at which the tickets for this reservation were picked up
 
 Note that the Reservation object has not yet been tested against active reservations (which have not yet been collected and have not been deleted) so if you have one of those, calling $client->getReservationHistory() will throw an InvalidArgumentException saying the status is invalid. This will be fixed soon.
 

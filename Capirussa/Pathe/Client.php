@@ -258,7 +258,7 @@ class Client
         $this->authenticate();
 
         // get the customer history page
-        $request = $this->getRequest(Request::SIGN_CUSTOMER_HISTORY, Request::METHOD_GET);
+        $request = $this->getRequest(Request::SIGN_CARD_RELATED_DATA, Request::METHOD_GET);
         $request->setCookieJar($this->getCookieJar());
         $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
         $request->addQueryParameter(Request::QUERY_TEMPLATE, Request::TEMPLATE_CARD_HISTORY);
@@ -542,6 +542,105 @@ class Client
         $this->logout();
 
         return $retValue;
+    }
+
+    /**
+     * Retrieves all reservations for a given Unlimited or Gold card for a given month/year (optional)
+     *
+     * @param string $cardNumber
+     * @param string $pinCode
+     * @param int    $month (Optional) Defaults to retrieve all months
+     * @param int    $year  (Optional) Defaults to retrieve all years
+     * @throws \InvalidArgumentException
+     * @return HistoryItem[]
+     */
+    public function getCardHistory($cardNumber, $pinCode, $month = null, $year = null)
+    {
+        // validate the card number
+        if (strlen($cardNumber) != 16 || preg_match('/[^0-9]/', $cardNumber)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid card number, must be a 16-digit code',
+                    __METHOD__
+                )
+            );
+        }
+
+        // validate the pin code
+        if (strlen($pinCode) != 4 || preg_match('/[^0-9]/', $pinCode)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Invalid PIN code, must a 4-digit code',
+                    __METHOD__
+                )
+            );
+        }
+
+        // validate the month
+        if ($month !== null) {
+            $month = intval($month, 10);
+
+            if ($month < 1 || $month > 12) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        '%1$s: Invalid month, must be a number between 1 and 12',
+                        __METHOD__
+                    )
+                );
+            }
+        } else {
+            $month = 9999;
+        }
+
+        // validate the year
+        if ($year !== null) {
+            $year = intval($year, 10);
+
+            if ($year < 2006 || $year > (date('Y') + 1)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        '%1$s: Invalid year, must be between 2006 and next year',
+                        __METHOD__
+                    )
+                );
+            }
+        } else {
+            $year = 9999;
+        }
+
+        $this->clearCookieJar();
+
+        // build the request to access the card history form and start a session
+        $request = $this->getRequest(Request::SIGN_CARD_HISTORY, Request::METHOD_GET);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
+        $request->send();
+
+        // submit the card number form now that we have a session
+        $request = $this->getRequest(Request::SIGN_CARD_HISTORY, Request::METHOD_POST);
+        $request->setCookieJar($this->getCookieJar());
+        $request->addQueryParameter(Request::QUERY_USER_CENTER_ID, Request::USER_CENTER_PATHE);
+        $request->addPostParameter(Request::CARD_HISTORY_CARD_NUMBER, $cardNumber);
+        $request->addPostParameter(Request::CARD_HISTORY_PIN_CODE, $pinCode);
+        $request->addPostParameter(Request::CARD_HISTORY_MONTH, $month);
+        $request->addPostParameter(Request::CARD_HISTORY_YEAR, $year);
+        $this->response = $request->send();
+
+        $this->clearCookieJar();
+
+        // handle validation errors
+        if (stripos($this->response->getRawBody(), 'Deze klantenkaart is niet gevonden.') > 0) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '%1$s: Unknown card number "%2$s" or incorrect PIN code "%3$s"',
+                    __METHOD__,
+                    $cardNumber,
+                    $pinCode
+                )
+            );
+        }
+
+        return HistoryItem::parseHistoryItemsFromCardHistory($this->response->getRawBody());
     }
 
     /**

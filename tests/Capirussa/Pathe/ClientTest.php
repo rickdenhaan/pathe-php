@@ -237,7 +237,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         $cookieJar = $reflectionGet->invoke($client);
@@ -276,7 +276,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown(), because we expect an exception and can't clear it
@@ -295,7 +295,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
@@ -317,11 +317,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // authenticate is a protected method, so we need to use reflection to call it
@@ -349,11 +349,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $history = $client->getCustomerHistory();
@@ -388,11 +388,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $personalData = $client->getPersonalData();
@@ -428,11 +428,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $personalData = $client->getPersonalData();
@@ -490,11 +490,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         /** @noinspection PhpParamsInspection (this is intentional) */
@@ -511,11 +511,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $client->forgotPassword('incorrect');
@@ -527,11 +527,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $success = $client->forgotPassword('nosuch@example.com');
@@ -547,11 +547,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $success = $client->forgotPassword('test@example.com');
@@ -570,11 +570,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         /** @noinspection PhpParamsInspection (this is intentional) */
@@ -591,11 +591,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -614,11 +614,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -638,11 +638,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -663,11 +663,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -689,11 +689,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -716,11 +716,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -744,11 +744,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -773,11 +773,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -803,11 +803,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -834,11 +834,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -862,11 +862,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         // build the personal data object
@@ -892,11 +892,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $client->prepareRequest('deleteAccount', 'addUrlParameter', array('force_fail'));
@@ -911,11 +911,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $success = $client->deleteAccount();
@@ -958,6 +958,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[1];
 
@@ -972,6 +973,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(22, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(23, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(24, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[2];
 
@@ -986,6 +988,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(19, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(20, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(21, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[3];
 
@@ -1000,6 +1003,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(16, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(17, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(18, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[4];
 
@@ -1014,6 +1018,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(13, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(14, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(15, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[5];
 
@@ -1028,6 +1033,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[6];
 
@@ -1042,6 +1048,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(10, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(11, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(12, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[7];
 
@@ -1056,6 +1063,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(7, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(8, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(9, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[8];
 
@@ -1070,6 +1078,183 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(5, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(6, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testGetCardHistoryWithoutArguments()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        /** @noinspection PhpParamsInspection (this is intentional) */
+        $client->getCardHistory();
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testGetCardHistoryWithTooFewArguments()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        /** @noinspection PhpParamsInspection (this is intentional) */
+        $client->getCardHistory('1234567890123456');
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid card number
+     */
+    public function testGetCardHistoryWithInvalidCardNumber()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('0123456789ABCDE', '1234');
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid PIN code
+     */
+    public function testGetCardHistoryWithInvalidPinCode()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('1234567890123456', 'ABCD');
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid month
+     */
+    public function testGetCardHistoryWithInvalidMonth()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('1234567890123456', '1234', 13);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid year
+     */
+    public function testGetCardHistoryWithInvalidYear()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('1234567890123456', '1234', 1, 2005);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Unknown card number
+     */
+    public function testGetCardHistoryWithUnknownCard()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('2345678901234567', '1234');
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage incorrect PIN code
+     */
+    public function testGetCardHistoryWithIncorrectPinCode()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $client->getCardHistory('1234567890123456', '2345');
+    }
+
+    public function testGetCardHistoryForSingleMonth()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $cardHistory = $client->getCardHistory('1234567890123456', '1234', 7, 2014);
+
+        $this->assertInternalType('array', $cardHistory);
+        $this->assertCount(4, $cardHistory);
+
+        $historyItem = $cardHistory[0];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-06 15:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe Groningen', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  5', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Transformers: Age of Extinction', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2014-07-06 14:53:58', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+
+        $historyItem = $cardHistory[1];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-12 19:50:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  3', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('How To Train Your Dragon 2', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2014-07-12 19:14:22', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+
+        $historyItem = $cardHistory[2];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-18 21:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  9', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Dawn of the Planet of the Apes', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2014-07-18 21:01:26', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+
+        $historyItem = $cardHistory[3];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2014-07-20 20:50:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  2', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Begin Again', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2014-07-20 20:08:34', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+    }
+
+    public function testGetCardHistoryFull()
+    {
+        $client = new MockClient('test@example.com', 'testPassword1');
+
+        $cardHistory = $client->getCardHistory('1234567890123456', '1234');
+
+        $this->assertInternalType('array', $cardHistory);
+        $this->assertCount(38, $cardHistory);
+
+        foreach ($cardHistory as $historyItem) {
+            $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem, $historyItem->getEvent()->getMovieName());
+        }
     }
 
     public function testGetLastResponse()
@@ -1078,11 +1263,11 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         // getCookieJar is a protected method, so we need to use reflection to call it
         $reflectionClient = new ReflectionObject($client);
-        $reflectionGet = $reflectionClient->getMethod('getCookieJar');
+        $reflectionGet    = $reflectionClient->getMethod('getCookieJar');
         $reflectionGet->setAccessible(true);
 
         // add the cookie jar to the files to delete in tearDown()
-        $cookieJar = $reflectionGet->invoke($client);
+        $cookieJar             = $reflectionGet->invoke($client);
         $this->filesToDelete[] = $cookieJar;
 
         $this->assertNull($client->getLastResponse());

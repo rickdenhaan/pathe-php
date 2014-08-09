@@ -11,7 +11,8 @@ class Request
     const SIGN_RESERVATION_HISTORY  = 24;
     const SIGN_PERSONAL_DATA        = 30;
     const SIGN_UPDATE_PERSONAL_DATA = 31;
-    const SIGN_CUSTOMER_HISTORY     = 70;
+    const SIGN_CARD_HISTORY         = 69;
+    const SIGN_CARD_RELATED_DATA    = 70;
     const SIGN_DELETE_ACCOUNT       = 91;
 
     /**
@@ -65,6 +66,10 @@ class Request
     const PERSONAL_DATA_PASSWORD            = 'LoginPassword';
     const PERSONAL_DATA_NEWSLETTER          = 'InfoWanted';
     const RESERVATION_HISTORY_WEEK_COUNT    = 'Weeks';
+    const CARD_HISTORY_CARD_NUMBER          = 'CustomerCardNumber';
+    const CARD_HISTORY_PIN_CODE             = 'PIN';
+    const CARD_HISTORY_MONTH                = 'Month';
+    const CARD_HISTORY_YEAR                 = 'Year';
 
     /**
      * Possible user centers
@@ -99,7 +104,8 @@ class Request
         self::SIGN_LOGOUT                => 'CRM/logout.php',
         self::SIGN_PERSONAL_DATA         => 'ticketweb.php?sign=%1$s',
         self::SIGN_UPDATE_PERSONAL_DATA  => 'ticketweb.php?sign=%1$s',
-        self::SIGN_CUSTOMER_HISTORY      => 'ticketweb.php?sign=%1$s',
+        self::SIGN_CARD_HISTORY          => 'crm/cardTransactions.php',
+        self::SIGN_CARD_RELATED_DATA     => 'ticketweb.php?sign=%1$s',
         self::SIGN_SOAP_CUSTOMER_HISTORY => 'CRM/soap.php',
         self::SIGN_DATA_CUSTOMER_HISTORY => 'CRM/UD/Cache/tickets_%%1$s.txt',
         self::SIGN_RESERVATION_HISTORY   => 'ticketweb.php?sign=%1$s',
@@ -333,6 +339,7 @@ class Request
             CURLOPT_FAILONERROR    => false,
             CURLOPT_HEADER         => true,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_USERAGENT      => 'Capirussa/1.0 (+http://github.com/rickdenhaan/pathe-php)'
         );
 

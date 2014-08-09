@@ -1,0 +1,175 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 302 Moved Temporarily
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html; charset=UTF-8
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Location: cardtransactions.php?sign=2&UserCenterID=1&ErrorMsg=%3Cdiv+class%3Derror%3E%3Cspan%3EDeze+klantenkaart+is+niet+gevonden.+Controleert+u+het+klantenkaartnummer.%3C%2Fspan%3E%3C%2Fdiv%3E
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Date: Sat, 09 Aug 2014 19:17:31 GMT
+Content-Length: 314
+
+HTTP/1.1 200 OK
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Type: text/html
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.4.8
+Date: Sat, 09 Aug 2014 19:17:32 GMT
+Content-Length: 6486
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="nl" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="Author" content="Poort80 Amsterdam - http://www.poort80.nl" />
+
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/reservering.css" media="screen" />
+    <!--[if ie 6]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie6.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+<!--[if ie 7]><link href="https://www.pathe.nl/ti2007/reserveringsmodule/css/ie7.css" type="text/css" rel="stylesheet" media="screen" /><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://www.pathe.nl/ti2007/reserveringsmodule/css/print.css" media="print" />
+
+	<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/common.js"></script>
+
+    <title>Path&eacute;.nl</title>
+<script type="text/javascript" src="https://www.pathe.nl/ti2007/reserveringsmodule/js/form.js"></script>
+	<script type="text/javascript" src="https://static.onlinetickets.pathe.nl/js/prototype.js"></script>
+    <SCRIPT LANGUAGE="JavaScript">
+	function checkData()
+	{
+		sError = '';
+
+		sCardNr = $("CustomerCardNumber").value;
+		sPIN    = $("PIN").value;
+
+		if (sCardNr == '') {
+			sError = '<div class="error"><span>Voer uw kaartnummer in</span></div> '; }
+
+		else if (sPIN == '') {
+			sError = '<div class="error"><span>Voer de pincode van uw kaart in</span></div> '; }
+
+		if (sError == '')
+		{
+			document.inlogForm.submit();
+//			return true;
+
+		}
+		else
+		{
+		  _err = $("ErrorMsg");
+	 	  _err.style.display ="block";
+		  _err.innerHTML = sError;
+
+		//	return false;
+		}
+	}
+</script>
+<style>
+	 .Logout {
+		font-size:13px;
+		font-weight:bold;
+		text-decoration:none;
+		width:51px;
+		height:19px;
+		color:#CCC;
+	}
+	.Logout:hover{
+		text-decoration:none;
+		color:#FEBB19;
+	}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NJ5HXC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJ5HXC');</script>
+<!-- End Google Tag Manager -->
+
+<div class="siteFrame">
+  <table border="0" cellspacing="0" cellpadding="0" align="center" class="centerTable">
+    <tr>
+      <td>
+<div class="header"></div>
+        <table border="0" cellspacing="0" cellpadding="0" class="reserveerTable">
+          <tr>
+            <td><table cellspacing="0" cellpadding="0" border="0" class="tweeCols">
+                <tr>
+					<td class="navTD">
+
+                  </td>
+                  <td class="elf"><img src="https://www.pathe.nl/ti2007/reserveringsmodule/gfx/transparent.gif" width="11" height="11" alt="" border="0" /></td>
+                  <td class="content">
+                    <div class="titleBalk">
+                    	<div class="titleWrap" style="float:left; width:300px;">
+							<img src="https://www.pathe.nl/textimage/textimage.aspx?height=20&width=600&font=DIN-Black&align=left&color=%23ffffff&size=18&trans=2&x=0&y=0&label=OVERZICHT%20KLANTENKAART" class="header" />
+						</div>
+						<div style="height:10px;"></div>
+						<div style="padding-right:20px;" align="right">
+							<a class="Logout" href="/CRM/logout.php">uitloggen</a>
+						</div>
+                    </div>
+                    <!-- titleBalk -->    <div class=error><span>Deze klantenkaart is niet gevonden. Controleert u het klantenkaartnummer.</span></div>
+					<div id='ErrorMsg'></div>
+                    <div class="content">
+                    <div class="pagesNav">
+<div class="questionMark"><a href="https://www.pathe.nl/klantenservice" onclick="window.open('https://www.pathe.nl/klantenservice','helpPopup', 'width=1000 , height=600, scrollbars=yes , directories=no, status=no ,resizable=no , toolbar=no , location=no'); return false">?</a></div>
+									<h1>
+									<!-- Om kaarten te !-- TI: buy = "kopen" -- !-- TI: make reservation ="reserveren" -- reserveren hebben we je e-mail adres nodig. -->
+									</h1>
+
+									<div class="registerOptions">
+											<h1>Type hier het nummer van uw klantenkaart en uw 4-cijferige PIN-code.</h1>
+												<form name="inlogForm" id="inlogForm" action="/crm/cardtransactions.php?UserCenterID=1" Method="post" class="formBlock">
+													<div class=""><label>Klantenkaart:</label><input type="text" class="typeText" name="CustomerCardNumber" maxlength="16" size="16" value="" id="CustomerCardNumber" /></div>
+													<div class=""><label>PIN:</label><input  type="password" class="typeText" size="4"  maxlength="4" name="PIN" id="PIN" value="" /></div>
+
+										<div class="arrowNavFooter">
+                        <div class="floatRight"><a href="javascript:checkData()" class="btnVolgende"><span>volgende</span></a></div>
+                        <a href="#" onClick="" class=""><span>vorige</span></a> </div></form>
+
+									</div><!-- content -->
+								</td>
+							</tr>
+						</table>
+
+
+					</td>
+				</tr>
+			</table>
+
+
+		<div class="algVoorw">Op ieder bezoek aan een Path&eacute; bioscoop zijn de <a href="https://www.pathe.nl/artikel/61-pathe-bezoekersvoorwaarden" target="_blank">Bezoekersvoorwaarden</a>
+ van toepassing</div>
+
+
+    		</td>
+    	</tr>
+    </table><!-- centerTable -->
+
+</div><!-- Siteframe -->
+
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-693301-1");
+pageTracker._trackPageview(); }
+catch(err) {}
+</script>
+
+</body>
+</html>

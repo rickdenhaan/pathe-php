@@ -182,7 +182,7 @@ class HistoryItem
 
         // get the reservation details table
         $reservationTable = null;
-        $tables = $dom->getElementsByTagName('table');
+        $tables           = $dom->getElementsByTagName('table');
         for ($table = 0; $table < $tables->length; $table++) {
             $testTable = $tables->item($table);
             /* @type $testTable \DOMElement */
@@ -240,7 +240,7 @@ class HistoryItem
 
                         // try to find this reservation in the first list we processed, because not all entries have a matching reservation
                         $reservationFound = ($retValue[$idx]->getShowTime()->format('Y-m-d H:i') == $showTime->format('Y-m-d H:i') && $event->getMovieName() == $retValue[$idx]->getEvent()->getMovieName());
-                        $testIdx = $idx;
+                        $testIdx          = $idx;
                         while ($testIdx < count($retValue) && !$reservationFound) {
                             $testIdx++;
                             if (!isset($retValue[$testIdx])) {
@@ -260,7 +260,7 @@ class HistoryItem
                         /* @type $cell \DOMElement */
 
                         $links = $cell->getElementsByTagName('a');
-                        $link = $links->item(0);
+                        $link  = $links->item(0);
                         /* @type $link \DOMElement */
 
                         $status = trim($link->textContent);
@@ -278,6 +278,81 @@ class HistoryItem
                 }
 
                 $idx++;
+            }
+        }
+
+        return $retValue;
+    }
+
+    /**
+     * Parses the HTML response from the card history
+     *
+     * @param string $htmlContent
+     * @return HistoryItem[]
+     */
+    public static function parseHistoryItemsFromCardHistory($htmlContent)
+    {
+        $retValue = array();
+        /* @type $retValue HistoryItem[] */
+
+        // parse the document
+        libxml_use_internal_errors(true);
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML($htmlContent);
+
+        // get the history table
+        $historyTable = null;
+        $tables       = $dom->getElementsByTagName('table');
+        for ($table = 0; $table < $tables->length; $table++) {
+            $testTable = $tables->item($table);
+            /* @type $testTable \DOMElement */
+
+            if (stripos($testTable->getAttribute('class'), 'chooseCardTable') > -1) {
+                $historyTable = $testTable;
+                // note: do not break, because we need the LAST table with this class
+            }
+        }
+
+        if ($historyTable !== null) {
+            $tableRows = $historyTable->getElementsByTagName('tr');
+
+            for ($row = 0; $row < $tableRows->length; $row++) {
+                $tableRow = $tableRows->item($row);
+                /* @type $tableRow \DOMElement */
+
+                // check whether this row contains any headers
+                $headers = $tableRow->getElementsByTagName('th');
+                if ($headers->length > 0) {
+                    continue;
+                }
+
+                // get the cells in this row
+                $cells = $tableRow->getElementsByTagName('td');
+                if ($cells->length != 5) {
+                    continue;
+                }
+
+                // make sure the first cell contains a valid date
+                $pickupTime = \DateTime::createFromFormat('j-n-Y  H:i:s', trim(preg_replace('/[^0-9:\-]/', ' ', html_entity_decode($cells->item(0)->textContent))));
+                if (!$pickupTime) {
+                    continue;
+                }
+
+                // get the screen for this movie
+                $screen = Screen::createFromString(trim($cells->item(1)->textContent));
+
+                // get the movie and showtime
+                $showTime = \DateTime::createFromFormat('Y-m-d H:i', trim(preg_replace('/[^0-9:\-]/', ' ', html_entity_decode(substr($cells->item(3)->textContent, -19)))));
+                $event    = Event::createFromMovieName(trim(substr($cells->item(3)->textContent, 0, -19)));
+
+                $reservation = new Reservation();
+                $reservation->setTicketCount(trim(preg_replace('/[^0-9]/', '', $cells->item(4)->textContent)));
+                $reservation->setPickupDateTime($pickupTime);
+
+                $historyItem = new HistoryItem($showTime, $screen, $event);
+                $historyItem->setReservation($reservation);
+                $retValue[] = $historyItem;
             }
         }
 

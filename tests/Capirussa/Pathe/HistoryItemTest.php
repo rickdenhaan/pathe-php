@@ -376,6 +376,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Dawn of the Planet of the', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
         $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
     }
 
     public function testParseHistoryItemsFromReservationHistoryWithSingleEntryWithReservation()
@@ -428,6 +429,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
     }
 
     public function testParseHistoryItemsFromReservationHistoryWithMultipleEntriesAndMixedReservations()
@@ -497,6 +499,13 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
             '        <td><!--ResNr. 14<br>--><a href="javascript:GetReservationDetails(\'13\', \'14\', \'15\', \'dvarmb1ng45bh7mi9iovgsioh3\');">Opgehaald</a></td>' . "\n" .
             '    </tr>' . "\n" .
             '    <tr><td colspan=4><div id="Reservation14"></div></td></tr>' . "\n" .
+            '    <tr>' . "\n" .
+            '        <td>2-3-2014&nbsp;20:05</td>' . "\n" .
+            '        <td>KuiR/Zaal 10</td>' . "\n" .
+            '        <td>LEGO Movie, The</td>' . "\n" .
+            '        <td><!--ResNr. 11<br>--><a href="javascript:GetReservationDetails(\'10\', \'11\', \'12\', \'dvarmb1ng45bh7mi9iovgsioh3\');">Opgehaald</a></td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr><td colspan=4><div id="Reservation11"></div></td></tr>' . "\n" .
             '</table>'
         );
 
@@ -518,6 +527,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[1];
 
@@ -532,6 +542,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[2];
 
@@ -546,6 +557,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(19, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(20, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(21, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[3];
 
@@ -560,6 +572,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
 
         $historyItem = $historyItems[4];
 
@@ -574,5 +587,192 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(13, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(14, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(15, $historyItem->getReservation()->getCollectionNumber());
+        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testParseHistoryItemsFromCardHistoryWithoutHtmlFile()
+    {
+        /** @noinspection PhpParamsInspection (this is intentional) */
+        HistoryItem::parseHistoryItemsFromCardHistory();
+    }
+
+    public function testParseHistoryItemsFromCardHistoryWithInvalidData()
+    {
+        $historyItems = HistoryItem::parseHistoryItemsFromCardHistory('abcd');
+
+        // should not have given an error, but should also not have been parsed into a history item
+
+        $this->assertInternalType('array', $historyItems);
+        $this->assertCount(0, $historyItems);
+    }
+
+    public function testParseHistoryItemsFromCardHistoryWithInvalidEntry()
+    {
+        $historyItems = HistoryItem::parseHistoryItemsFromCardHistory(
+            '<table class="chooseCardTable">' . "\n" .
+            '    <tr>' . "\n" .
+            '        <th>DATUM+TIJD</th>' . "\n" .
+            '        <th>BIOSCOOP/ZAAL</th>' . "\n" .
+            '        <th colspan="2">ACTIE/TITEL</th>' . "\n" .
+            '        <th class="price">KAARTEN</th>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" . // should not be parsed, because the first cell does not contain a valid date/time
+            '        <td>&nbsp;</td>' . "\n" .
+            '        <td> </td>' . "\n" .
+            '        <td>aangeschaft</td><td>  &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;"></td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" . // should not be parsed, because there are only four cells instead of five
+            '        <td>21-8-2012&nbsp;22:18:47</td>' . "\n" .
+            '        <td><br>Pathe de Kuip Zaal  9</td>' . "\n" .
+            '        <td><br>Expendables 2, The <br>2012-08-21 22:30 &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;">1</td>' . "\n" .
+            '    </tr>' . "\n" .
+            '</table>'
+        );
+
+        $this->assertInternalType('array', $historyItems);
+        $this->assertCount(0, $historyItems);
+    }
+
+    public function testParseHistoryItemsFromCardHistoryWithSingleEntry()
+    {
+        $historyItems = HistoryItem::parseHistoryItemsFromCardHistory(
+            '<table class="chooseCardTable">' . "\n" .
+            '    <tr>' . "\n" .
+            '        <th>DATUM+TIJD</th>' . "\n" .
+            '        <th>BIOSCOOP/ZAAL</th>' . "\n" .
+            '        <th colspan="2">ACTIE/TITEL</th>' . "\n" .
+            '        <th class="price">KAARTEN</th>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" . // should not be parsed, because the first cell does not contain a valid date/time
+            '        <td>&nbsp;</td>' . "\n" .
+            '        <td> </td>' . "\n" .
+            '        <td>aangeschaft</td><td>  &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;"></td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" .
+            '        <td>21-8-2012&nbsp;22:18:47</td>' . "\n" .
+            '        <td><br>Pathe de Kuip Zaal  9</td>' . "\n" .
+            '        <td>1 gebruikt</td><td><br>Expendables 2, The <br>2012-08-21 22:30 &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;">1</td>' . "\n" .
+            '    </tr>' . "\n" .
+            '</table>'
+        );
+
+        // should have given us one history item
+
+        $this->assertInternalType('array', $historyItems);
+        $this->assertCount(1, $historyItems);
+
+        $historyItem = $historyItems[0];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2012-08-21 22:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  9', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Expendables 2, The', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+    }
+
+    public function testParseHistoryItemsFromCardHistoryWithMultipleEntries()
+    {
+        $historyItems = HistoryItem::parseHistoryItemsFromCardHistory(
+            '<table class="chooseCardTable">' . "\n" .
+            '    <tr>' . "\n" .
+            '        <th>DATUM+TIJD</th>' . "\n" .
+            '        <th>BIOSCOOP/ZAAL</th>' . "\n" .
+            '        <th colspan="2">ACTIE/TITEL</th>' . "\n" .
+            '        <th class="price">KAARTEN</th>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" . // should not be parsed, because the first cell does not contain a valid date/time
+            '        <td>&nbsp;</td>' . "\n" .
+            '        <td> </td>' . "\n" .
+            '        <td>aangeschaft</td><td>  &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;"></td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" .
+            '        <td>21-8-2012&nbsp;22:18:47</td>' . "\n" .
+            '        <td><br>Pathe de Kuip Zaal  9</td>' . "\n" .
+            '        <td>1 gebruikt</td><td><br>Expendables 2, The <br>2012-08-21 22:30 &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;">1</td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" .
+            '        <td>31-8-2012&nbsp;20:29:03</td>' . "\n" .
+            '        <td><br>Pathe de Kuip Zaal  6</td>' . "\n" .
+            '        <td>1 gebruikt</td><td><br>Bourne Legacy, The <br>2012-08-31 21:00 &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;">1</td>' . "\n" .
+            '    </tr>' . "\n" .
+            '    <tr>' . "\n" .
+            '        <td>3-9-2012&nbsp;20:59:56</td>' . "\n" .
+            '        <td><br>Pathe de Kuip Zaal  7</td>' . "\n" .
+            '        <td>1 gebruikt</td><td><br>Red Lights <br>2012-09-03 21:30 &nbsp;</td>' . "\n" .
+            '        <td class="price" style="padding-right:40px;">1</td>' . "\n" .
+            '    </tr>' . "\n" .
+            '</table>'
+        );
+
+        // should have given us three history items
+
+        $this->assertInternalType('array', $historyItems);
+        $this->assertCount(3, $historyItems);
+
+        $historyItem = $historyItems[0];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2012-08-21 22:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  9', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Expendables 2, The', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+
+        $historyItem = $historyItems[1];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2012-08-31 21:00:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  6', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Bourne Legacy, The', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2012-08-31 20:29:03', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+
+        $historyItem = $historyItems[2];
+
+        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+
+        $this->assertEquals('2012-09-03 21:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('Pathe de Kuip', $historyItem->getScreen()->getTheater());
+        $this->assertEquals('Zaal  7', $historyItem->getScreen()->getScreen());
+        $this->assertEquals('Red Lights', $historyItem->getEvent()->getMovieName());
+        $this->assertEquals(1, $historyItem->getReservation()->getTicketCount());
+        $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
+        $this->assertNull($historyItem->getReservation()->getShowIdentifier());
+        $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
+        $this->assertNull($historyItem->getReservation()->getCollectionNumber());
+        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertEquals('2012-09-03 20:59:56', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
     }
 }
