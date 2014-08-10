@@ -124,7 +124,7 @@ The Pathe\Reservation entity contains details about a past reservation:
 * ShowIdentifier - not sure yet what this is, but I think it's a unique identifier for the movie
 * ReservationSetIdentifier - appears to be the unique reservation identifier
 * CollectionNumber - not sure what this is used for, but we might need it in the future
-* PickupDateTime - the date/time at which the tickets for this reservation were picked up
+* CollectDateTime - the date/time at which the tickets for this reservation were collected
 
 Note that the Reservation object has not yet been tested against active reservations (which have not yet been collected and have not been deleted) so if you have one of those, calling $client->getReservationHistory() will throw an InvalidArgumentException saying the status is invalid. This will be fixed soon.
 

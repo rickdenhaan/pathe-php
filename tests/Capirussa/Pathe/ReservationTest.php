@@ -174,38 +174,38 @@ class ReservationTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException PHPUnit_Framework_Error
      */
-    public function testSetPickupDateTimeWithoutParameters()
+    public function testSetCollectDateTimeWithoutParameters()
     {
         $reservation = new Reservation();
 
         /** @noinspection PhpParamsInspection (this is intentional) */
-        $reservation->setPickupDateTime();
+        $reservation->setCollectDateTime();
     }
 
     /**
      * @expectedException PHPUnit_Framework_Error
      */
-    public function testSetPickupDateTimeWithInvalidParameter()
+    public function testSetCollectDateTimeWithInvalidParameter()
     {
         $reservation = new Reservation();
 
         /** @noinspection PhpParamsInspection (this is intentional) */
-        $reservation->setPickupDateTime('2014-01-01 12:00:00');
+        $reservation->setCollectDateTime('2014-01-01 12:00:00');
     }
 
-    public function testSetPickupDateTimeWithValidDateTime()
+    public function testSetCollectDateTimeWithValidDateTime()
     {
         $reservation = new Reservation();
 
-        $this->assertNull($this->getObjectAttribute($reservation, 'pickupDateTime'));
+        $this->assertNull($this->getObjectAttribute($reservation, 'collectDateTime'));
 
         $reservationDateTime = new \DateTime('2014-01-01 12:00:00');
-        $reservation->setPickupDateTime($reservationDateTime);
+        $reservation->setCollectDateTime($reservationDateTime);
 
-        $this->assertNotNull($this->getObjectAttribute($reservation, 'pickupDateTime'));
-        $this->assertNotNull($reservation->getPickupDateTime());
-        $this->assertEquals($this->getObjectAttribute($reservation, 'pickupDateTime'), $reservation->getPickupDateTime());
+        $this->assertNotNull($this->getObjectAttribute($reservation, 'collectDateTime'));
+        $this->assertNotNull($reservation->getCollectDateTime());
+        $this->assertEquals($this->getObjectAttribute($reservation, 'collectDateTime'), $reservation->getCollectDateTime());
 
-        $this->assertEquals('2014-01-01 12:00:00', $reservation->getPickupDateTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2014-01-01 12:00:00', $reservation->getCollectDateTime()->format('Y-m-d H:i:s'));
     }
 }

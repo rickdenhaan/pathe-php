@@ -50,7 +50,7 @@ class Reservation
      *
      * @type \DateTime
      */
-    protected $pickupDateTime;
+    protected $collectDateTime;
 
     /**
      * Sets the number of tickets
@@ -191,11 +191,11 @@ class Reservation
     /**
      * Sets the date/time at which the tickets for this reservation were picked up
      *
-     * @param \DateTime $pickupDateTime
+     * @param \DateTime $collectDateTime
      */
-    public function setPickupDateTime(\DateTime $pickupDateTime)
+    public function setCollectDateTime(\DateTime $collectDateTime)
     {
-        $this->pickupDateTime = $pickupDateTime;
+        $this->collectDateTime = $collectDateTime;
     }
 
     /**
@@ -203,8 +203,8 @@ class Reservation
      *
      * @return \DateTime|null
      */
-    public function getPickupDateTime()
+    public function getCollectDateTime()
     {
-        return $this->pickupDateTime;
+        return $this->collectDateTime;
     }
 }

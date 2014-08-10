@@ -334,8 +334,8 @@ class HistoryItem
                 }
 
                 // make sure the first cell contains a valid date
-                $pickupTime = \DateTime::createFromFormat('j-n-Y  H:i:s', trim(preg_replace('/[^0-9:\-]/', ' ', html_entity_decode($cells->item(0)->textContent))));
-                if (!$pickupTime) {
+                $collectTime = \DateTime::createFromFormat('j-n-Y  H:i:s', trim(preg_replace('/[^0-9:\-]/', ' ', html_entity_decode($cells->item(0)->textContent))));
+                if (!$collectTime) {
                     continue;
                 }
 
@@ -348,7 +348,7 @@ class HistoryItem
 
                 $reservation = new Reservation();
                 $reservation->setTicketCount(trim(preg_replace('/[^0-9]/', '', $cells->item(4)->textContent)));
-                $reservation->setPickupDateTime($pickupTime);
+                $reservation->setCollectDateTime($collectTime);
 
                 $historyItem = new HistoryItem($showTime, $screen, $event);
                 $historyItem->setReservation($reservation);

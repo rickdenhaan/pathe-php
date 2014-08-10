@@ -376,7 +376,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Dawn of the Planet of the', $historyItem->getEvent()->getMovieName());
         $this->assertEquals(2, $historyItem->getReservation()->getTicketCount());
         $this->assertEquals(Reservation::STATUS_UNKNOWN, $historyItem->getReservation()->getStatus());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
     }
 
     public function testParseHistoryItemsFromReservationHistoryWithSingleEntryWithReservation()
@@ -429,7 +429,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
     }
 
     public function testParseHistoryItemsFromReservationHistoryWithMultipleEntriesAndMixedReservations()
@@ -527,7 +527,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(25, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(26, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(27, $historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
 
         $historyItem = $historyItems[1];
 
@@ -542,7 +542,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
 
         $historyItem = $historyItems[2];
 
@@ -557,7 +557,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(19, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(20, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(21, $historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
 
         $historyItem = $historyItems[3];
 
@@ -572,7 +572,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
 
         $historyItem = $historyItems[4];
 
@@ -587,7 +587,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(13, $historyItem->getReservation()->getShowIdentifier());
         $this->assertEquals(14, $historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertEquals(15, $historyItem->getReservation()->getCollectionNumber());
-        $this->assertNull($historyItem->getReservation()->getPickupDateTime());
+        $this->assertNull($historyItem->getReservation()->getCollectDateTime());
     }
 
     /**
@@ -681,8 +681,8 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
-        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+        $this->assertNotNull($historyItem->getReservation()->getCollectDateTime());
+        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getCollectDateTime()->format('Y-m-d H:i:s'));
     }
 
     public function testParseHistoryItemsFromCardHistoryWithMultipleEntries()
@@ -740,8 +740,8 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
-        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+        $this->assertNotNull($historyItem->getReservation()->getCollectDateTime());
+        $this->assertEquals('2012-08-21 22:18:47', $historyItem->getReservation()->getCollectDateTime()->format('Y-m-d H:i:s'));
 
         $historyItem = $historyItems[1];
 
@@ -756,8 +756,8 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
-        $this->assertEquals('2012-08-31 20:29:03', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+        $this->assertNotNull($historyItem->getReservation()->getCollectDateTime());
+        $this->assertEquals('2012-08-31 20:29:03', $historyItem->getReservation()->getCollectDateTime()->format('Y-m-d H:i:s'));
 
         $historyItem = $historyItems[2];
 
@@ -772,7 +772,7 @@ class HistoryItemTest extends PHPUnit_Framework_TestCase
         $this->assertNull($historyItem->getReservation()->getShowIdentifier());
         $this->assertNull($historyItem->getReservation()->getReservationSetIdentifier());
         $this->assertNull($historyItem->getReservation()->getCollectionNumber());
-        $this->assertNotNull($historyItem->getReservation()->getPickupDateTime());
-        $this->assertEquals('2012-09-03 20:59:56', $historyItem->getReservation()->getPickupDateTime()->format('Y-m-d H:i:s'));
+        $this->assertNotNull($historyItem->getReservation()->getCollectDateTime());
+        $this->assertEquals('2012-09-03 20:59:56', $historyItem->getReservation()->getCollectDateTime()->format('Y-m-d H:i:s'));
     }
 }
