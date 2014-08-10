@@ -195,7 +195,7 @@ class Reservation
      */
     public function setCollectDateTime(\DateTime $collectDateTime)
     {
-        $this->collectDateTime = $collectDateTime;
+        $this->collectDateTime = clone $collectDateTime;
     }
 
     /**
@@ -205,6 +205,12 @@ class Reservation
      */
     public function getCollectDateTime()
     {
-        return $this->collectDateTime;
+        $retValue = $this->collectDateTime;
+
+        if ($retValue !== null) {
+            $retValue = clone $retValue;
+        }
+
+        return $retValue;
     }
 }
