@@ -46,8 +46,6 @@ class Request
     const LOGIN_EMAIL_ADDRESS               = 'Email';
     const LOGIN_CONFIRM_EMAIL_ADDRESS       = 'EmailConfirm';
     const LOGIN_NEWSLETTER                  = 'WantInfoPerMail';
-    const LOGIN_SUBMIT_X                    = 'submitButton.x';
-    const LOGIN_SUBMIT_Y                    = 'submitButton.y';
     const PERSONAL_DATA_GENDER              = 'Gender';
     const PERSONAL_DATA_FIRST_NAME          = 'FirstName';
     const PERSONAL_DATA_MIDDLE_NAME         = 'MiddleName';
