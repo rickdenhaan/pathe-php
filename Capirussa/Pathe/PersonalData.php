@@ -1,159 +1,244 @@
 <?php
 namespace Capirussa\Pathe;
 
+/**
+ * The PersonalData object contains a customer's personal details and can be used to make changes.
+ *
+ * @package Capirussa\Pathe
+ */
 class PersonalData
 {
     /**
-     * Form field names
+     * The form field in the personal information dashboard that contains the customer's gender.
      */
-    const FORM_GENDER              = 'Gender';
-    const FORM_FIRST_NAME          = 'FirstName';
-    const FORM_MIDDLE_NAME         = 'MiddleName';
-    const FORM_LAST_NAME           = 'LastName';
-    const FORM_EMAIL               = 'Email';
-    const FORM_COUNTRY             = 'CountryID';
-    const FORM_BIRTH_DAY           = 'BirthDay';
-    const FORM_BIRTH_MONTH         = 'BirthMonth';
-    const FORM_BIRTH_YEAR          = 'BirthYear';
-    const FORM_STREET_NAME         = 'Address1';
-    const FORM_HOUSE_NUMBER        = 'HouseNbr';
-    const FORM_HOUSE_NUMBER_SUFFIX = 'HouseNbrPostFix';
-    const FORM_POSTAL_CODE         = 'ZIP';
-    const FORM_CITY                = 'City';
-    const FORM_MOBILE_PHONE_NUMBER = 'Mobile';
-    const FORM_PASSWORD            = 'LoginPassword';
-    const FORM_NEWSLETTER          = 'InfoWanted';
+    const FORM_GENDER = 'Gender';
 
     /**
-     * Gender values
+     * The form field in the personal information dashboard that contains the customer's first name.
+     */
+    const FORM_FIRST_NAME = 'FirstName';
+
+    /**
+     * The form field in the personal information dashboard that contains the customer's middle name.
+     */
+    const FORM_MIDDLE_NAME = 'MiddleName';
+
+    /**
+     * The form field in the personal information dashboard that contains the customer's last name.
+     */
+    const FORM_LAST_NAME = 'LastName';
+
+    /**
+     * The form field in the personal information dashboard that contains the customer's email address.
+     */
+    const FORM_EMAIL = 'Email';
+
+    /**
+     * The form field in the personal information dashboard that contains the country identifier.
+     */
+    const FORM_COUNTRY = 'CountryID';
+
+    /**
+     * The form field in the personal information dashboard that contains the day portion of the birth date.
+     */
+    const FORM_BIRTH_DAY = 'BirthDay';
+
+    /**
+     * The form field in the personal information dashboard that contains the month portion of the birth date.
+     */
+    const FORM_BIRTH_MONTH = 'BirthMonth';
+
+    /**
+     * The form field in the personal information dashboard that contains the year portion of the birth date.
+     */
+    const FORM_BIRTH_YEAR = 'BirthYear';
+
+    /**
+     * The form field in the personal information dashboard that contains the name of the street on which the customer
+     * lives.
+     */
+    const FORM_STREET_NAME = 'Address1';
+
+    /**
+     * The form field in the personal information dashboard that contains the house number portion of the customer's
+     * address.
+     */
+    const FORM_HOUSE_NUMBER = 'HouseNbr';
+
+    /**
+     * The form field in the personal information dashboard that contains the suffix to the house number portion of
+     * the customer's address.
+     */
+    const FORM_HOUSE_NUMBER_SUFFIX = 'HouseNbrPostFix';
+
+    /**
+     * The form field in the personal information dashboard that contains the customer's postal code.
+     */
+    const FORM_POSTAL_CODE = 'ZIP';
+
+    /**
+     * The form field in the personal information dashboard that contains the city in which the customer lives.
+     */
+    const FORM_CITY = 'City';
+
+    /**
+     * The form field in the personal information dashboard that contains the customer's mobile phone number.
+     */
+    const FORM_MOBILE_PHONE_NUMBER = 'Mobile';
+
+    /**
+     * The form field in the personal information dashboard that should be used when the customer wants to change
+     * their password.
+     */
+    const FORM_PASSWORD = 'LoginPassword';
+
+    /**
+     * The checkbox in the personal information dashboard that contains the user's newsletter preference.
+     */
+    const FORM_NEWSLETTER = 'InfoWanted';
+
+    /**
+     * The Pathé identifier for the female gender.
      */
     const GENDER_FEMALE = 10273;
-    const GENDER_MALE   = 10274;
 
     /**
-     * Country values
+     * The Pathé identifier for the male gender.
+     */
+    const GENDER_MALE = 10274;
+
+    /**
+     * The Pathé country identifier for The Netherlands. Currently the only supported country.
      */
     const COUNTRY_NETHERLANDS = 11456;
 
     /**
-     * Password default value indicating no change
+     * The unique value to use when submitting changes to the customer's personal information if you do not also want
+     * to change the password.
      */
     const PASSWORD_NO_CHANGE = 'ticket.international';
 
     /**
-     * The user's username
+     * The username the customer currently has, or the username with which to register a new customer account.
      *
      * @type string
      */
     protected $username;
 
     /**
-     * The user's password
+     * The customer's new password, if it needs to be changed. Otherwise, it defaults to the `PASSWORD_NO_CHANGE`
+     * constant.
      *
      * @type string
      */
     protected $password = self::PASSWORD_NO_CHANGE;
 
     /**
-     * The user's gender
+     * The Pathé identifier for the customer's gender. Matches one of the `GENDER_*` constants defined in this class.
      *
      * @type int
      */
     protected $gender = self::GENDER_MALE;
 
     /**
-     * The user's first name
+     * The customer's first name.
      *
      * @type string
      */
     protected $firstName;
 
     /**
-     * The user's middle name
+     * The customer's middle name.
      *
      * @type string
      */
     protected $middleName;
 
     /**
-     * The user's last name
+     * The customer's last name.
      *
      * @type string
      */
     protected $lastName;
 
     /**
-     * The user's email address
+     * The customer's email address.
      *
      * @type string
      */
     protected $emailAddress;
 
     /**
-     * The user's country
+     * The Pathé identifier for the country in which the customer lives, matches one of the `COUNTRY_*` constants
+     * defined in this class.
      *
      * @type int
      */
     protected $country = self::COUNTRY_NETHERLANDS;
 
     /**
-     * The user's birth date
+     * A DateTime object referencing the customer's date of birth.
      *
      * @type \DateTime
      */
     protected $birthDate;
 
     /**
-     * The user's street name
+     * The street on which the customer lives.
      *
      * @type string
      */
     protected $streetName;
 
     /**
-     * The user's house number
+     * The house number portion of the customer's address.
      *
      * @type int
      */
     protected $houseNumber;
 
     /**
-     * The user's house number suffix
+     * The suffix to the customer's house number.
      *
      * @type string
      */
     protected $houseNumberSuffix;
 
     /**
-     * The user's postal code
+     * The customer's postal code.
      *
      * @type string
      */
     protected $postalCode;
 
     /**
-     * The user's city
+     * The city in which the customer lives.
      *
      * @type string
      */
     protected $city;
 
     /**
-     * The user's mobile phone number
+     * The customer's mobile phone number.
      *
      * @type string
      */
     protected $mobilePhoneNumber;
 
     /**
-     * Whether the user wants to receive the weekly newsletter
+     * A boolean indicating whether or not the customer wants to receive the weekly newsletter.
      *
      * @var bool
      */
     protected $newsletter = false;
 
     /**
-     * Sets the username
+     * This method is used to set the customer's username. It expects one argument, which must be a valid email
+     * address. It returns nothing.
+     *
+     * <code>
+     * $personalData->setUsername('username@example.com');
+     * </code>
      *
      * @param string $username
      * @throws \InvalidArgumentException
@@ -184,7 +269,11 @@ class PersonalData
     }
 
     /**
-     * Returns the username
+     * This method returns the customer's username. Returns null if the username is not set.
+     *
+     * <code>
+     * $username = $personalData->getUsername();
+     * </code>
      *
      * @return string|null
      */
@@ -194,7 +283,14 @@ class PersonalData
     }
 
     /**
-     * Sets the user's password
+     * This method is used to set the user's password. It expects one argument, which must be at least six characters
+     * long, contain at least one number and is not the same as the customer's email address or username. It returns
+     * nothing.
+     *
+     * <code>
+     * $personalData->setPassword('abcd123');
+     * $personalData->setPassword(PersonalData::PASSWORD_NO_CHANGE);
+     * </code>
      *
      * @param string $password
      * @throws \InvalidArgumentException
@@ -255,7 +351,13 @@ class PersonalData
     }
 
     /**
-     * Returns the password
+     * This method returns the customer's password **after** it has been changed. This will never return the
+     * customer's current password. If the password has not been changed, it will return
+     * `PersonalData::PASSWORD_NO_CHANGE`.
+     *
+     * <code>
+     * $password = $personalData->getPassword();
+     * </code>
      *
      * @return string|null
      */
@@ -265,7 +367,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's gender
+     * This method is used to set the customer's gender. It expects one argument, which must be one of the constants
+     * defined in this class, and returns nothing.
+     *
+     * <code>
+     * $personalData->setGender(PersonalData::GENDER_MALE);
+     * </code>
      *
      * @param int $gender
      * @throws \InvalidArgumentException
@@ -295,7 +402,11 @@ class PersonalData
     }
 
     /**
-     * Returns the gender
+     * This method returns the identifier for the customer's gender, or null if it is not known.
+     *
+     * <code>
+     * $gender = $personalData->getGender();
+     * </code>
      *
      * @return int|null
      */
@@ -305,7 +416,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's first name
+     * This method is used to set the customer's first name. It expects one argument, which must be a non-empty
+     * string. It returns nothing.
+     *
+     * <code>
+     * $personalData->setFirstName('Bob');
+     * </code>
      *
      * @param string $firstName
      * @throws \InvalidArgumentException
@@ -326,7 +442,11 @@ class PersonalData
     }
 
     /**
-     * Returns the first name
+     * This method returns the customer's first name, or null if it is not known.
+     *
+     * <code>
+     * $firstName = $personalData->getFirstName();
+     * </code>
      *
      * @return string|null
      */
@@ -336,7 +456,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's middle name
+     * This method is used to set the prefix for the customer's last name. It expects one optional argument, which
+     * must be a string, and returns nothing.
+     *
+     * <code>
+     * $personalData->setMiddleName('van der');
+     * </code>
      *
      * @param string $middleName (Optional) Defaults to null
      * @throws \InvalidArgumentException
@@ -362,7 +487,12 @@ class PersonalData
     }
 
     /**
-     * Returns the middle name
+     * This method returns the prefix to the customer's last name (e.g. 'de', 'van' or 'van der') if any, or null if
+     * it is not known.
+     *
+     * <code>
+     * $middleName = $personalData->getMiddleName();
+     * </code>
      *
      * @return string|null
      */
@@ -372,7 +502,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's last name
+     * This method is used to set the customer's last name. It expects one argument, which must be a non-empty string,
+     * and returns nothing.
+     *
+     * <code>
+     * $personalData->setLastName('Smit');
+     * </code>
      *
      * @param string $lastName
      * @throws \InvalidArgumentException
@@ -393,7 +528,11 @@ class PersonalData
     }
 
     /**
-     * Returns the last name
+     * This method returns the customer's last name, or null if it is not known.
+     *
+     * <code>
+     * $lastName = $personalData->getLastName();
+     * </code>
      *
      * @return string|null
      */
@@ -403,7 +542,12 @@ class PersonalData
     }
 
     /**
-     * Sets the email address
+     * This method is used to set the customer's email address. It expects one argument which, obviously, must be a
+     * valid email address. It returns nothing.
+     *
+     * <code>
+     * $personalData->setEmailAddress('email@example.com');
+     * </code>
      *
      * @param string $emailAddress
      * @throws \InvalidArgumentException
@@ -434,7 +578,11 @@ class PersonalData
     }
 
     /**
-     * Returns the email address
+     * This method returns the customer's email address, or null if it is not known.
+     *
+     * <code>
+     * $emailAddress = $personalData->getEmailAddress();
+     * </code>
      *
      * @return string|null
      */
@@ -444,7 +592,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's country
+     * This method is used to set the identifier of the country where this customer lives. It expects one argument,
+     * which must match one of the constants defined in this class. It returns nothing.
+     *
+     * <code>
+     * $personalData->setCountry(PersonalData::COUNTRY_NETHERLANDS);
+     * </code>
      *
      * @param int $country
      * @throws \InvalidArgumentException
@@ -474,7 +627,11 @@ class PersonalData
     }
 
     /**
-     * Returns the country
+     * This method returns the identifier for the country in which the customer lives, or null if it is not known.
+     *
+     * <code>
+     * $country = $personalData->getCountry();
+     * </code>
      *
      * @return int|null
      */
@@ -484,7 +641,12 @@ class PersonalData
     }
 
     /**
-     * Returns the birth date
+     * This method returns a DateTime object containing the customer's date of birth. If this date is not known, it
+     * returns today.
+     *
+     * <code>
+     * $birthDate = $personalData->getBirthDate();
+     * </code>
      *
      * @return \DateTime
      */
@@ -499,7 +661,13 @@ class PersonalData
     }
 
     /**
-     * Sets the full birth date
+     * This method is used to set the customer's date of birth. It expects one argument, which must be a DateTime
+     * object, and returns nothing.
+     *
+     * <code>
+     * $birthDate = new \DateTime('1980-01-01');
+     * $personalData->setBirthDate($birthDate);
+     * </code>
      *
      * @param \DateTime $birthDate
      */
@@ -509,7 +677,12 @@ class PersonalData
     }
 
     /**
-     * Sets only the day of the birth date
+     * This method is used to set only the day portion of the customer's date of birth. It expects one argument,
+     * which must be an integer between 1 and 31. This method returns nothing.
+     *
+     * <code>
+     * $personalData->setBirthDay(15);
+     * </code>
      *
      * @param int $day
      */
@@ -529,7 +702,12 @@ class PersonalData
     }
 
     /**
-     * Sets only the month of the birth date
+     * This method is used to set only the month portion of the customer's date of birth. It expects one argument,
+     * which must be an integer between 1 and 12. This method returns nothing.
+     *
+     * <code>
+     * $personalData->setBirthMonth(8);
+     * </code>
      *
      * @param int $month
      */
@@ -549,7 +727,13 @@ class PersonalData
     }
 
     /**
-     * Sets only the year of the birth date
+     * This method is used to set only the year portion of the customer's date of birth. It expects one argument,
+     * which must be an integer between 1899 and the current year (at the time of writing: 2014). This method returns
+     * nothing.
+     *
+     * <code>
+     * $personalData->setBirthYear(1968);
+     * </code>
      *
      * @param int $year
      */
@@ -569,7 +753,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's street name
+     * This method is used to set the street name portion of the customer's address. It expects one argument, which
+     * must be a non-empty string. It returns nothing.
+     *
+     * <code>
+     * $personalData->setStreetName('Hoofdstraat');
+     * </code>
      *
      * @param string $streetName
      * @throws \InvalidArgumentException
@@ -590,7 +779,11 @@ class PersonalData
     }
 
     /**
-     * Returns the street name
+     * This method returns the street portion of the customer's address, or null if it is not known.
+     *
+     * <code>
+     * $streetName = $personalData->getStreetName();
+     * </code>
      *
      * @return string|null
      */
@@ -600,9 +793,14 @@ class PersonalData
     }
 
     /**
-     * Sets the user's house number
+     * This method is used to set the house number portion of the customer's address. It expects one argument, which
+     * must be a positive integer between 1 and 999. It returns nothing.
      *
-     * @param int  $houseNumber
+     * <code>
+     * $personalData->setHouseNumber(15);
+     * </code>
+     *
+     * @param int $houseNumber
      * @throws \InvalidArgumentException
      */
     public function setHouseNumber($houseNumber)
@@ -623,7 +821,11 @@ class PersonalData
     }
 
     /**
-     * Returns the house number
+     * This method returns the house number portion of the customer's address, or null if it is not known.
+     *
+     * <code>
+     * $houseNumber = $personalData->getHouseNumber();
+     * </code>
      *
      * @return int|null
      */
@@ -633,7 +835,13 @@ class PersonalData
     }
 
     /**
-     * Sets the user's house number suffix
+     * This method is used to set the suffix to the house number, if the customer has one (e.g. if the customer's
+     * address is 'Hoofdstraat 12 P' the suffix is 'P'). It expects one optional argument, which must be a string,
+     * and returns nothing.
+     *
+     * <code>
+     * $personalData->setHouseNumberSuffix('P');
+     * </code>
      *
      * @param string $houseNumberSuffix (Optional) Defaults to null
      * @throws \InvalidArgumentException
@@ -668,7 +876,11 @@ class PersonalData
     }
 
     /**
-     * Returns the house number suffix
+     * This method returns the suffix to the customer's house number, if any, or null if it is not known.
+     *
+     * <code>
+     * $houseNumberSuffix = $personalData->getHouseNumberSuffix();
+     * </code>
      *
      * @return string|null
      */
@@ -678,7 +890,13 @@ class PersonalData
     }
 
     /**
-     * Sets the user's postal code
+     * This method is used to set the postal code portion of the customer's address. It expects one argument, which
+     * must be a valid Dutch postal code, and returns nothing.
+     *
+     * <code>
+     * $personalData->setPostalCode('1234 AB');
+     * $personalData->setPostalCode('1234ab');
+     * </code>
      *
      * @param string $postalCode
      * @throws \InvalidArgumentException
@@ -702,7 +920,11 @@ class PersonalData
     }
 
     /**
-     * Returns the postal code
+     * This method returns the postal code portion of the customer's address, or null if it is not known.
+     *
+     * <code>
+     * $postalCode = $personalData->getPostalCode();
+     * </code>
      *
      * @return string|null
      */
@@ -712,7 +934,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's city
+     * This method is used to set the name of the city where this customer lives. It expects one argument, which must
+     * be a non-empty string, and returns nothing.
+     *
+     * <code>
+     * $personalData->setCity('Rotterdam');
+     * </code>
      *
      * @param string $city
      * @throws \InvalidArgumentException
@@ -733,7 +960,11 @@ class PersonalData
     }
 
     /**
-     * Returns the city
+     * This method returns the city in which the customer lives, or null if the city is not known.
+     *
+     * <code>
+     * $city = $personalData->getCity();
+     * </code>
      *
      * @return string|null
      */
@@ -743,7 +974,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's mobile phone number
+     * This method is used to set the customer's mobile phone number. It expects one optional argument, which must be
+     * a valid 10-digit Dutch mobile phone number. It returns nothing.
+     *
+     * <code>
+     * $personalData->setMobilePhoneNumber('0612345678');
+     * </code>
      *
      * @param string $mobilePhoneNumber (Optional) Defaults to null
      * @throws \InvalidArgumentException
@@ -778,7 +1014,11 @@ class PersonalData
     }
 
     /**
-     * Returns the mobile phone number
+     * This method returns the customer's mobile phone number, or null if it is not known.
+     *
+     * <code>
+     * $phoneNumber = $personalData->getMobilePhoneNumber();
+     * </code>
      *
      * @return string|null
      */
@@ -788,7 +1028,12 @@ class PersonalData
     }
 
     /**
-     * Sets the user's weekly newsletter preference
+     * This method is used to set whether or not the customer wants to receive the weekly newsletter. It expects one
+     * argument, which must be a boolean `true` or `false`. It returns nothing.
+     *
+     * <code>
+     * $personalData->setNewsletter(true);
+     * </code>
      *
      * @param bool $newsletter
      * @throws \InvalidArgumentException
@@ -809,7 +1054,12 @@ class PersonalData
     }
 
     /**
-     * Returns the newsletter preference
+     * This method returns a boolean indicating whether the customer wants to receive the weekly Pathé newsletter. If
+     * not known, false is assumed.
+     *
+     * <code>
+     * $newsletter = $personalData->getNewsletter();
+     * </code>
      *
      * @return bool
      */
@@ -819,7 +1069,12 @@ class PersonalData
     }
 
     /**
-     * Creates a new PersonalData entity from the given HTML file containing an HTML form
+     * This method expects one argument: an HTML form filled in with the customer's personal details. It will attempt
+     * to parse this form and find all of the customer's details and will return a PersonalData object.
+     *
+     * <code>
+     * $personalData = PersonalData::parsePersonalDataFromHtmlForm($htmlResponseWithPersonalDataForm);
+     * </code>
      *
      * @param string $htmlFormString
      * @return PersonalData
@@ -827,6 +1082,7 @@ class PersonalData
     public static function parsePersonalDataFromHtmlForm($htmlFormString)
     {
         $retValue = new static();
+        /* @type $retValue PersonalData */
 
         // parse the document
         libxml_use_internal_errors(true);
@@ -958,7 +1214,16 @@ class PersonalData
     }
 
     /**
-     * Makes sure all values that are required for registration and/or a personal information update are filled
+     * This method checks whether all required fields are filled in, so that the contents of this instance are safe to
+     * use for registering a new account (via `Client::registerAccount()`) or updating an existing account (via
+     * `Client::updatePersonalData()`). It accepts one argument, which is a boolean that defaults to `false`. If it is
+     * set to `true`, that means validation for a new account registration is done, meaning the username and password
+     * are required and the password must not match `PersonalData::PASSWORD_NO_CHANGE`. This method returns nothing,
+     * but throws a LogicException for any validation errors it comes across.
+     *
+     * <code>
+     * $personalData->assertValidForRegistrationAndUpdate(true);
+     * </code>
      *
      * @param bool $newRegistration if TRUE will make sure the username is set and the password is not set to the NO_CHANGE password
      * @throws \LogicException

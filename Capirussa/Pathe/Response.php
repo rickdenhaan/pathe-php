@@ -2,35 +2,42 @@
 namespace Capirussa\Pathe;
 
 /**
- * Response object represents a Pathe response
+ * Every request that is sent to Pathé returns a Response object. The most recent one is always available from the
+ * Client.
  *
  * @package Capirussa\Pathe
  */
 class Response
 {
     /**
-     * HTTP status code returned by the remote server
+     * This property contains the 3-digit HTTP status code for this response.
      *
      * @var int
      */
     protected $statusCode;
 
     /**
-     * List of HTTP headers returned by the remote server
+     * This property contains an array of HTTP headers received with this response.
      *
      * @var string[]
      */
     protected $rawHeaders;
 
     /**
-     * Raw HTTP body returned by the remote server
+     * This property contains the raw HTTP body received with this response.
      *
      * @var string
      */
     protected $rawBody;
 
     /**
-     * Builds the Response object from a raw API response string
+     * The constructor expects one argument: the raw HTTP response as a string, including the HTTP headers and
+     * response body. It parses this string into the HTTP status code, and splits the headers and body into separate
+     * properties which can be retrieved using the following methods.
+     *
+     * <code>
+     * $response = new Response($rawHttpRequestResult);
+     * </code>
      *
      * @param string $apiResponse
      */
@@ -75,7 +82,11 @@ class Response
     }
 
     /**
-     * Returns the HTTP status code
+     * This method is used to retrieve the 4-digit HTTP status code (e.g. 200, 401) for the request.
+     *
+     * <code>
+     * $statusCode = $response->getStatusCode();
+     * </code>
      *
      * @return int|null
      */
@@ -85,7 +96,13 @@ class Response
     }
 
     /**
-     * Returns the headers (if any)
+     * This method is used to retrieve an array of HTTP headers returned in the response. This can be useful if you
+     * want to validate the content type before doing any manual parsing of the body, for example, or to check caching
+     * settings if you want to implement your own caching mechanism.
+     *
+     * <code>
+     * $headers = $response->getRawHeaders();
+     * </code>
      *
      * @return string[]|null
      */
@@ -95,7 +112,12 @@ class Response
     }
 
     /**
-     * Returns the raw body (if any)
+     * This method is used to retrieve the raw body returned in the response. In most cases this is an HTML document,
+     * but for some requests this can be a plain text file or nothing at all.
+     *
+     * <code>
+     * $rawBody = $response->getRawBody();
+     * </code>
      *
      * @return string|null
      */

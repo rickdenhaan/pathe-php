@@ -1,99 +1,313 @@
 <?php
 namespace Capirussa\Pathe;
 
+/**
+ * The Request object is used to submit a request to Mijn Pathé. You will probably never need to use this object,
+ * because all logic for building a Request object is contained in the Client object.
+ *
+ * @package Capirussa\Pathe
+ */
 class Request
 {
     /**
-     * Page identifiers
+     * This constant is a unique page identifier that refers to the login page.
      */
-    const SIGN_LOGIN                = 23;
-    const SIGN_LOGOUT               = 3023;
-    const SIGN_RESERVATION_HISTORY  = 24;
-    const SIGN_PERSONAL_DATA        = 30;
-    const SIGN_UPDATE_PERSONAL_DATA = 31;
-    const SIGN_CARD_HISTORY         = 69;
-    const SIGN_CARD_RELATED_DATA    = 70;
-    const SIGN_DELETE_ACCOUNT       = 91;
+    const SIGN_LOGIN = 23;
 
     /**
-     * SOAP identifiers
+     * This constant is a unique page identifier that refers to the logout page.
+     */
+    const SIGN_LOGOUT = 3023;
+
+    /**
+     * This constant is a unique page identifier that refers to the page where a customer's reservation history can be
+     * retrieved.
+     */
+    const SIGN_RESERVATION_HISTORY = 24;
+
+    /**
+     * This constant is a unique page identifier that refers to the Mijn Pathé dashboard containing the customer's
+     * details.
+     */
+    const SIGN_PERSONAL_DATA = 30;
+
+    /**
+     * This constant is a unique page identifier that refers to the page where a user's personal details can be
+     * modified.
+     */
+    const SIGN_UPDATE_PERSONAL_DATA = 31;
+
+    /**
+     * This constant is a unique page identifier used for requesting an Unlimited or Gold Card's usage history.
+     */
+    const SIGN_CARD_HISTORY = 69;
+
+    /**
+     * This constant is a unique page identifier used for requesting various card-related details.
+     */
+    const SIGN_CARD_RELATED_DATA = 70;
+
+    /**
+     * This constant is a unique page identifier that refers to the page where an account can be deleted.
+     */
+    const SIGN_DELETE_ACCOUNT = 91;
+
+    /**
+     * This constant is a unique page identifier that refers to a URL that needs to be called to trigger the
+     * generation of the pipe-delimited text file containing a customer's history.
      */
     const SIGN_SOAP_CUSTOMER_HISTORY = 1070;
 
     /**
-     * Data identifiers
+     * This constant is a unique page identifier that refers to the pipe-delimited text file that contains a
+     * customer's history.
      */
     const SIGN_DATA_CUSTOMER_HISTORY = 2070;
 
     /**
-     * Query string parameters
+     * This constant refers to the name of a query parameter added to some request URLs.
      */
-    const QUERY_CUSTOMER_ID    = 'CustomerID';
-    const QUERY_HISTORY        = 'History';
-    const QUERY_LOAD_CARDS     = 'LoadCards';
-    const QUERY_SELECTED_YEAR  = 'SelYear';
+    const QUERY_CUSTOMER_ID = 'CustomerID';
+
+    /**
+     * This constant refers to the name of a query parameter added to some request URLs.
+     */
+    const QUERY_HISTORY = 'History';
+
+    /**
+     * This constant refers to the name of a query parameter added to some request URLs.
+     */
+    const QUERY_LOAD_CARDS = 'LoadCards';
+
+    /**
+     * This constant refers to the name of a query parameter added to some request URLs.
+     */
+    const QUERY_SELECTED_YEAR = 'SelYear';
+
+    /**
+     * This constant refers to the name of a query parameter added to some request URLs.
+     */
     const QUERY_USER_CENTER_ID = 'UserCenterID';
-    const QUERY_TEMPLATE       = 'template';
 
     /**
-     * Post parameters
+     * This constant refers to the name of a query parameter added to some request URLs.
      */
-    const DELETE_PASSWORD                   = 'Password';
-    const DELETE_CONFIRM                    = 'Check';
-    const LOGIN_USERNAME                    = 'Login';
-    const LOGIN_PASSWORD                    = 'Password';
-    const LOGIN_CONFIRM_PASSWORD            = 'PasswordConfirm';
-    const LOGIN_EMAIL_ADDRESS               = 'Email';
-    const LOGIN_CONFIRM_EMAIL_ADDRESS       = 'EmailConfirm';
-    const LOGIN_NEWSLETTER                  = 'WantInfoPerMail';
-    const PERSONAL_DATA_GENDER              = 'Gender';
-    const PERSONAL_DATA_FIRST_NAME          = 'FirstName';
-    const PERSONAL_DATA_MIDDLE_NAME         = 'MiddleName';
-    const PERSONAL_DATA_LAST_NAME           = 'LastName';
-    const PERSONAL_DATA_EMAIL_ADDRESS       = 'Email';
-    const PERSONAL_DATA_COUNTRY             = 'CountryID';
-    const PERSONAL_DATA_BIRTH_DAY           = 'BirthDay';
-    const PERSONAL_DATA_BIRTH_MONTH         = 'BirthMonth';
-    const PERSONAL_DATA_BIRTH_YEAR          = 'BirthYear';
-    const PERSONAL_DATA_STREET_NAME         = 'Address1';
-    const PERSONAL_DATA_HOUSE_NUMBER        = 'HouseNbr';
-    const PERSONAL_DATA_HOUSE_NUMBER_SUFFIX = 'HouseNbrPostFix';
-    const PERSONAL_DATA_POSTAL_CODE         = 'ZIP';
-    const PERSONAL_DATA_CITY                = 'City';
-    const PERSONAL_DATA_MOBILE_PHONE_NUMBER = 'Mobile';
-    const PERSONAL_DATA_PASSWORD            = 'LoginPassword';
-    const PERSONAL_DATA_NEWSLETTER          = 'InfoWanted';
-    const RESERVATION_HISTORY_WEEK_COUNT    = 'Weeks';
-    const CARD_HISTORY_CARD_NUMBER          = 'CustomerCardNumber';
-    const CARD_HISTORY_PIN_CODE             = 'PIN';
-    const CARD_HISTORY_MONTH                = 'Month';
-    const CARD_HISTORY_YEAR                 = 'Year';
+    const QUERY_TEMPLATE = 'template';
 
     /**
-     * Possible user centers
+     * This constant is used when deleting a Mijn Pathé account, and is the name of the form field where you need to
+     * enter your password to confirm that you really want to delete the account.
+     */
+    const DELETE_PASSWORD = 'Password';
+
+    /**
+     * This constant is used when deleting a Mijn Pathé account, and is the name of the form's checkbox that is used
+     * to confirm that you really want to delete the account.
+     */
+    const DELETE_CONFIRM = 'Check';
+
+    /**
+     * This constant is used when logging into an existing Mijn Pathé account, and is the name of the form field where
+     * you need to enter your username.
+     */
+    const LOGIN_USERNAME = 'Login';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when logging into an existing account, and is
+     * the name of the form field where you need to enter your password.
+     */
+    const LOGIN_PASSWORD = 'Password';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account, and is the name of the form field where you
+     * need to confirm your password.
+     */
+    const LOGIN_CONFIRM_PASSWORD = 'PasswordConfirm';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when requesting a forgotten password, and is
+     * the name of the form field where you need to enter your email address.
+     */
+    const LOGIN_EMAIL_ADDRESS = 'Email';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account, and is the name of the form field where you
+     * need to confirm your email address.
+     */
+    const LOGIN_CONFIRM_EMAIL_ADDRESS = 'EmailConfirm';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account, and is the name of the form's checkbox that is
+     * used to indicate whether or not you want to receive the weekly newsletter.
+     */
+    const LOGIN_NEWSLETTER = 'WantInfoPerMail';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form's radio buttons where you need to select your gender.
+     */
+    const PERSONAL_DATA_GENDER = 'Gender';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter your first name.
+     */
+    const PERSONAL_DATA_FIRST_NAME = 'FirstName';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter your optional middle name.
+     */
+    const PERSONAL_DATA_MIDDLE_NAME = 'MiddleName';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter your last name.
+     */
+    const PERSONAL_DATA_LAST_NAME = 'LastName';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter your email address.
+     */
+    const PERSONAL_DATA_EMAIL_ADDRESS = 'Email';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter the country where you live.
+     */
+    const PERSONAL_DATA_COUNTRY = 'CountryID';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter the day part of your date of birth.
+     */
+    const PERSONAL_DATA_BIRTH_DAY = 'BirthDay';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter the month part of your date of birth.
+     */
+    const PERSONAL_DATA_BIRTH_MONTH = 'BirthMonth';
+
+    /**
+     * This constant is used when registering a new Mijn Pathé account or when updating an existing account, and is
+     * the name of the form field where you need to enter the year part of your date of birth.
+     */
+    const PERSONAL_DATA_BIRTH_YEAR = 'BirthYear';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter the name of the street where you live.
+     */
+    const PERSONAL_DATA_STREET_NAME = 'Address1';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter your house number.
+     */
+    const PERSONAL_DATA_HOUSE_NUMBER = 'HouseNbr';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter the optional suffix to your house number.
+     */
+    const PERSONAL_DATA_HOUSE_NUMBER_SUFFIX = 'HouseNbrPostFix';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter your postal code.
+     */
+    const PERSONAL_DATA_POSTAL_CODE = 'ZIP';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter the city where you live.
+     */
+    const PERSONAL_DATA_CITY = 'City';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field where you
+     * need to enter your mobile phone number.
+     */
+    const PERSONAL_DATA_MOBILE_PHONE_NUMBER = 'Mobile';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form field you can
+     * use to change your password.
+     */
+    const PERSONAL_DATA_PASSWORD = 'LoginPassword';
+
+    /**
+     * This constant is used when updating an existing Mijn Pathé account and is the name of the form's checkbox where
+     * you indicate whether or not you want to receive the weekly newsletter.
+     */
+    const PERSONAL_DATA_NEWSLETTER = 'InfoWanted';
+
+    /**
+     * This constant is used when requesting the reservation history and is used to limit the number of weeks in the
+     * result.
+     */
+    const RESERVATION_HISTORY_WEEK_COUNT = 'Weeks';
+
+    /**
+     * This constant is used when retrieving the usage history for a specific Unlimited or Gold Card from Mijn Pathé,
+     * and is the name of the form field that contains the card number.
+     */
+    const CARD_HISTORY_CARD_NUMBER = 'CustomerCardNumber';
+
+    /**
+     * This constant is used when retrieving the usage history for a specific Unlimited or Gold Card from Mijn Pathé,
+     * and is the name of the form field that contains the card's PIN code.
+     */
+    const CARD_HISTORY_PIN_CODE = 'PIN';
+
+    /**
+     * This constant is used when retrieving the usage history for a specific Unlimited or Gold Card from Mijn Pathé,
+     * and is the name of the form field that contains the month number to filter by.
+     */
+    const CARD_HISTORY_MONTH = 'Month';
+
+    /**
+     * This constant is used when retrieving the usage history for a specific Unlimited or Gold Card from Mijn Pathé,
+     * and is the name of the form field that contains the year to filter by.
+     */
+    const CARD_HISTORY_YEAR = 'Year';
+
+    /**
+     * For some requests a User Center Identifier needs to be provided in the URL. This constant refers to the
+     * default Pathé user center for those requests.
      */
     const USER_CENTER_PATHE = 1;
 
     /**
-     * Possible templates
+     * For card-related details, a template needs to be provided in the URL. This particular template indicates that
+     * we're interested in the card's usage history.
      */
     const TEMPLATE_CARD_HISTORY = '0.cards.history.';
 
     /**
-     * Possible request methods
+     * This constant is used to define one of the possible HTTP request methods for this request. This one indicates
+     * that a GET request should be submitted.
      */
-    const METHOD_GET  = 'GET';
+    const METHOD_GET = 'GET';
+
+    /**
+     * This constant is used to define one of the possible HTTP request methods for this request. This one indicates
+     * that a POST request should be submitted.
+     */
     const METHOD_POST = 'POST';
 
     /**
-     * Base URL for all calls
+     * This property contains the base URL for all requests. All signs are mapped to specific URIs that will be
+     * appended to this global base URL.
      *
      * @type string
      */
     protected $baseUrl = 'https://onlinetickets2.pathe.nl/';
 
     /**
-     * URL suffixes for all page identifiers
+     * This property contains an array that maps signs to URIs.
      *
      * @type array
      */
@@ -111,63 +325,80 @@ class Request
     );
 
     /**
-     * Which page to load
+     * This property refers to the sign this request should attempt to fetch.
      *
      * @type int
      */
     protected $sign;
 
     /**
-     * Which request method to use for this request
+     * This property contains the request method to use for this request, must be one of the methods defined in the
+     * constants.
      *
      * @type string
      */
     protected $requestMethod = self::METHOD_GET;
 
     /**
-     * Extra URL parameters that will be printf()'d into the URL
+     * This property contains an array of optional parameters that should be inserted into the URI for this sign via
+     * `sprintf()`.
      *
      * @var array
      */
     protected $urlParameters = array();
 
     /**
-     * Extra parameters to append to the URL
+     * This property contains an array of data that should be appended to the URL in its query string.
      *
      * @type mixed[]
      */
     protected $queryParameters = array();
 
     /**
-     * Post data to submit with POST requests
+     * This property contains an array of data that should be posted with the request, if it is a POST request.
      *
      * @type mixed[]
      */
     protected $postParameters = array();
 
     /**
-     * Whether or not to validate the SSL certificates
+     * This property is a boolean indicating whether the SSL certificate for the remote server should be validated.
+     * Defaults to `true`, I recommend you keep it that way.
      *
      * @type bool
      */
     protected $validateSsl = true;
 
     /**
-     * The response for the last submitted request
+     * This property will contain the response to this request after it has been submitted.
      *
      * @type Response
      */
     protected $response;
 
     /**
-     * Cookie jar to use for requests
+     * This property refers to a filename that is used to store cookies across requests.
      *
      * @type string|null
      */
     protected $cookieJar;
 
     /**
-     * Constructor. Initializes the request
+     * The constructor can be used to quickly instantiate a Request with a sign and request method. In some
+     * circumstances it may be necessary to disable SSL verification on the response. Usually when your server is not
+     * properly configured, but this can also happen if Pathé ever forgets to renew their SSL certificates and is
+     * working with old ones. If you ever need to (**which is not recommended!**), you can use the third argument of
+     * the constructor to disable SSL verification, or you can configure this via the Client. The constructor accepts
+     * three optional arguments:
+     *
+     * * The sign, which must be null or one of the signs defined in this class (see `getSign()`)
+     * * The request method, which must be one of the methods defined in this class (see `getRequestMethod()`), defaults to `Request::METHOD_GET`
+     * * A boolean flag which indicates whether or not to validate the Pathé SSL certificate, defaults to `true`
+     *
+     * <code>
+     * $request = new Request(Request::SIGN_LOGIN);
+     * $request = new Request(Request::SIGN_UPDATE_PERSONAL_DATA, Request::METHOD_POST, false);
+     * </code>
      *
      * @param int    $sign          (Optional) Defaults to null
      * @param string $requestMethod (Optional) Defaults to self::METHOD_GET
@@ -189,7 +420,12 @@ class Request
     }
 
     /**
-     * Sets the page identifier to load
+     * This method is used to set the sign for this request. It accepts one argument, which must be one of the signs
+     * defined in this class, and returns nothing.
+     *
+     * <code>
+     * $request->setSign(Request::SIGN_LOGIN);
+     * </code>
      *
      * @param int $sign
      * @throws \InvalidArgumentException
@@ -211,7 +447,12 @@ class Request
     }
 
     /**
-     * Sets the request method to use
+     * This method is used to set the request method for this request. It accepts one argument, which must be one of
+     * the request methods defined in this class (see `getRequestMethod()`) and returns nothing.
+     *
+     * <code>
+     * $request->setRequestMethod(Request::METHOD_GET);
+     * </code>
      *
      * @param string $requestMethod
      * @throws \InvalidArgumentException
@@ -233,7 +474,12 @@ class Request
     }
 
     /**
-     * Sets the cookie jar file name
+     * This method is used to set the cookie jar filename to use for this request. It accepts one argument, which must
+     * be a full path to a readable and writable file. This method returns nothing.
+     *
+     * <code>
+     * $request->setCookieJar('/tmp/cookies.txt');
+     * </code>
      *
      * @param string $cookieJar
      * @throws \InvalidArgumentException
@@ -255,7 +501,12 @@ class Request
     }
 
     /**
-     * Returns the cookie jar
+     * This method returns the filename for the cookie jar to use, or null if one has not been set. The cookie jar is
+     * used to store cookies so they can be re-used in a future request.
+     *
+     * <code>
+     * $cookieJar = $request->getCookieJar();
+     * </code>
      *
      * @return string|null
      */
@@ -265,7 +516,12 @@ class Request
     }
 
     /**
-     * Adds a parameter to the list of parameters to put into the URL
+     * This method is used to set data that should be inserted into the URL for the current sign, if it expects
+     * parameters. This method expects one argument, which must be a string or integer, and returns nothing.
+     *
+     * <code>
+     * $request->addUrlParameter('value');
+     * </code>
      *
      * @param mixed $value
      */
@@ -275,7 +531,16 @@ class Request
     }
 
     /**
-     * Adds a query parameter to the list of parameters
+     * This method is used to set data that should be appended to the URL's query string. The method returns nothing
+     * and accepts two arguments:
+     *
+     * * The parameter that is being set, which must be valid for use as an array index (string or integer)
+     * * The value that is being set, which can be anything
+     *
+     * <code>
+     * $request->addQueryParameter('key1', 'value');
+     * $request->addQueryParameter('key2', array('value 1', 'value 2'));
+     * </code>
      *
      * @param string $parameter
      * @param mixed  $value
@@ -286,7 +551,16 @@ class Request
     }
 
     /**
-     * Adds a post parameter to the list of parameters
+     * This method is used to set data that should be submitted in a POST request. The method returns nothing and
+     * accepts two arguments:
+     *
+     * * The parameter that is being set, which must be valid for use as an array index (string or integer)
+     * * The value that is being set, which can be anything
+     *
+     * <code>
+     * $request->addPostParameter('key1', 'value');
+     * $request->addPostParameter('key2', array('value 1', 'value 2'));
+     * </code>
      *
      * @param string $parameter
      * @param mixed  $value
@@ -297,7 +571,12 @@ class Request
     }
 
     /**
-     * Returns the request method to use
+     * This method returns the currently configured request method. It will return one of the `METHOD_*` constants
+     * defined in this class.
+     *
+     * <code>
+     * $requestMethod = $request->getRequestMethod();
+     * </code>
      *
      * @return string
      */
@@ -307,7 +586,11 @@ class Request
     }
 
     /**
-     * Sends the request and returns a Response
+     * This method submits this request to Pathé and returns a Response object containing the resulting response.
+     *
+     * <code>
+     * $response = $request->send();
+     * </code>
      *
      * @return Response
      */
@@ -317,7 +600,12 @@ class Request
     }
 
     /**
-     * Sends the request and returns a Response
+     * This method actually performs the CURL request to the remote server and retrieves the response. May be merged
+     * into `send()` at some point in the future.
+     *
+     * <code>
+     * $response = $this->doRequest();
+     * </code>
      *
      * @throws \Exception
      * @return Response
@@ -383,7 +671,13 @@ class Request
     }
 
     /**
-     * Builds the full request URL for this request
+     * This method is used internally to build the full request URL by combining the base URL with the suffix for the
+     * current sign, and applying any URL or query parameters.
+     *
+     * <code>
+     * $this->setSign(self::SIGN_LOGIN);
+     * $fullUrl = $this->buildRequestUrl();
+     * </code>
      *
      * @return string
      */
@@ -407,7 +701,11 @@ class Request
     }
 
     /**
-     * Returns the base URL
+     * This method is used internally to retrieve the base URL.
+     *
+     * <code>
+     * $baseUrl = $this->getBaseUrl();
+     * </code>
      *
      * @return string
      */
@@ -417,7 +715,11 @@ class Request
     }
 
     /**
-     * Returns the URL suffix for the current sign
+     * This method is used internally to retrieve the URI that is mapped to the currently configured sign.
+     *
+     * <code>
+     * $urlSuffix = $this->getUrlSuffix();
+     * </code>
      *
      * @return string
      */
@@ -433,7 +735,12 @@ class Request
     }
 
     /**
-     * Returns the current page identifier
+     * This method returns the currently configured sign (page identifier). It will return one of the `SIGN_*`
+     * constants defined in this class.
+     *
+     * <code>
+     * $sign = $request->getSign();
+     * </code>
      *
      * @return int
      */
@@ -443,7 +750,11 @@ class Request
     }
 
     /**
-     * Returns the URL parameters
+     * This method returns an array of all url parameters that have been added to this request.
+     *
+     * <code>
+     * $urlParameters = $request->getUrlParameters();
+     * </code>
      *
      * @return mixed[]
      */
@@ -453,7 +764,11 @@ class Request
     }
 
     /**
-     * Returns the query parameters
+     * This method returns an array of all query parameters that have been added to this request.
+     *
+     * <code>
+     * $queryParameters = $request->getQueryParameters();
+     * </code>
      *
      * @return mixed[]
      */
@@ -463,7 +778,11 @@ class Request
     }
 
     /**
-     * Returns the post parameters
+     * This method returns an array of all post parameters that have been added to this request.
+     *
+     * <code>
+     * $postParameters = $request->getPostParameters();
+     * </code>
      *
      * @return mixed[]
      */
@@ -473,7 +792,13 @@ class Request
     }
 
     /**
-     * Returns the last response
+     * This method returns the last response, in case this request is submitted multiple times or this instance is
+     * reused for several requests. It returns either a Response object or null, if the request has not been submitted
+     * yet.
+     *
+     * <code>
+     * $response = $request->getLastResponse();
+     * </code>
      *
      * @return Response
      */
@@ -483,7 +808,11 @@ class Request
     }
 
     /**
-     * Uses reflection to determine whether a given sign is valid
+     * This static method validates whether a given value is one of the defined signs (page identifiers).
+     *
+     * <code>
+     * $isValid = Request::isValidSign(Request::SIGN_LOGIN);
+     * </code>
      *
      * @param int $sign
      * @return bool
@@ -506,7 +835,11 @@ class Request
     }
 
     /**
-     * Uses reflection to determine whether a given request method is valid
+     * This static method validates whether a given value is one of the defined request methods.
+     *
+     * <code>
+     * $isValid = Request::isValidRequestMethod(Request::METHOD_GET);
+     * </code>
      *
      * @param string $requestMethod
      * @return bool

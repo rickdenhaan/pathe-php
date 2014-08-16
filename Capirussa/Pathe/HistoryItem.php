@@ -1,38 +1,54 @@
 <?php
 namespace Capirussa\Pathe;
 
+/**
+ * The HistoryItem object contains information about a movie from the customer's history.
+ *
+ * @package Capirussa\Pathe
+ */
 class HistoryItem
 {
     /**
-     * Date/time at which this history item occurred
+     * Contains the date/time at which this event occurred.
      *
      * @type \DateTime
      */
     protected $showTime;
 
     /**
-     * Theater and screen at which this history item occurred
+     * Contains the theater and screen at which this event occurred.
      *
      * @type Screen
      */
     protected $screen;
 
     /**
-     * The event that occurred
+     * Contains the Event that occurred.
      *
      * @type Event
      */
     protected $event;
 
     /**
-     * The reservation details for this history item
+     * Contains the Reservation details for this history item.
      *
      * @type Reservation
      */
     protected $reservation;
 
     /**
-     * Constructs a new HistoryItem
+     * The constructor expects three arguments, all of which are required:
+     *
+     * * The date and time at which this movie played, as a DateTime object
+     * * The theater and viewing screen at which this movie was shown, as a Screen object
+     * * The movie that played, as an Event object
+     *
+     * <code>
+     * $showTime = new \DateTime('2014-07-01 12:00:00');
+     * $screen = Screen::createFromString('Pathé Delft/Zaal 1');
+     * $event = Event::createFromMovieName('The Avengers');
+     * $historyItem = new HistoryItem($showTime, $screen, $event);
+     * </code>
      *
      * @param \DateTime $showTime
      * @param Screen    $screen
@@ -46,7 +62,12 @@ class HistoryItem
     }
 
     /**
-     * Sets the show time
+     * This method is used to set the date and time at which the movie was shown. It expects one argument, which must
+     * be a DateTime object. It returns nothing.
+     *
+     * <code>
+     * $historyItem->setShowTime(new \DateTime('2014-07-13T20:50:00+02:00'));
+     * </code>
      *
      * @param \DateTime $showTime
      */
@@ -56,7 +77,12 @@ class HistoryItem
     }
 
     /**
-     * Sets the screen
+     * This method is used to set the theater and viewing screen at which this movie was shown. It expects one
+     * argument, which must be a Screen object. It returns nothing.
+     *
+     * <code>
+     * $historyItem->setScreen(Screen::createFromString('Pathé de Kuip/Zaal 5'));
+     * </code>
      *
      * @param Screen $screen
      */
@@ -66,7 +92,12 @@ class HistoryItem
     }
 
     /**
-     * Sets the event
+     * This method is used to set the movie that was shown. It expects one argument, which must be an Event object. It
+     * returns nothing.
+     *
+     * <code>
+     * $historyItem->setEvent(Event::createFromMovieName('The Avengers'));
+     * </code>
      *
      * @param Event $event
      */
@@ -76,7 +107,11 @@ class HistoryItem
     }
 
     /**
-     * Returns the show time for this history item
+     * This method returns the date and time at which the movie played, as a DateTime object.
+     *
+     * <code>
+     * $showTime = $historyItem->getShowTime();
+     * </code>
      *
      * @return \DateTime
      */
@@ -86,7 +121,11 @@ class HistoryItem
     }
 
     /**
-     * Returns the screen at which this history item took place
+     * This method returns the theater and viewing screen at which this movie was shown, as a Screen object.
+     *
+     * <code>
+     * $screen = $historyItem->getScreen();
+     * </code>
      *
      * @return Screen
      */
@@ -96,7 +135,11 @@ class HistoryItem
     }
 
     /**
-     * Returns the event that took place
+     * This method returns the movie that was shown as an Event object.
+     *
+     * <code>
+     * $event = $historyItem->getEvent();
+     * </code>
      *
      * @return Event
      */
@@ -106,7 +149,12 @@ class HistoryItem
     }
 
     /**
-     * Sets the reservation details
+     * This method is used to set the reservation that matches this history item. It expects one argument, which must
+     * be a Reservation object. It returns nothing.
+     *
+     * <code>
+     * $historyItem->setReservation($reservation);
+     * </code>
      *
      * @param Reservation $reservation
      */
@@ -116,7 +164,12 @@ class HistoryItem
     }
 
     /**
-     * Returns the reservation details for this history item
+     * This method returns the reservation that matches this history item, if any. Returns either a Reservation object
+     * or null.
+     *
+     * <code>
+     * $reservation = $historyItem->getReservation();
+     * </code>
      *
      * @return Reservation|null
      */
@@ -126,7 +179,12 @@ class HistoryItem
     }
 
     /**
-     * Parses a pipe-delimited data file into an array of history items
+     * This static method expects one parameter: a pipe-delimited plain text file containing a list of movies. It will
+     * return an array of HistoryItem objects.
+     *
+     * <code>
+     * $historyItems = HistoryItem::parseHistoryItemsFromDataFile($plainTextFile);
+     * </code>
      *
      * @param string $dataFile
      * @return HistoryItem[]
@@ -164,7 +222,13 @@ class HistoryItem
     }
 
     /**
-     * Parses the HTML response from the reservation history
+     * This static method expects one parameter: an HTML document containing the customer's reservation history. It
+     * will parse this into an array of HistoryItem objects, containing matching Reservations (if a match could be
+     * made).
+     *
+     * <code>
+     * $historyItems = HistoryItem::parseHistoryItemsFromReservationHistory($htmlReservationHistory);
+     * </code>
      *
      * @param string $htmlContent
      * @return HistoryItem[]
@@ -285,7 +349,12 @@ class HistoryItem
     }
 
     /**
-     * Parses the HTML response from the card history
+     * This static method expects one parameter: an HTML document containing an Unlimited or Gold Card usage history.
+     * It will parse this into an array of HistoryItem objects, containing Reservations with the collection date/times.
+     *
+     * <code>
+     * $historyItems = HistoryItem::parseHistoryItemsFromCardHistory($htmlCardHistory);
+     * </code>
      *
      * @param string $htmlContent
      * @return HistoryItem[]

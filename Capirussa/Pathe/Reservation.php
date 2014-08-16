@@ -1,59 +1,83 @@
 <?php
 namespace Capirussa\Pathe;
 
+/**
+ * The Reservation object contains information about a movie reservation.
+ *
+ * @package Capirussa\Pathe
+ */
 class Reservation
 {
     /**
-     * Possible reservation statuses
+     * This status constant indicates that there is no information available about the ticket status for this
+     * reservation.
      */
-    const STATUS_UNKNOWN   = 'Onbekend';
-    const STATUS_COLLECTED = 'Opgehaald';
-    const STATUS_DELETED   = 'Verwijderd';
+    const STATUS_UNKNOWN = 'Onbekend';
 
     /**
-     * Number of tickets
+     * This status constant indicates that the tickets for this reservation have been collected.
+     */
+    const STATUS_COLLECTED = 'Opgehaald';
+
+    /**
+     * This status constant indicates that the tickets for this reservation were not collected, and have been deleted.
+     */
+    const STATUS_DELETED = 'Verwijderd';
+
+    /**
+     * This property contains the number of tickets in this reservation. Defaults to 0.
      *
      * @type int
      */
     protected $ticketCount = 0;
 
     /**
-     * Reservation status
+     * This property contains the ticket status for this reservation. Possible values are the status constants defined
+     * in this class. This property defaults to `Reservation::STATUS_UNKNOWN`.
      *
      * @type string
      */
     protected $status = self::STATUS_UNKNOWN;
 
     /**
-     * Show identifier
+     * This property contains the show identifier from Mijn Pathé. Since I haven't found a use for this yet, it may be
+     * removed in the future.
      *
      * @type string
      */
     protected $showId;
 
     /**
-     * Reservation set identifier
+     * This property contains the reservation set identifier from Mijn Pathé. Since I haven't found a use for this
+     * yet, it may be removed in the future.
      *
      * @type string
      */
     protected $reservationSetId;
 
     /**
-     * Collection number
+     * This property contains the collection number from Mijn Pathé. Since I haven't found a use for this yet, it may
+     * be removed in the future.
      *
      * @type string
      */
     protected $collectNumber;
 
     /**
-     * Date/time the tickets for this reservation were picked up
+     * This property contains a DateTime object with the date and time at which the tickets for this reservation were
+     * collected.
      *
      * @type \DateTime
      */
     protected $collectDateTime;
 
     /**
-     * Sets the number of tickets
+     * This method is used to set the number of tickets in this reservation. It accepts one argument, which must be a
+     * positive integer, and returns nothing.
+     *
+     * <code>
+     * $reservation->setTicketCount(4);
+     * </code>
      *
      * @param int $ticketCount
      * @throws \InvalidArgumentException
@@ -77,7 +101,11 @@ class Reservation
     }
 
     /**
-     * Returns the ticket count
+     * This method is used to retrieve the number of tickets in this reservation.
+     *
+     * <code>
+     * $ticketCount = $reservation->getTicketCount();
+     * </code>
      *
      * @return int
      */
@@ -87,7 +115,12 @@ class Reservation
     }
 
     /**
-     * Sets the reservation status
+     * This method is used to set the status of this reservation. It accepts one argument, which must be one of the
+     * defined status constants, and returns nothing.
+     *
+     * <code>
+     * $reservation->setStatus(Reservation::STATUS_COLLECTED);
+     * </code>
      *
      * @param string $status
      * @throws \InvalidArgumentException
@@ -119,7 +152,12 @@ class Reservation
     }
 
     /**
-     * Returns the reservation status
+     * This method is used to retrieve the status of a reservation. Returns a Dutch language string, which matches one
+     * of the defined status constants.
+     *
+     * <code>
+     * $status = $reservation->getStatus();
+     * </code>
      *
      * @return string
      */
@@ -129,7 +167,13 @@ class Reservation
     }
 
     /**
-     * Sets the show identifier
+     * This method is used to set the show identifier of this reservation. It accepts one argument which, since I'm
+     * not yet sure exactly what this is used for, can be anything. It returns nothing. This method may be removed in
+     * the future.
+     *
+     * <code>
+     * $reservation->setShowIdentifier('1234');
+     * </code>
      *
      * @param string $showIdentifier
      */
@@ -139,7 +183,11 @@ class Reservation
     }
 
     /**
-     * Returns the show identifier
+     * This method is used to retrieve the show identifier of a reservation. May be removed in the future.
+     *
+     * <code>
+     * $showIdentifier = $reservation->getShowIdentifier();
+     * </code>
      *
      * @return string|null
      */
@@ -149,7 +197,13 @@ class Reservation
     }
 
     /**
-     * Sets the reservation set identifier
+     * This method is used to set the reservation set identifier of this reservation. It accepts one argument which,
+     * since I'm not yet sure exactly what this is used for, can be anything. It returns nothing. This method may be
+     * removed in the future.
+     *
+     * <code>
+     * $reservation->setReservationSetIdentifier('1234');
+     * </code>
      *
      * @param string $reservationSetIdentifier
      */
@@ -159,7 +213,11 @@ class Reservation
     }
 
     /**
-     * Returns the reservation set identifier
+     * This method is used to retrieve the reservation set identifier of a reservation. May be removed in the future.
+     *
+     * <code>
+     * $reservationSetId = $reservation->getReservationSetIdentifier();
+     * </code>
      *
      * @return string|null
      */
@@ -169,7 +227,13 @@ class Reservation
     }
 
     /**
-     * Sets the collection number
+     * This method is used to set the collection number of this reservation. It accepts one argument which, since I'm
+     * not yet sure exactly what this is used for, can be anything. It returns nothing. This method may be removed in
+     * the future.
+     *
+     * <code>
+     * $reservation->setCollectionNumber('1234');
+     * </code>
      *
      * @param string $collectionNumber
      */
@@ -179,7 +243,11 @@ class Reservation
     }
 
     /**
-     * Returns the collection number
+     * This method is used to retrieve the collection number of a reservation. May be removed in the future.
+     *
+     * <code>
+     * $collectionNumber = $reservation->getCollectionNumber();
+     * </code>
      *
      * @return string|null
      */
@@ -189,7 +257,13 @@ class Reservation
     }
 
     /**
-     * Sets the date/time at which the tickets for this reservation were picked up
+     * This method is used to set the date and time at which the tickets for this reservation were collected. It
+     * accepts one argument, which must be a DateTime object, and returns nothing.
+     *
+     * <code>
+     * $collectDateTime = new \DateTime('2014-01-01 12:00:00');
+     * $reservation->setCollectDateTime($collectDateTime);
+     * </code>
      *
      * @param \DateTime $collectDateTime
      */
@@ -199,7 +273,12 @@ class Reservation
     }
 
     /**
-     * Returns the date/time at which the tickets for this reservation were picked up
+     * This method returns a DateTime object indicating when the tickets for this reservation were collected, or null
+     * if not known.
+     *
+     * <code>
+     * $collectDateTime = $reservation->getCollectDateTime();
+     * </code>
      *
      * @return \DateTime|null
      */

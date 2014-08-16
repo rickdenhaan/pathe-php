@@ -1,52 +1,64 @@
 <?php
 namespace Capirussa\Pathe;
 
+/**
+ * The Client is the main hub of this library. It contains methods to perform all actions currently supported.
+ *
+ * @package Capirussa\Pathe
+ */
 class Client
 {
     /**
-     * Username for the Pathé Client Panel
+     * Contains the username to use when authenticating with Mijn Pathé.
      *
      * @type string
      */
     protected $username;
 
     /**
-     * Password for the Pathé Client Panel
+     * Contains the password to use when authenticating with Mijn Pathé.
      *
      * @type string
      */
     protected $password;
 
     /**
-     * Pathé customer identifier, will be automatically determined upon successful authentication
+     * Contains the customer ID that is needed to retrieve the customer history. Will be automatically set upon login,
+     * but can also be set manually.
      *
      * @type int
      */
     protected $customerId;
 
     /**
-     * Indicates whether the Pathe SSL certificate should be verified (only disable for debug purposes!)
+     * A boolean indicator which can be set to false so that the Pathé SSL certificate is not verified. **Not
+     * recommended.**
      *
      * @type bool
      */
     private $validateSsl = true;
 
     /**
-     * File resource handle to a cookie jar we can use cross-request
+     * Contains the full path to the cookie jar filename which will be passed between requests.
      *
      * @type string|null
      */
     protected $cookieJar = null;
 
     /**
-     * Response for the last request
+     * Contains the Response object for the last submitted request.
      *
      * @type Response
      */
     protected $response;
 
     /**
-     * Constructor. Sets the username and password
+     * The constructor requires two arguments: your Mijn Pathé username and your password. Both arguments must be
+     * strings.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * </code>
      *
      * @param string $username
      * @param string $password
@@ -58,7 +70,14 @@ class Client
     }
 
     /**
-     * Sets the password for the Pathé Client Panel
+     * This method can be used to update your username, for example if you're logging in using your email address
+     * instead of your username and you've just changed your email address. It accepts one argument which must be a
+     * valid email address, and returns nothing.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $client->setUsername('newuser@example.com');
+     * </code>
      *
      * @param string $username
      * @throws \InvalidArgumentException
@@ -79,7 +98,13 @@ class Client
     }
 
     /**
-     * Sets the password for the Pathé Client Panel
+     * This method can be used to update your password, for example if you've just changed it and don't want to
+     * re-initialize the Client. It accepts one argument, which must be a non-empty string, and returns nothing.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $client->setPassword('newPassword123');
+     * </code>
      *
      * @param string $password
      * @throws \InvalidArgumentException
@@ -100,7 +125,13 @@ class Client
     }
 
     /**
-     * Sets the customer ID for the Pathé Client Panel
+     * This method is used to set the customer ID. It accepts one argument, which must be a numeric string. It returns
+     * nothing.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $client->setCustomerId('12345678');
+     * </code>
      *
      * @param int|string $customerId
      * @throws \InvalidArgumentException
@@ -122,7 +153,12 @@ class Client
     }
 
     /**
-     * Returns the configured username
+     * Returns the username configured in the client. Returns a string, and accepts no arguments.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $username = $client->getUsername();
+     * </code>
      *
      * @return string
      */
@@ -132,7 +168,12 @@ class Client
     }
 
     /**
-     * Returns the configured password
+     * This method returns the password configured in the client. It accepts no arguments and returns a string.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $password = $client->getPassword();
+     * </code>
      *
      * @return string
      */
@@ -142,7 +183,14 @@ class Client
     }
 
     /**
-     * Returns the determined customer ID or null if one has not been set/determined
+     * This method returns your Pathé customer id, but only after at least one request (other than forgotPassword) has
+     * been submitted or after `setCustomerId()` has been called. It accepts no arguments and returns either an
+     * integer or null.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $customerId = $client->getCustomerId();
+     * </code>
      *
      * @return int|null
      */
@@ -152,7 +200,15 @@ class Client
     }
 
     /**
-     * Disables SSL verification -- Only do this if you're debugging!
+     * This method should really only be used if your server is having problems verifying the SSL certificates used by
+     * Pathé. Disabling the SSL verification opens the door to potential man-in-the-middle attacks by not checking
+     * whether the SSL certificate has been spoofed. But, if you **really** want to do this, just call this method. It
+     * takes no arguments and returns nothing.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $client->disableSslVerification();
+     * </code>
      *
      * @return void
      */
@@ -162,7 +218,13 @@ class Client
     }
 
     /**
-     * Returns the cookie jar filename
+     * This method returns the full path to the current cookie jar. If no jar is set, a new cookie jar is created and
+     * its filename is returned.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $cookieJar = $client->getCookieJar();
+     * </code>
      *
      * @return string
      */
@@ -176,7 +238,12 @@ class Client
     }
 
     /**
-     * Removes and resets the cookie jar
+     * This method is called internally after all processing for an action is complete, to make sure the following
+     * action starts with a new user session. It deletes the cookie jar so a new one is created for the next request.
+     *
+     * <code>
+     * $this->clearCookieJar();
+     * </code>
      *
      * @return void
      */
@@ -189,7 +256,11 @@ class Client
     }
 
     /**
-     * Authenticates with the Pathé Client Panel
+     * This method is called internally for most actions to authenticate the user with Mijn Pathé.
+     *
+     * <code>
+     * $this->authenticate();
+     * </code>
      *
      * @throws \LogicException
      * @return void
@@ -233,7 +304,11 @@ class Client
     }
 
     /**
-     * Logs the user out of the Pathé Client Panel
+     * This internal method destroys the current Mijn Pathé session and clears the cookie jar.
+     *
+     * <code>
+     * $this->logout();
+     * </code>
      *
      * @return void
      */
@@ -247,7 +322,13 @@ class Client
     }
 
     /**
-     * Retrieves the customer history from the Pathé Client Panel
+     * This method retrieves the last 100 movies you watched from Mijn Pathé and returns them as an array of
+     * HistoryItem objects. It accepts no arguments.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $historyItems = $client->getCustomerHistory();
+     * </code>
      *
      * @throws \LogicException
      * @return HistoryItem[]
@@ -298,7 +379,13 @@ class Client
     }
 
     /**
-     * Returns the personal information for the current user
+     * This method retrieves your personal information from Mijn Pathé and returns it as a PersonalData object. It
+     * accepts no arguments.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $personalData = $client->getPersonalData();
+     * </code>
      *
      * @return PersonalData
      */
@@ -315,7 +402,16 @@ class Client
     }
 
     /**
-     * Updates the personal information for the current user
+     * This method can be used to update your personal details. It accepts one argument, which must be a PersonalData
+     * object, and returns a PersonalData object containing your customer details after the changes have been
+     * processed.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $personalData = $client->getPersonalData()
+     * $personalData->setPassword('newPassword123');
+     * $newData = $client->updatePersonalData($personalData);
+     * </code>
      *
      * @param PersonalData $personalData
      * @return PersonalData
@@ -362,7 +458,16 @@ class Client
     }
 
     /**
-     * Requests a password reminder from Pathé
+     * You can use this method if you've forgotten your password. Initialize the client by using an incorrect password
+     * (it is ignored for the forgotPassword method). If you supply a valid email address, Pathé will send you a link
+     * you can use to reset your password. This link will remain valid for 3 hours. This method expects one argument,
+     * which must be your email address as registered with Mijn Pathé. It returns a boolean `true` or `false`
+     * indicating whether the request was successful.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'notMyPassword123');
+     * $client->forgotPassword('email@example.com');
+     * </code>
      *
      * @param string $email
      * @throws \InvalidArgumentException
@@ -404,7 +509,34 @@ class Client
     }
 
     /**
-     * Allows a user to register a new client account at Mijn Pathé
+     * This method is used to register a new account with Mijn Pathé. It expects one argument, which must be a
+     * (filled) PersonalData object. It returns true or false, depending on whether registration succeeded. This
+     * method is called on the Client, but the username and password supplied when instantiating the Client are not
+     * used. You can make up anything you want when instantiating, as long as the username and password match their
+     * expected syntax (an email address for the username, and a password of at least 6 characters containing at least
+     * one number).
+     *
+     * <code>
+     * $client = new Client('nobody@example.com', 'n0body123');
+     * $personalData = new PersonalData();
+     * $personalData->setUsername('user@example.com');
+     * $personalData->setPassword('myP4ssword');
+     * $personalData->setEmailAddress('pathe@example.com'); // can be different from your username
+     * $success = $client->registerAccount($personalData);
+     * </code>
+     *
+     * Note that quite a few fields are required when registering an account, because this library will automatically
+     * submit an `updatePersonalData()` request to fill in the fields that aren't available in the registration form.
+     * The required fields are:
+     *
+     * * Your first name
+     * * Your last name
+     * * Your email address
+     * * Your birth date
+     * * Your username
+     * * Your password
+     * * Your street name and house number
+     * * Your postal code and city
      *
      * @param PersonalData $personalData with which to register
      * @throws \InvalidArgumentException
@@ -469,7 +601,14 @@ class Client
     }
 
     /**
-     * Deletes the user's account (note: only possible if no active Unlimited or Gold card is linked to the account)
+     * This method allows you to delete your Mijn Pathé account. Note that for this to work you must not have an
+     * active Unlimited or Gold card linked to your account. This method accepts no arguments and returns a boolean
+     * indicating whether or not your account was successfully deleted.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $client->deleteAccount();
+     * </code>
      *
      * @return bool
      */
@@ -511,7 +650,18 @@ class Client
     }
 
     /**
-     * Retrieves the user's reservations for the given period
+     * This method retrieves a history of the movies you made reservations for, with their reservations if they could
+     * be found. The result will be returned as an array of HistoryItem objects. This method accepts one optional
+     * argument, which is the number of weeks (in the past) for which the reservations should be looked up.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $historyItems = $client->getReservationHistory(3);
+     * $historyItems = $client->getReservationHistory(52);
+     * </code>
+     *
+     * Valid values are 3, 4, 9, 13, 26, 52, 105 and 150 weeks. If you do not give a value, the default of 3 weeks is
+     * assumed.
      *
      * @param int $weekCount (Optional) Defaults to 3, possible values: 3, 4, 9, 13, 26, 52, 105, 150
      * @throws \InvalidArgumentException
@@ -545,7 +695,23 @@ class Client
     }
 
     /**
-     * Retrieves all reservations for a given Unlimited or Gold card for a given month/year (optional)
+     * This method retrieves a list of movies visited using a given Pathé Unlimited or Gold Card. It accepts four
+     * arguments, two of which are required:
+     *
+     * * Unlimited/Gold card number
+     * * Card PIN code
+     * * Month for which to get movies (optional)
+     * * Year for which to get movies (optional)
+     *
+     * If you provide a month and year, it will only retrieve the movies visited in the given month. If you do not,
+     * it will fetch all movies since day one of your Unlimited/Gold Card subscription. This method returns an array
+     * of HistoryItem objects.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $historyItems = $client->getCardHistory('cardNumber', 'pinCode');
+     * $historyItems = $client->getCardHistory('cardNumber', 'pinCode', 7, 2014);
+     * </code>
      *
      * @param string $cardNumber
      * @param string $pinCode
@@ -644,7 +810,13 @@ class Client
     }
 
     /**
-     * Returns a new Request object
+     * This method is used internally to retrieve a Request object. It accepts two parameters, the sign and request
+     * method to use. When building the request, it also passes on whether or not to validate the remote SSL
+     * certificate.
+     *
+     * <code>
+     * $request = $this->getRequest(Request::SIGN_LOGIN, Request::METHOD_GET);
+     * </code>
      *
      * @param int    $sign          (Optional) Defaults to null
      * @param string $requestMethod (Optional) Defaults to Request::METHOD_GET
@@ -659,7 +831,15 @@ class Client
     }
 
     /**
-     * Returns the Response to the last executed request
+     * This method returns the Response object returned for the last request, in case the method itself returned
+     * something else. For example, you can use this method after calling `getCustomerHistory()` (which returns an
+     * array of HistoryItem objects) to retrieve the Response object. It accepts no arguments.
+     *
+     * <code>
+     * $client = new Client('user@example.com', 'p4s5w0rd');
+     * $historyItems = $client->getCustomerHistory();
+     * $response = $client->getLastResponse();
+     * </code>
      *
      * @return Response|null
      */
