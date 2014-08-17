@@ -1,5 +1,9 @@
 language: php
 
+env:
+  global:
+  - secure: "O4IllNAfUV1e6oSMQ6vmr+5gbJUj33EmW05uVLQ/VCrLAUoJ/n/H3qDeGT9Hg22rTiEyIrwB7jOZnSZt2Y8ziHUpKYJMJUU7Jhple+UozbJ1gQBVga5sW2hj0jHCm7dUkYq3veTjxFN/lb27x0Gt9DNb57KSxJTc/qJ/3qjyFqI="
+
 php:
   - 5.6
   - 5.5
@@ -15,3 +19,15 @@ script:
 
 after_script:
   - php vendor/bin/coveralls -v
+  - rm -rf ./.git
+  - mkdir ./wiki
+  - cd ./wiki
+  - git clone https://#{ENV['GH_TOKEN']}@github.com/rickdenhaan/pathe-php.wiki.git ./
+  - git config user.name '#{ENV['GIT_NAME']}'
+  - git config user.email '#{ENV['GIT_NAME']}'
+  - cd ./../
+  - php wiki.php ./wiki/
+  - cd ./wiki
+  - git add ./*
+  - git commit ./* -m "Auto-generated Wiki"
+  - git push
