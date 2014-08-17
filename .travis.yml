@@ -2,7 +2,7 @@ language: php
 
 env:
   global:
-  - secure: "O4IllNAfUV1e6oSMQ6vmr+5gbJUj33EmW05uVLQ/VCrLAUoJ/n/H3qDeGT9Hg22rTiEyIrwB7jOZnSZt2Y8ziHUpKYJMJUU7Jhple+UozbJ1gQBVga5sW2hj0jHCm7dUkYq3veTjxFN/lb27x0Gt9DNb57KSxJTc/qJ/3qjyFqI="
+  - secure: "dp07Cc0rTSAljPKw0DV2G/fBrhmIVFbo3z3TkcxwckmPwfPFYd4hlQ7zT7xgyHt4F1zZ5mtmVwlISl//KwTdyqSuAyq8wNAXo2f0TEGvuXexwj29GQA3z2KRH899ycuz8cWMO9zjwiypfokLenPS099ZmnopezlfXCFyMvCGWyQ="
 
 php:
   - 5.6
@@ -22,9 +22,9 @@ after_script:
   - rm -rf ./.git
   - mkdir ./wiki
   - cd ./wiki
-  - git clone https://#{ENV['GH_TOKEN']}@github.com/rickdenhaan/pathe-php.wiki.git ./
-  - git config user.name '#{ENV['GIT_NAME']}'
-  - git config user.email '#{ENV['GIT_NAME']}'
+  - git clone #{ENV['GIT_WIKI']} ./
+  - git config user.name 'Travis-CI'
+  - git config user.email 'rick@capirussa.nl'
   - cd ./../
   - php wiki.php ./wiki/
   - cd ./wiki
