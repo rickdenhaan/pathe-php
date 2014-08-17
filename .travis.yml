@@ -22,7 +22,7 @@ after_script:
   - rm -rf ./.git
   - mkdir ./wiki
   - cd ./wiki
-  - git clone #{ENV['GIT_WIKI']} ./
+  - git clone $GIT_WIKI ./
   - git config user.name 'Travis-CI'
   - git config user.email 'rick@capirussa.nl'
   - cd ./../
