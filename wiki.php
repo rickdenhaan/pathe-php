@@ -182,8 +182,8 @@ class Wiki
 
         // try to find the definition of this constant
         foreach ($tokens as $index => $tokenDetails) {
-            if ($tokenDetails[1] == $constantName && $tokens[$index - 2][0] == T_CONST) {
-                $constantIndex = $index;
+            if ($tokenDetails[0] == T_CONST && isset($tokens[$index + 2]) && $tokens[$index + 2][1] == $constantName) {
+                $constantIndex = $index + 2;
                 break;
             }
         }
