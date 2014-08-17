@@ -182,7 +182,7 @@ class Wiki
 
         // try to find the definition of this constant
         foreach ($tokens as $index => $tokenDetails) {
-            if ($tokens[$index - 2][0] == T_CONST && $tokenDetails[1] == $constantName) {
+            if ($tokenDetails[1] == $constantName && $tokens[$index - 2][0] == T_CONST) {
                 $constantIndex = $index;
                 break;
             }
