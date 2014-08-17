@@ -815,7 +815,7 @@ class Client
      * certificate.
      *
      * <code>
-     * $request = $this->getRequest(Request::SIGN_LOGIN, Request::METHOD_GET);
+     * $request = $this->getRequest(Request::SIGN_LOGOUT, Request::METHOD_GET);
      * </code>
      *
      * @param int    $sign          (Optional) Defaults to null
