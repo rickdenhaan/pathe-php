@@ -53,7 +53,7 @@ class Wiki
             $self->classes = array();
 
             // open the path to the classes
-            $path = realpath(dirname(__FILE__) . '/Capirussa/Pathe');
+            $path = realpath(dirname(__FILE__) . '/src');
             $dir  = opendir($path);
 
             // loop through all items in this folder
@@ -69,7 +69,7 @@ class Wiki
 
                     // store a reflection class for this file
                     $className                 = substr($file, 0, -4);
-                    $self->classes[$className] = new ReflectionClass('\\Capirussa\\Pathe\\' . $className);
+                    $self->classes[$className] = new ReflectionClass('\\RickDenHaan\\Pathe\\' . $className);
                 }
             }
             closedir($dir);
@@ -233,7 +233,7 @@ class Wiki
     {
         $output = 'Welcome to the pathe-php wiki!' . "\n";
         $output .= "\n";
-        $output .= 'You can use this library to communicate with [Mijn Pathé](https://onlinetickets2.pathe.nl/ticketweb.php?sign=30&UserCenterID=1). Everything you want to do is done via the Client object, so for a full list of the possibilities, see the documentation for that class.' . "\n";
+        $output .= 'You can use this library to communicate with [Mijn Pathé](https://www.pathe.nl/mijn/profiel). Everything you want to do is done via the Client object, so for a full list of the possibilities, see the documentation for that class.' . "\n";
         $output .= "\n";
         $output .= 'The library consists of the following objects:' . "\n";
 

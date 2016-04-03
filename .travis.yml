@@ -5,19 +5,23 @@ env:
   - secure: "dp07Cc0rTSAljPKw0DV2G/fBrhmIVFbo3z3TkcxwckmPwfPFYd4hlQ7zT7xgyHt4F1zZ5mtmVwlISl//KwTdyqSuAyq8wNAXo2f0TEGvuXexwj29GQA3z2KRH899ycuz8cWMO9zjwiypfokLenPS099ZmnopezlfXCFyMvCGWyQ="
 
 php:
+  - 7
   - 5.6
   - 5.5
   - 5.4
   - 5.3
+  - hhvm
 
 before_script:
-  - composer require satooshi/php-coveralls:dev-master
+  - composer self-update
+  - composer install --no-dev
 
 script:
   - mkdir -p build/logs
-  - phpunit --colors --coverage-clover build/logs/clover.xml ./tests
+  - php vendor/bin/phpunit --colors=always --coverage-clover build/logs/clover.xml ./tests
 
 after_script:
+  - composer require satooshi/php-coveralls:dev-master
   - php vendor/bin/coveralls -v
   - rm -rf ./.git
   - mkdir ./wiki

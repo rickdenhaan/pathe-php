@@ -1,12 +1,12 @@
 <?php
-require_once(dirname(__FILE__) . '/../../init.php');
+require_once(dirname(__FILE__) . '/../init.php');
 
-use Capirussa\Pathe\Client;
-use Capirussa\Pathe\PersonalData;
-use Capirussa\Pathe\Reservation;
+use RickDenHaan\Pathe\Client;
+use RickDenHaan\Pathe\PersonalData;
+use RickDenHaan\Pathe\Reservation;
 
 /**
- * Tests Capirussa\Pathe\Client
+ * Tests RickDenHaan\Pathe\Client
  *
  */
 class ClientTest extends PHPUnit_Framework_TestCase
@@ -360,23 +360,23 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $history);
         $this->assertCount(9, $history);
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[0]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[0]);
         $this->assertEquals('Dawn of the Planet of the Apes', $history[0]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[1]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[1]);
         $this->assertEquals('How To Train Your Dragon 2', $history[1]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[2]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[2]);
         $this->assertEquals('Transcendence', $history[2]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[3]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[3]);
         $this->assertEquals('Edge of Tomorrow', $history[3]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[4]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[4]);
         $this->assertEquals('X-Men: Days of Future Past', $history[4]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[5]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[5]);
         $this->assertEquals('Need for Speed', $history[5]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[6]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[6]);
         $this->assertEquals('LEGO Movie, The', $history[6]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[7]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[7]);
         $this->assertEquals('Frozen', $history[7]->getEvent()->getMovieName());
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $history[8]);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $history[8]);
         $this->assertEquals('Hobbit, The: The Desolation of Smaug', $history[8]->getEvent()->getMovieName());
 
         $this->assertFileNotExists($cookieJar);
@@ -397,7 +397,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $personalData = $client->getPersonalData();
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\PersonalData', $personalData);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\PersonalData', $personalData);
 
         $this->assertEquals('test@example.com', $personalData->getUsername());
         $this->assertEquals(PersonalData::PASSWORD_NO_CHANGE, $personalData->getPassword());
@@ -456,7 +456,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $updatedPersonalData = $client->updatePersonalData($personalData);
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\PersonalData', $updatedPersonalData);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\PersonalData', $updatedPersonalData);
 
         $this->assertEquals('test@example.com', $updatedPersonalData->getUsername());
         $this->assertEquals(PersonalData::PASSWORD_NO_CHANGE, $updatedPersonalData->getPassword());
@@ -947,7 +947,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $historyItem = $historyItems[0];
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $historyItem);
 
         $this->assertEquals('2014-07-18 21:30:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
         $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
@@ -962,7 +962,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $historyItem = $historyItems[1];
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $historyItem);
 
         $this->assertEquals('2014-07-12 19:50:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
         $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
@@ -977,7 +977,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $historyItem = $historyItems[2];
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $historyItem);
 
         $this->assertEquals('2014-06-20 22:45:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
         $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());
@@ -992,7 +992,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $historyItem = $historyItems[3];
 
-        $this->assertInstanceOf('Capirussa\\Pathe\\HistoryItem', $historyItem);
+        $this->assertInstanceOf('RickDenHaan\\Pathe\\HistoryItem', $historyItem);
 
         $this->assertEquals('2014-05-29 21:20:00', $historyItem->getShowTime()->format('Y-m-d H:i:s'));
         $this->assertEquals('Pathé de Kuip', $historyItem->getScreen()->getTheater());

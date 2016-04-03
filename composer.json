@@ -1,5 +1,5 @@
 {
-    "name": "capirussa/pathe-php",
+    "name": "rickdenhaan/pathe-php",
     "type": "library",
     "description": "A PHP library for retrieving and updating Pathé Unlimited and Pathé Gold member history and information from Mijn Pathé",
     "keywords": ["php", "pathe"],
@@ -7,8 +7,8 @@
     "authors": [
         {
             "name": "Rick den Haan",
-            "email": "rick@capirussa.nl",
-            "homepage": "http://capirussa.nl",
+            "email": "rick.denhaan@gmail.com",
+            "homepage": "http://github.com/rickdenhaan",
             "role": "Developer"
         },
         {
@@ -19,11 +19,21 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "kriswallsmith/buzz": "0.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
     },
     "autoload": {
         "psr-4" : {
-            "Capirussa\\Pathe\\" : "Capirussa/Pathe/"
+            "RickDenHaan\\Pathe\\" : "src/"
         }
+    },
+    "archive": {
+        "exclude": [
+            "/tests",
+            "/*.yml"
+        ]
     }
 }

@@ -4,7 +4,7 @@ Pathe PHP client
 [![Build Status](https://travis-ci.org/rickdenhaan/pathe-php.png?branch=master)](https://travis-ci.org/rickdenhaan/pathe-php)
 [![Coverage Status](https://coveralls.io/repos/rickdenhaan/pathe-php/badge.png?branch=master)](https://coveralls.io/r/rickdenhaan/pathe-php)
 
-This PHP client connects to the Pathé Client Panel at [onlinetickets2.pathe.nl](https://onlinetickets2.pathe.nl/ticketweb.php?sign=30&UserCenterID=1) to retrieve information about an Unlimited or Gold Member's history.
+This PHP client connects to the Pathé Client Panel at [pathe.nl](https://www.pathe.nl/mijn/profiel) to retrieve information about an Unlimited or Gold Member's history.
 
 Many thanks to [Robbert Noordzij](https://github.com/robbertnoordzij) for his efforts in getting this project started!
 
@@ -13,7 +13,7 @@ Usage
 -----
 
 ```php
-use Capirussa\Pathe;
+use RickDenHaan\Pathe;
 
 try {
     $client = new Pathe\Client('username', 'password');
