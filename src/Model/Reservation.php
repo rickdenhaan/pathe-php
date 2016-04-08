@@ -2,6 +2,8 @@
 
 namespace RickDenHaan\Pathe\Model;
 
+use RickDenHaan\Pathe\Client;
+
 /**
  * The Reservation model represents a reservation for a movie or event, either past or future
  *
@@ -95,6 +97,13 @@ class Reservation
     private $status;
 
     /**
+     * Contains all tickets belonging to this reservation
+     *
+     * @type Ticket[]
+     */
+    private $tickets;
+
+    /**
      * Sets the card's id
      *
      * @param string|int $id
@@ -160,6 +169,7 @@ class Reservation
         } else {
             // return a copy of the date instead of a reference
             $clone = clone $this->date;
+
             return $clone;
         }
     }
@@ -292,7 +302,7 @@ class Reservation
      * Returns a thumbnail URL for the given width and height
      *
      * @param int $width  Desired thumbnail width in pixels
-     * @param int $height  Desired thumbnail height in pixels
+     * @param int $height Desired thumbnail height in pixels
      * @return string|null
      */
     public function getThumbnailUrl($width, $height)
@@ -301,6 +311,7 @@ class Reservation
             return null;
         } else {
             $size = sprintf("%dx%d", $width, $height);
+
             return str_replace("[format]", $size, $this->thumbnailFormat);
         }
     }
@@ -340,6 +351,7 @@ class Reservation
         } else {
             // return a copy of the showtime instead of a reference
             $clone = clone $this->showTime;
+
             return $clone;
         }
     }
@@ -497,5 +509,87 @@ class Reservation
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Retrieves all reservations for the current user in the given year, or the
+     * current year if no year was given
+     *
+     * @param int     $year    (Optional) Defaults to null
+     * @param Session $session (Optional) Defaults to null
+     * @return static[]
+     * @throws \Exception
+     */
+    public static function getAll($year = null, Session $session = null)
+    {
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $retValue = array();
+
+        $ownSession = false;
+        if ($session === null) {
+            $session    = Session::create();
+            $ownSession = true;
+        }
+
+        try {
+            $result = Client::getInstance()
+                            ->get(
+                                sprintf(
+                                    "users/%d/transactions_overview?year=%s",
+                                    $session->getUserId(),
+                                    $year
+                                ),
+                                200,
+                                $session
+                            );
+        } catch (\Exception $ex) {
+            if ($ownSession) {
+                $session->close();
+            }
+
+            throw $ex;
+        }
+
+        foreach ($result['transactions'] as $reservationData) {
+            $reservation = new static();
+            $reservation->setId($reservationData['id']);
+            $reservation->setDate(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['date']));
+            $reservation->setTheater($reservationData['cinemaName']);
+            $reservation->setScreen($reservationData['screenName']);
+            $reservation->setName($reservationData['movieName'] === null ? $reservationData['specialName'] : $reservationData['movieName']);
+            $reservation->setThumbnailFormat($reservationData['thumb']);
+            $reservation->setShowTime(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['showTime']));
+            $reservation->setCancelable($reservationData['cancellable']);
+            $reservation->setBarcodeUrl($reservationData['pdfUrl']);
+            $reservation->setPassbookUrl($reservationData['passbookUrl']);
+            $reservation->setCalendarUrl($reservationData['iCalUrl']);
+            $reservation->setStatus($reservationData['state']);
+
+            $retValue[] = $reservation;
+        }
+
+        if ($ownSession) {
+            $session->close();
+        }
+
+        return $retValue;
+    }
+
+    /**
+     * Gets all Tickets for this reservation
+     *
+     * @param Session $session (Optional) Defaults to null
+     * @return Ticket[]
+     */
+    public function getTickets(Session $session = null)
+    {
+        if ($this->tickets === null) {
+            $this->tickets = Ticket::getAll($this, $session);
+        }
+
+        return $this->tickets;
     }
 }

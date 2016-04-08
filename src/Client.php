@@ -6,11 +6,7 @@ use Buzz\Client\Curl;
 use Buzz\Listener\CookieListener;
 use Buzz\Message\MessageInterface;
 use Buzz\Message\Response;
-use RickDenHaan\Pathe\Model\Card;
-use RickDenHaan\Pathe\Model\Seat;
 use RickDenHaan\Pathe\Model\Session;
-use RickDenHaan\Pathe\Model\Reservation;
-use RickDenHaan\Pathe\Model\Ticket;
 
 /**
  * The Client is the main hub of this library. It contains methods to perform all actions currently supported.
@@ -32,6 +28,13 @@ class Client
      * @type string
      */
     protected $password;
+
+    /**
+     * Url to the Mijn Pathé API
+     *
+     * @type string
+     */
+    private $apiUrl = 'https://connect.pathe.nl/v1/';
 
     /**
      * A boolean indicator which can be set to false so that the Pathé SSL certificate is not verified. **Not
@@ -60,8 +63,7 @@ class Client
      *
      * @type string
      */
-    private $clientToken = '1f8ecc5806054255903af1f34157bf38';
-    // @todo figure out how to generate a valid token!
+    private $clientToken;
 
     /**
      * Unique device token for the current machine
@@ -71,27 +73,42 @@ class Client
     private $deviceToken;
 
     /**
-     * Contains the details for the current Mijn Pathé user session
-     * 
-     * @type Model\Session
+     * Contains a static reference to the current Client instance
+     *
+     * @type Client
      */
-    private $session = null;
+    private static $instance;
 
     /**
-     * The constructor requires two arguments: your Mijn Pathé username and your password. Both arguments must be
-     * strings.
+     * Returns the current Client instance
      *
-     * <code>
-     * $client = new Client('user@example.com', 'p4s5w0rd');
-     * </code>
+     * @return static
+     */
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            throw new \LogicException("Client has not been initialized. Did you call ::init()?");
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Initializes a new Client instance
      *
      * @param string $username
      * @param string $password
+     * @return static
      */
-    public function __construct($username, $password)
+    public static function init($username, $password)
     {
-        $this->setUsername($username);
-        $this->setPassword($password);
+        $client = new static();
+        $client->setUsername($username);
+        $client->setPassword($password);
+
+        self::$instance = $client;
+
+        return self::$instance;
     }
 
     /**
@@ -201,341 +218,97 @@ class Client
     }
 
     /**
-     * Authenticates the user with Mijn Pathé to allow us to access pages that require a login
+     * Sends a GET request to Mijn Pathé
      *
-     * @param Browser $browser
+     * @param string        $uri
+     * @param int           $expectedStatusCode (Optional) Defaults to 200
+     * @param Model\Session $session            (Optional) Defaults to null
+     * @return array
+     */
+    public function get($uri, $expectedStatusCode = 200, $session = null)
+    {
+        // get a Browser
+        $browser = $this->getBrowser();
+
+        // submit the request
+        $this->response = $browser->get(
+            $this->apiUrl . $uri,
+            $this->getRequestHeaders(null, $session)
+        );
+
+        // validate the response code
+        if ($this->parseResponseCode($this->response) != $expectedStatusCode) {
+            throw new \UnexpectedValueException("Status code does not match expected code");
+        }
+
+        $response = json_decode($this->response->getContent(), true);
+        if (!is_array($response)) {
+            throw new \UnexpectedValueException("Could not decode JSON data");
+        }
+
+        return $response;
+    }
+
+    /**
+     * Sends a POST request to Mijn Pathé
+     *
+     * @param string        $uri
+     * @param array         $data               (Optional) Defaults to an empty array
+     * @param int           $expectedStatusCode (Optional) Defaults to 200
+     * @param Model\Session $session            (Optional) Defaults to null
+     * @return array
+     */
+    public function post($uri, $data = array(), $expectedStatusCode = 200, $session = null)
+    {
+        // get a Browser
+        $browser = $this->getBrowser();
+
+        // build the form data
+        $formData = http_build_query($data);
+
+        // submit the form
+        $this->response = $browser->post(
+            $this->apiUrl . $uri,
+            $this->getRequestHeaders($formData, $session),
+            $formData
+        );
+
+        // validate the response code
+        if ($this->parseResponseCode($this->response) != $expectedStatusCode) {
+            throw new \UnexpectedValueException("Status code does not match expected code");
+        }
+
+        $response = json_decode($this->response->getContent(), true);
+        if (!is_array($response)) {
+            throw new \UnexpectedValueException("Could not decode JSON data");
+        }
+
+        return $response;
+    }
+
+    /**
+     * Sends a DELETE request to Mijn Pathé
+     *
+     * @param string        $uri
+     * @param int           $expectedStatusCode (Optional) Defaults to 200
+     * @param Model\Session $session            (Optional) Defaults to null
      * @return void
      */
-    private function login(Browser $browser)
+    public function delete($uri, $expectedStatusCode = 200, $session = null)
     {
-        // build the form data
-        $formData = http_build_query(
-            array(
-                'email'    => $this->getUsername(),
-                'password' => $this->getPassword(),
-            )
-        );
-
-        // submit the form
-        $result = $browser->post(
-            'https://connect.pathe.nl/v1/sessions',
-            $this->getRequestHeaders($formData),
-            $formData
-        );
-
-        // the response code should be 201 Created
-        if ($this->parseResponseCode($result) != 201) {
-            throw new \UnexpectedValueException("Could not authenticate with Mijn Pathé");
-        }
-
-        $response = json_decode($result->getContent(), true);
-        if (!is_array($response)) {
-            throw new \UnexpectedValueException("Could not authenticate with Mijn Pathé");
-        }
-
-        $this->session = new Session();
-
-        $this->session
-             ->setId($response['id'])
-             ->setUserId($response['userId'])
-             ->setSessionToken($response['sessionToken']);
-    }
-
-    /**
-     * Logs the user out after accessing pages that require a login
-     *
-     * @param Browser $browser
-     * @return bool
-     */
-    private function logout(Browser $browser)
-    {
-        if ($this->session === null) {
-            return false;
-        }
-
-        // terminate the session
-        $result = $browser->delete(
-            sprintf(
-                'https://connect.pathe.nl/v1/sessions/%s',
-                $this->session->getId()
-            ),
-            $this->getRequestHeaders()
-        );
-
-        // the response code should be 204 No Content
-        $retValue = ($this->parseResponseCode($result) == 204);
-
-        if ($retValue) {
-            $this->session = null;
-        }
-
-        return $retValue;
-    }
-
-    /**
-     * Requests the password reset instructions from Pathé and returns a boolean indicating success
-     *
-     * <code>
-     * $client = new Client('email@example.com', 'dummy');
-     * $success = $client->forgotPassword();
-     * </code>
-     *
-     * @return bool
-     */
-    public function forgotPassword()
-    {
-        // set up a new browser
+        // get a Browser
         $browser = $this->getBrowser();
 
-        // build the form data
-        $formData = http_build_query(
-            array(
-                'email' => $this->getUsername(),
-            )
+        // submit the request
+        $this->response = $browser->delete(
+            $this->apiUrl . $uri,
+            $this->getRequestHeaders(null, $session)
         );
 
-        // submit the form
-        $result = $browser->post(
-            'https://connect.pathe.nl/v1/users/resetpassword',
-            $this->getRequestHeaders($formData),
-            $formData
-        );
-
-        $this->response = $result;
-
-        // the response code should be 202 Accepted
-        return ($this->parseResponseCode($result) == 202);
-    }
-
-    /**
-     * Retrieves details of the Unlimited or Unlimited Gold card(s) this user has
-     * 
-     * @return Model\Card[]
-     */
-    public function getCards()
-    {
-        // set up a new browser
-        $browser = $this->getBrowser();
-
-        // fetching the cards requires a logged in user
-        $this->login($browser);
-
-        // retrieve the list of cards
-        $this->response = $browser->get(
-            sprintf(
-                'https://connect.pathe.nl/v1/users/%d/cards',
-                $this->session->getUserId()
-            ),
-            $this->getRequestHeaders()
-        );
-
-        // the response code should be 200 OK
-        if ($this->parseResponseCode($this->response) != 200) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not retrieve cards from Mijn Pathé");
+        // validate the response code
+        if ($this->parseResponseCode($this->response) != $expectedStatusCode) {
+            throw new \UnexpectedValueException("Status code does not match expected code");
         }
-
-        $retValue = array();
-
-        $result = json_decode($this->response->getContent(), true);
-
-        if (!is_array($result)) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not parse cards from Mijn Pathé");
-        }
-
-        foreach ($result['cards'] as $cardData) {
-            $card = new Card();
-            $card->setId($cardData['id'])
-                 ->setType($cardData['cardType'])
-                 ->setStatus($cardData['state'])
-                 ->setStatusReason($cardData['stateComment'])
-                 ->setStartDate(\DateTime::createFromFormat('d-m-Y', $cardData['startDate']))
-                 ->setExpiryDate(\DateTime::createFromFormat('d-m-Y', $cardData['expiryDate']));
-
-            // retrieve the PIN code for this card
-            $pinResponse = $browser->get(
-                sprintf(
-                    'https://connect.pathe.nl/v1/users/%d/cards/%s/pin',
-                    $this->session->getUserId(),
-                    $card->getId()
-                ),
-                $this->getRequestHeaders()
-            );
-
-            // the response code should be 200 OK
-            if ($this->parseResponseCode($pinResponse) == 200) {
-                $pinResult = json_decode($pinResponse->getContent(), true);
-                if (is_array($pinResult)) {
-                    $card->setPinCode($pinResult['pin']);
-                }
-            }
-
-            $retValue[] = $card;
-        }
-
-        $this->logout($browser);
-
-        return $retValue;
-    }
-
-    /**
-     * Retrieves the most recent movie and event reservations (max. 100) for this user
-     *
-     * @return Model\Reservation[]
-     */
-    public function getReservations()
-    {
-        // set up a new browser
-        $browser = $this->getBrowser();
-
-        // fetching the reservations requires a logged in user
-        $this->login($browser);
-
-        // retrieve the list of reservations
-        $this->response = $browser->get(
-            sprintf(
-                'https://connect.pathe.nl/v1/users/%d/transactions_overview?pageSize=100',
-                $this->session->getUserId()
-            ),
-            $this->getRequestHeaders()
-        );
-
-        // the response code should be 200 OK
-        if ($this->parseResponseCode($this->response) != 200) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not retrieve reservations from Mijn Pathé");
-        }
-
-        $retValue = array();
-
-        $result = json_decode($this->response->getContent(), true);
-
-        if (!is_array($result)) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not parse reservations from Mijn Pathé");
-        }
-
-        foreach ($result['transactions'] as $reservationData) {
-            $reservation = new Reservation();
-            $reservation->setId($reservationData['id'])
-                        ->setDate(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['date']))
-                        ->setTheater($reservationData['cinemaName'])
-                        ->setScreen($reservationData['screenName'])
-                        ->setName($reservationData['movieName'] === null ? $reservationData['specialName'] : $reservationData['movieName'])
-                        ->setThumbnailFormat($reservationData['thumb'])
-                        ->setShowTime(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['showTime']))
-                        ->setCancelable($reservationData['cancellable'])
-                        ->setBarcodeUrl($reservationData['pdfUrl'])
-                        ->setPassbookUrl($reservationData['passbookUrl'])
-                        ->setCalendarUrl($reservationData['iCalUrl'])
-                        ->setStatus($reservationData['state']);
-
-            $retValue[] = $reservation;
-        }
-
-        $this->logout($browser);
-
-        return $retValue;
-    }
-
-    /**
-     * Retrieves the tickets for the provided reservation
-     *
-     * @param Model\Reservation $reservation
-     * @return Model\Ticket[]
-     */
-    public function getTickets(Reservation $reservation)
-    {
-        // sanity check: we need a reservation ID
-        if (!($reservation instanceof Reservation) || $reservation->getId() === null) {
-            throw new \InvalidArgumentException("Invalid reservation, must be have a valid ID");
-        }
-
-        // set up a new browser
-        $browser = $this->getBrowser();
-
-        // fetching the tickets requires a logged in user
-        $this->login($browser);
-
-        // retrieve the list of tickets
-        $this->response = $browser->get(
-            sprintf(
-                'https://connect.pathe.nl/v1/users/%d/transactions/%s',
-                $this->session->getUserId(),
-                $reservation->getId()
-            ),
-            $this->getRequestHeaders()
-        );
-
-        // the response code should be 200 OK
-        if ($this->parseResponseCode($this->response) != 200) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not retrieve tickets from Mijn Pathé");
-        }
-
-        $retValue = array();
-
-        $result = json_decode($this->response->getContent(), true);
-
-        if (!is_array($result)) {
-            try {
-                $this->logout($browser);
-            } catch (\Exception $exception) {
-                // ignored, because we're throwing our own exception
-            }
-
-            throw new \UnexpectedValueException("Could not parse tickets from Mijn Pathé");
-        }
-
-        foreach ($result['tickets'] as $ticketData) {
-            $ticket = new Ticket();
-            $ticket->setId($ticketData['id'])
-                   ->setOwnerName($ticketData['cardOwner'])
-                   ->setType($ticketData['name'])
-                   ->setPrice($ticketData['price'] === null ? null : ($ticketData['price'] / 100))
-                   ->setCancelable($ticketData['canCancel'])
-                   ->setStatus($ticketData['status']);
-
-            foreach ($ticketData['seats'] as $seatData) {
-                $seat = new Seat();
-                $seat->setRow($seatData['row'])
-                     ->setSeat($seatData['name']);
-
-                $ticket->addSeat($seat);
-            }
-
-            $retValue[] = $ticket;
-        }
-
-        $this->logout($browser);
-
-        return $retValue;
     }
 
     /**
@@ -602,32 +375,20 @@ class Client
     /**
      * This method is used internally to build the default request headers.
      *
-     * @param string|array $requestBody (Optional) Defaults to null
+     * @param string|array  $requestBody (Optional) Defaults to null
+     * @param Model\Session $session     (Optional) Defaults to null
      * @return array
      */
-    protected function getRequestHeaders($requestBody = null)
+    protected function getRequestHeaders($requestBody = null, Session $session = null)
     {
         $retValue = array(
-            'User-Agent' => 'RickDenHaan-Pathe/2.0 (+http://github.com/rickdenhaan/pathe-php)',
+            'User-Agent'     => 'RickDenHaan-Pathe/2.0 (+http://github.com/rickdenhaan/pathe-php)',
             'X-Client-Token' => $this->getClientToken(),
             'X-Device-Token' => $this->getDeviceToken(),
-            //'Accept' => 'application/json',
-            //'X-Software-Version' => '2.2.2',
-            //'Proxy-Connection' => 'keep-alive',
-            //'X-System-Version' => '9.3',
-            //'X-Operating-System' => 'iPhone OS',
-            //'Accept-Language' => 'nl-NL',
-            //'Accept-Encoding' => 'gzip',
-            //'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8',
-            //'Content-Length' => '30',
-            //'X-Site-Id' => '2',
-            //'User-Agent' => 'Pathe/2 (iPhone; iOS 9.3; Scale/2.00)',
-            //'Connection' => 'keep-alive',
-            //'X-Device-Type' => 'iPhone',
         );
 
-        if ($this->session !== null) {
-            $retValue['X-Session-Token'] = $this->session->getSessionToken();
+        if ($session !== null) {
+            $retValue['X-Session-Token'] = $session->getSessionToken();
         }
 
         if ($requestBody !== null) {
@@ -649,18 +410,7 @@ class Client
     private function getClientToken()
     {
         if ($this->clientToken === null) {
-            $machineName = gethostname();
-            $userName = get_current_user();
-            $pathName = realpath(__FILE__);
-
-            $this->clientToken = md5(
-                sprintf(
-                    'pathe-php.client.%s.%s.%s',
-                    $machineName,
-                    $userName,
-                    $pathName
-                )
-            );
+            $this->clientToken = '1f8ecc5806054255903af1f34157bf38';
         }
 
         return $this->clientToken;
@@ -675,7 +425,7 @@ class Client
     {
         if ($this->deviceToken === null) {
             $machineName = gethostname();
-            $userName = get_current_user();
+            $userName    = get_current_user();
 
             $token = strtoupper(
                 md5(

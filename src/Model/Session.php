@@ -2,6 +2,8 @@
 
 namespace RickDenHaan\Pathe\Model;
 
+use RickDenHaan\Pathe\Client;
+
 /**
  * The Session model represents a Mijn Pathé user session
  *
@@ -109,5 +111,53 @@ class Session
     public function getSessionToken()
     {
         return $this->sessionToken;
+    }
+
+    /**
+     * Creates a new session on the server
+     *
+     * @return static
+     */
+    public static function create()
+    {
+        $client = Client::getInstance();
+
+        try {
+            $response = $client->post(
+                "sessions",
+                array(
+                    'email'    => $client->getUsername(),
+                    'password' => $client->getPassword(),
+                ),
+                201
+            );
+        } catch (\Exception $ex) {
+            throw new \LogicException("Could not authenticate with Mijn Pathé");
+        }
+
+        $session = new static();
+        $session->setId($response['id']);
+        $session->setUserId($response['userId']);
+        $session->setSessionToken($response['sessionToken']);
+
+        return $session;
+    }
+
+    /**
+     * Closes the session, effectively logging the user out
+     *
+     * @return void
+     */
+    public function close()
+    {
+        Client::getInstance()
+              ->delete(
+                  sprintf(
+                      'sessions/%d',
+                      $this->getId()
+                  ),
+                  204,
+                  $this
+              );
     }
 }

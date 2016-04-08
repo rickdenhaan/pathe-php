@@ -2,6 +2,8 @@
 
 namespace RickDenHaan\Pathe\Model;
 
+use RickDenHaan\Pathe\Client;
+
 /**
  * The Card model represents an Unlimited or Unlimited Gold card
  *
@@ -203,6 +205,7 @@ class Card
         } else {
             // return a copy of the start date instead of a reference
             $clone = clone $this->startDate;
+
             return $clone;
         }
     }
@@ -242,6 +245,7 @@ class Card
         } else {
             // return a copy of the expiry date instead of a reference
             $clone = clone $this->expiryDate;
+
             return $clone;
         }
     }
@@ -266,10 +270,100 @@ class Card
     /**
      * Returns the card's PIN code
      *
-     * @return string|null
+     * @param Session $session (Optional) Defaults to null
+     * @return string
+     * @throws \Exception
      */
-    public function getPinCode()
+    public function getPinCode(Session $session = null)
     {
+        if ($this->pinCode === null && $this->getId() !== null) {
+            $ownSession = false;
+
+            if ($session === null) {
+                $session    = Session::create();
+                $ownSession = true;
+            }
+
+            try {
+                $result = Client::getInstance()
+                                ->get(
+                                    sprintf(
+                                        "users/%d/cards/%s/pin",
+                                        $session->getUserId(),
+                                        $this->getId()
+                                    ),
+                                    200,
+                                    $session
+                                );
+            } catch (\Exception $ex) {
+                if ($ownSession) {
+                    $session->close();
+                }
+
+                throw $ex;
+            }
+
+            $this->pinCode = $result['pin'];
+
+            if ($ownSession) {
+                $session->close();
+            }
+        }
+
         return $this->pinCode;
+    }
+
+    /**
+     * Retrieves all cards for the current user
+     *
+     * @param Session $session (Optional) Defaults to null
+     * @return static[]
+     * @throws \Exception
+     */
+    public static function getAll(Session $session = null)
+    {
+        $retValue = array();
+
+        $ownSession = false;
+        if ($session === null) {
+            $session    = Session::create();
+            $ownSession = true;
+        }
+
+        try {
+            $result = Client::getInstance()
+                            ->get(
+                                sprintf(
+                                    "users/%d/cards",
+                                    $session->getUserId()
+                                ),
+                                200,
+                                $session
+                            );
+        } catch (\Exception $ex) {
+            if ($ownSession) {
+                $session->close();
+            }
+
+            throw $ex;
+        }
+
+        foreach ($result['cards'] as $cardData) {
+            $card = new static();
+            $card->setId($cardData['id']);
+            $card->setType($cardData['cardType']);
+            $card->setStatus($cardData['state']);
+            $card->setStatusReason($cardData['stateComment']);
+            $card->setStartDate(\DateTime::createFromFormat('d-m-Y', $cardData['startDate']));
+            $card->setExpiryDate(\DateTime::createFromFormat('d-m-Y', $cardData['expiryDate']));
+
+            $retValue[] = $card;
+        }
+
+        if ($ownSession) {
+            $session->close();
+        }
+
+        return $retValue;
     }
 }

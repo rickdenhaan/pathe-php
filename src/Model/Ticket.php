@@ -2,6 +2,8 @@
 
 namespace RickDenHaan\Pathe\Model;
 
+use RickDenHaan\Pathe\Client;
+
 /**
  * The Ticket model represents a single ticket in a reservation
  *
@@ -253,7 +255,7 @@ class Ticket
     public function setSeats(array $seats = array())
     {
         $this->seats = $seats;
-        
+
         return $this;
     }
 
@@ -278,5 +280,69 @@ class Ticket
     public function getSeats()
     {
         return $this->seats;
+    }
+
+    /**
+     * Retrieves all tickets for the supplied reservation.
+     *
+     * @param Reservation $reservation
+     * @param Session     $session (Optional) Defaults to null
+     * @return static[]
+     * @throws \Exception
+     */
+    public static function getAll(Reservation $reservation, Session $session = null)
+    {
+        $retValue = array();
+
+        $ownSession = false;
+        if ($session === null) {
+            $session    = Session::create();
+            $ownSession = true;
+        }
+
+        try {
+            $result = Client::getInstance()
+                            ->get(
+                                sprintf(
+                                    "users/%d/transactions/%s",
+                                    $session->getUserId(),
+                                    $reservation->getId()
+                                ),
+                                200,
+                                $session
+                            );
+        } catch (\Exception $ex) {
+            if ($ownSession) {
+                $session->close();
+            }
+
+            throw $ex;
+        }
+
+        foreach ($result['tickets'] as $ticketData) {
+            $ticket = new static();
+            $ticket->setId($ticketData['id']);
+            $ticket->setOwnerName($ticketData['cardOwner']);
+            $ticket->setType($ticketData['name']);
+            $ticket->setPrice($ticketData['price'] === null ? null : ($ticketData['price'] / 100));
+            $ticket->setCancelable($ticketData['canCancel']);
+            $ticket->setStatus($ticketData['status']);
+
+            foreach ($ticketData['seats'] as $seatData) {
+                $seat = new Seat();
+                $seat->setRow($seatData['row'])
+                     ->setSeat($seatData['name']);
+
+                $ticket->addSeat($seat);
+            }
+
+            $retValue[] = $ticket;
+        }
+
+        if ($ownSession) {
+            $session->close();
+        }
+
+        return $retValue;
     }
 }
