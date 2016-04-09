@@ -19,6 +19,13 @@ class Ticket
     private $id;
 
     /**
+     * Contains the reservation id
+     *
+     * @type string
+     */
+    private $reservationId;
+
+    /**
      * Contains the type of ticket
      *
      * @type string
@@ -61,7 +68,7 @@ class Ticket
     private $seats = array();
 
     /**
-     * Sets the card's id
+     * Sets the ticket's id
      *
      * @param string|int $id
      * @return $this
@@ -75,20 +82,51 @@ class Ticket
                 throw new \InvalidArgumentException("Invalid id: must be numeric");
             }
 
-            $this->id = trim(strval($id));
+            $this->id = intval($id, 10);
         }
 
         return $this;
     }
 
     /**
-     * Returns the card's id
+     * Returns the ticket's id
      *
      * @return string|null
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Sets the reservation's id
+     *
+     * @param string|int $reservationId
+     * @return $this
+     */
+    public function setReservationId($reservationId = null)
+    {
+        if ($reservationId === null) {
+            $this->reservationId = null;
+        } else {
+            if (!is_numeric($reservationId)) {
+                throw new \InvalidArgumentException("Invalid reservationId: must be numeric");
+            }
+
+            $this->reservationId = trim(strval($reservationId));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the reservation's id
+     *
+     * @return string|null
+     */
+    public function getReservationId()
+    {
+        return $this->reservationId;
     }
 
     /**
@@ -321,7 +359,8 @@ class Ticket
 
         foreach ($result['tickets'] as $ticketData) {
             $ticket = new static();
-            $ticket->setId($ticketData['id']);
+            $ticket->setId($ticketData['detailId']);
+            $ticket->setReservationId($reservation->getId());
             $ticket->setOwnerName($ticketData['cardOwner']);
             $ticket->setType($ticketData['name']);
             $ticket->setPrice($ticketData['price'] === null ? null : ($ticketData['price'] / 100));
@@ -344,5 +383,49 @@ class Ticket
         }
 
         return $retValue;
+    }
+
+    /**
+     * Cancels this ticket reservation, if it has not been collected yet.
+     *
+     * @param Session $session (Optional) Defaults to null
+     * @return bool
+     */
+    public function cancel(Session $session = null)
+    {
+        if ($this->getCancelable() !== true) {
+            return false;
+        }
+
+        $ownSession = false;
+
+        if ($session === null) {
+            $session = Session::create();
+            $ownSession = true;
+        }
+
+        $success = true;
+
+        try {
+            Client::getInstance()
+                  ->delete(
+                      sprintf(
+                          'users/%d/transactions/%s/tickets/%d',
+                          $session->getUserId(),
+                          $this->getReservationId(),
+                          $this->getId()
+                      ),
+                      204,
+                      $session
+                  );
+        } catch (\Exception $e) {
+            $success = false;
+        }
+
+        if ($ownSession) {
+            $session->close();
+        }
+
+        return $success;
     }
 }

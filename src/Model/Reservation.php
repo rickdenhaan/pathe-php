@@ -30,21 +30,28 @@ class Reservation
      *
      * @type string
      */
-    private $theater;
+    private $cinemaName;
 
     /**
      * Contains the name of the screen in this theater
      *
      * @type string
      */
-    private $screen;
+    private $screenName;
 
     /**
-     * Contains the name for the movie or event
+     * Contains the ID for the movie
+     *
+     * @type int
+     */
+    private $movieId;
+
+    /**
+     * Contains the name for the movie
      *
      * @type string
      */
-    private $name;
+    private $movieName;
 
     /**
      * Contains the URL format for the movie or event's thumbnail. Format contains
@@ -53,6 +60,27 @@ class Reservation
      * @type string
      */
     private $thumbnailFormat;
+
+    /**
+     * Contains the ID for the special event
+     *
+     * @type int
+     */
+    private $specialId;
+
+    /**
+     * Contains the name for the special event
+     *
+     * @type string
+     */
+    private $specialName;
+
+    /**
+     * Contains the language version for the movie or event
+     *
+     * @type string
+     */
+    private $languageVersion;
 
     /**
      * Contains the date and time the movie or event starts
@@ -104,7 +132,7 @@ class Reservation
     private $tickets;
 
     /**
-     * Sets the card's id
+     * Sets the reservation's id
      *
      * @param string|int $id
      * @return $this
@@ -125,7 +153,7 @@ class Reservation
     }
 
     /**
-     * Returns the card's id
+     * Returns the reservation's id
      *
      * @return string|null
      */
@@ -177,19 +205,19 @@ class Reservation
     /**
      * Sets the theater name
      *
-     * @param string $theater
+     * @param string $cinemaName
      * @return $this
      */
-    public function setTheater($theater = null)
+    public function setCinemaName($cinemaName = null)
     {
-        if ($theater === null) {
-            $this->theater = null;
+        if ($cinemaName === null) {
+            $this->cinemaName = null;
         } else {
-            if (!is_string($theater)) {
-                throw new \InvalidArgumentException("Invalid theater: must be a string");
+            if (!is_string($cinemaName)) {
+                throw new \InvalidArgumentException("Invalid cinemaName: must be a string");
             }
 
-            $this->theater = trim($theater);
+            $this->cinemaName = trim($cinemaName);
         }
 
         return $this;
@@ -200,27 +228,27 @@ class Reservation
      *
      * @return string|null
      */
-    public function getTheater()
+    public function getCinemaName()
     {
-        return $this->theater;
+        return $this->cinemaName;
     }
 
     /**
      * Sets the screen name
      *
-     * @param string $screen
+     * @param string $screenName
      * @return $this
      */
-    public function setScreen($screen = null)
+    public function setScreenName($screenName = null)
     {
-        if ($screen === null) {
-            $this->screen = null;
+        if ($screenName === null) {
+            $this->screenName = null;
         } else {
-            if (!is_string($screen)) {
-                throw new \InvalidArgumentException("Invalid screen: must be a string");
+            if (!is_string($screenName)) {
+                throw new \InvalidArgumentException("Invalid screenName: must be a string");
             }
 
-            $this->screen = trim($screen);
+            $this->screenName = trim($screenName);
         }
 
         return $this;
@@ -231,40 +259,71 @@ class Reservation
      *
      * @return string|null
      */
-    public function getScreen()
+    public function getScreenName()
     {
-        return $this->screen;
+        return $this->screenName;
     }
 
     /**
-     * Sets the movie/event name
+     * Sets the movie's id
      *
-     * @param string $name
+     * @param string|int $movieId
      * @return $this
      */
-    public function setName($name = null)
+    public function setMovieId($movieId = null)
     {
-        if ($name === null) {
-            $this->name = null;
+        if ($movieId === null) {
+            $this->movieId = null;
         } else {
-            if (!is_string($name)) {
-                throw new \InvalidArgumentException("Invalid name: must be a string");
+            if (!is_numeric($movieId)) {
+                throw new \InvalidArgumentException("Invalid movieId: must be numeric");
             }
 
-            $this->name = trim($name);
+            $this->movieId = intval($movieId, 10);
         }
 
         return $this;
     }
 
     /**
-     * Returns the movie/event name
+     * Returns the movie's id
+     *
+     * @return int|null
+     */
+    public function getMovieId()
+    {
+        return $this->movieId;
+    }
+
+    /**
+     * Sets the movie name
+     *
+     * @param string $movieName
+     * @return $this
+     */
+    public function setMovieName($movieName = null)
+    {
+        if ($movieName === null) {
+            $this->movieName = null;
+        } else {
+            if (!is_string($movieName)) {
+                throw new \InvalidArgumentException("Invalid movieName: must be a string");
+            }
+
+            $this->movieName = trim($movieName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the movie name
      *
      * @return string|null
      */
-    public function getName()
+    public function getMovieName()
     {
-        return $this->name;
+        return $this->movieName;
     }
 
     /**
@@ -296,6 +355,99 @@ class Reservation
     public function getThumbnailFormat()
     {
         return $this->thumbnailFormat;
+    }
+
+    /**
+     * Sets the special event's id
+     *
+     * @param string|int $specialId
+     * @return $this
+     */
+    public function setSpecialId($specialId = null)
+    {
+        if ($specialId === null) {
+            $this->specialId = null;
+        } else {
+            if (!is_numeric($specialId)) {
+                throw new \InvalidArgumentException("Invalid specialId: must be numeric");
+            }
+
+            $this->specialId = intval($specialId, 10);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the special event's id
+     *
+     * @return int|null
+     */
+    public function getSpecialId()
+    {
+        return $this->specialId;
+    }
+
+    /**
+     * Sets the special event's name
+     *
+     * @param string $specialName
+     * @return $this
+     */
+    public function setSpecialName($specialName = null)
+    {
+        if ($specialName === null) {
+            $this->specialName = null;
+        } else {
+            if (!is_string($specialName)) {
+                throw new \InvalidArgumentException("Invalid specialName: must be a string");
+            }
+
+            $this->specialName = trim($specialName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the special event's name
+     *
+     * @return string|null
+     */
+    public function getSpecialName()
+    {
+        return $this->specialName;
+    }
+
+    /**
+     * Sets the language version for the movie or event
+     *
+     * @param string $languageVersion
+     * @return $this
+     */
+    public function setLanguageVersion($languageVersion = null)
+    {
+        if ($languageVersion === null) {
+            $this->languageVersion = null;
+        } else {
+            if (!is_string($languageVersion)) {
+                throw new \InvalidArgumentException("Invalid languageVersion: must be a string");
+            }
+
+            $this->languageVersion = trim($languageVersion);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the language version for the movie or event
+     *
+     * @return string|null
+     */
+    public function getLanguageVersion()
+    {
+        return $this->languageVersion;
     }
 
     /**
@@ -557,10 +709,14 @@ class Reservation
             $reservation = new static();
             $reservation->setId($reservationData['id']);
             $reservation->setDate(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['date']));
-            $reservation->setTheater($reservationData['cinemaName']);
-            $reservation->setScreen($reservationData['screenName']);
-            $reservation->setName($reservationData['movieName'] === null ? $reservationData['specialName'] : $reservationData['movieName']);
+            $reservation->setCinemaName($reservationData['cinemaName']);
+            $reservation->setScreenName($reservationData['screenName']);
+            $reservation->setMovieId($reservationData['movieId']);
+            $reservation->setMovieName($reservationData['movieName']);
             $reservation->setThumbnailFormat($reservationData['thumb']);
+            $reservation->setSpecialId($reservationData['specialId']);
+            $reservation->setSpecialName($reservationData['specialName']);
+            $reservation->setLanguageVersion($reservationData['languageVersion']);
             $reservation->setShowTime(\DateTime::createFromFormat(\DateTime::RFC3339, $reservationData['showTime']));
             $reservation->setCancelable($reservationData['cancellable']);
             $reservation->setBarcodeUrl($reservationData['pdfUrl']);
