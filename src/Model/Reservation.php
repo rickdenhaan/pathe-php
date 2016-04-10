@@ -668,11 +668,10 @@ class Reservation
      * current year if no year was given
      *
      * @param int     $year    (Optional) Defaults to null
-     * @param Session $session (Optional) Defaults to null
      * @return static[]
      * @throws \Exception
      */
-    public static function getAll($year = null, Session $session = null)
+    public static function getAll($year = null)
     {
         if ($year === null) {
             $year = date('Y');
@@ -680,30 +679,20 @@ class Reservation
 
         $retValue = array();
 
-        $ownSession = false;
-        if ($session === null) {
-            $session    = Session::create();
-            $ownSession = true;
+        $client = Client::getInstance();
+
+        if ($client->getSession() === null) {
+            $client->createSession();
         }
 
-        try {
-            $result = Client::getInstance()
-                            ->get(
-                                sprintf(
-                                    "users/%d/transactions_overview?year=%s",
-                                    $session->getUserId(),
-                                    $year
-                                ),
-                                200,
-                                $session
-                            );
-        } catch (\Exception $ex) {
-            if ($ownSession) {
-                $session->close();
-            }
-
-            throw $ex;
-        }
+        $result = $client->get(
+            sprintf(
+                "users/%d/transactions_overview?year=%s",
+                $client->getSession()->getUserId(),
+                $year
+            ),
+            200
+        );
 
         foreach ($result['transactions'] as $reservationData) {
             $reservation = new static();
@@ -725,10 +714,6 @@ class Reservation
             $reservation->setStatus($reservationData['state']);
 
             $retValue[] = $reservation;
-        }
-
-        if ($ownSession) {
-            $session->close();
         }
 
         return $retValue;

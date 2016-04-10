@@ -270,44 +270,28 @@ class Card
     /**
      * Returns the card's PIN code
      *
-     * @param Session $session (Optional) Defaults to null
      * @return string
      * @throws \Exception
      */
-    public function getPinCode(Session $session = null)
+    public function getPinCode()
     {
         if ($this->pinCode === null && $this->getId() !== null) {
-            $ownSession = false;
+            $client = Client::getInstance();
 
-            if ($session === null) {
-                $session    = Session::create();
-                $ownSession = true;
+            if ($client->getSession() === null) {
+                $client->createSession();
             }
 
-            try {
-                $result = Client::getInstance()
-                                ->get(
-                                    sprintf(
-                                        "users/%d/cards/%s/pin",
-                                        $session->getUserId(),
-                                        $this->getId()
-                                    ),
-                                    200,
-                                    $session
-                                );
-            } catch (\Exception $ex) {
-                if ($ownSession) {
-                    $session->close();
-                }
-
-                throw $ex;
-            }
+            $result = $client->get(
+                sprintf(
+                    "users/%d/cards/%s/pin",
+                    $client->getSession()->getUserId(),
+                    $this->getId()
+                ),
+                200
+            );
 
             $this->pinCode = $result['pin'];
-
-            if ($ownSession) {
-                $session->close();
-            }
         }
 
         return $this->pinCode;
@@ -316,37 +300,26 @@ class Card
     /**
      * Retrieves all cards for the current user
      *
-     * @param Session $session (Optional) Defaults to null
      * @return static[]
      * @throws \Exception
      */
-    public static function getAll(Session $session = null)
+    public static function getAll()
     {
         $retValue = array();
 
-        $ownSession = false;
-        if ($session === null) {
-            $session    = Session::create();
-            $ownSession = true;
+        $client = Client::getInstance();
+
+        if ($client->getSession() === null) {
+            $client->createSession();
         }
 
-        try {
-            $result = Client::getInstance()
-                            ->get(
-                                sprintf(
-                                    "users/%d/cards",
-                                    $session->getUserId()
-                                ),
-                                200,
-                                $session
-                            );
-        } catch (\Exception $ex) {
-            if ($ownSession) {
-                $session->close();
-            }
-
-            throw $ex;
-        }
+        $result = $client->get(
+            sprintf(
+                "users/%d/cards",
+                $client->getSession()->getUserId()
+            ),
+            200
+        );
 
         foreach ($result['cards'] as $cardData) {
             $card = new static();
@@ -358,10 +331,6 @@ class Card
             $card->setExpiryDate(\DateTime::createFromFormat('d-m-Y', $cardData['expiryDate']));
 
             $retValue[] = $card;
-        }
-
-        if ($ownSession) {
-            $session->close();
         }
 
         return $retValue;

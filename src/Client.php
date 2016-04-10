@@ -80,6 +80,13 @@ class Client
     private static $instance;
 
     /**
+     * The client's browsing session
+     *
+     * @type Session
+     */
+    private $session;
+
+    /**
      * Returns the current Client instance
      *
      * @return static
@@ -106,9 +113,22 @@ class Client
         $client->setUsername($username);
         $client->setPassword($password);
 
+        $client->createSession(false);
+
         self::$instance = $client;
 
         return self::$instance;
+    }
+
+    /**
+     * Properly close the current session when the client is no longer needed
+     *
+     */
+    public function __destruct()
+    {
+        if ($this->session !== null) {
+            $this->session->close();
+        }
     }
 
     /**
@@ -137,6 +157,11 @@ class Client
         }
 
         $this->username = $username;
+
+        // if we were logged in, create a new session
+        if ($this->session !== null) {
+            $this->createSession();
+        }
     }
 
     /**
@@ -164,6 +189,49 @@ class Client
         }
 
         $this->password = $password;
+
+        // if we were logged in, create a new session
+        if ($this->session !== null) {
+            $this->createSession();
+        }
+    }
+
+    /**
+     * Creates a new session, closing the previous one if one existed
+     *
+     * @param bool $assert If false, will not throw an exception if the session could not be created
+     * @return bool
+     * @throws \Exception
+     */
+    public function createSession($assert = true)
+    {
+        try {
+            $session = Session::create();
+
+            if ($this->session !== null) {
+                $this->session->close();
+            }
+
+            $this->session = $session;
+
+            return true;
+        } catch (\Exception $ex) {
+            if ($assert) {
+                throw $ex;
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Returns the current session
+     *
+     * @return Session
+     */
+    public function getSession()
+    {
+        return $this->session;
     }
 
     /**
@@ -222,10 +290,9 @@ class Client
      *
      * @param string        $uri
      * @param int           $expectedStatusCode (Optional) Defaults to 200
-     * @param Model\Session $session            (Optional) Defaults to null
      * @return array
      */
-    public function get($uri, $expectedStatusCode = 200, $session = null)
+    public function get($uri, $expectedStatusCode = 200)
     {
         // get a Browser
         $browser = $this->getBrowser();
@@ -233,7 +300,7 @@ class Client
         // submit the request
         $this->response = $browser->get(
             $this->apiUrl . $uri,
-            $this->getRequestHeaders(null, $session)
+            $this->getRequestHeaders()
         );
 
         // validate the response code
@@ -255,10 +322,9 @@ class Client
      * @param string        $uri
      * @param array         $data               (Optional) Defaults to an empty array
      * @param int           $expectedStatusCode (Optional) Defaults to 200
-     * @param Model\Session $session            (Optional) Defaults to null
      * @return array
      */
-    public function post($uri, $data = array(), $expectedStatusCode = 200, $session = null)
+    public function post($uri, $data = array(), $expectedStatusCode = 200)
     {
         // get a Browser
         $browser = $this->getBrowser();
@@ -269,7 +335,7 @@ class Client
         // submit the form
         $this->response = $browser->post(
             $this->apiUrl . $uri,
-            $this->getRequestHeaders($formData, $session),
+            $this->getRequestHeaders($formData),
             $formData
         );
 
@@ -291,10 +357,9 @@ class Client
      *
      * @param string        $uri
      * @param int           $expectedStatusCode (Optional) Defaults to 200
-     * @param Model\Session $session            (Optional) Defaults to null
      * @return void
      */
-    public function delete($uri, $expectedStatusCode = 200, $session = null)
+    public function delete($uri, $expectedStatusCode = 200)
     {
         // get a Browser
         $browser = $this->getBrowser();
@@ -302,7 +367,7 @@ class Client
         // submit the request
         $this->response = $browser->delete(
             $this->apiUrl . $uri,
-            $this->getRequestHeaders(null, $session)
+            $this->getRequestHeaders(null)
         );
 
         // validate the response code
@@ -376,10 +441,9 @@ class Client
      * This method is used internally to build the default request headers.
      *
      * @param string|array  $requestBody (Optional) Defaults to null
-     * @param Model\Session $session     (Optional) Defaults to null
      * @return array
      */
-    protected function getRequestHeaders($requestBody = null, Session $session = null)
+    protected function getRequestHeaders($requestBody = null)
     {
         $retValue = array(
             'User-Agent'     => 'RickDenHaan-Pathe/2.0 (+http://github.com/rickdenhaan/pathe-php)',
@@ -387,8 +451,8 @@ class Client
             'X-Device-Token' => $this->getDeviceToken(),
         );
 
-        if ($session !== null) {
-            $retValue['X-Session-Token'] = $session->getSessionToken();
+        if ($this->session !== null) {
+            $retValue['X-Session-Token'] = $this->session->getSessionToken();
         }
 
         if ($requestBody !== null) {

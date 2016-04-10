@@ -156,8 +156,7 @@ class Session
                       'sessions/%d',
                       $this->getId()
                   ),
-                  204,
-                  $this
+                  204
               );
     }
 }

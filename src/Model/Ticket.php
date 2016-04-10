@@ -324,38 +324,27 @@ class Ticket
      * Retrieves all tickets for the supplied reservation.
      *
      * @param Reservation $reservation
-     * @param Session     $session (Optional) Defaults to null
      * @return static[]
      * @throws \Exception
      */
-    public static function getAll(Reservation $reservation, Session $session = null)
+    public static function getAll(Reservation $reservation)
     {
         $retValue = array();
 
-        $ownSession = false;
-        if ($session === null) {
-            $session    = Session::create();
-            $ownSession = true;
+        $client = Client::getInstance();
+
+        if ($client->getSession() === null) {
+            $client->createSession();
         }
 
-        try {
-            $result = Client::getInstance()
-                            ->get(
-                                sprintf(
-                                    "users/%d/transactions/%s",
-                                    $session->getUserId(),
-                                    $reservation->getId()
-                                ),
-                                200,
-                                $session
-                            );
-        } catch (\Exception $ex) {
-            if ($ownSession) {
-                $session->close();
-            }
-
-            throw $ex;
-        }
+        $result = $client->get(
+            sprintf(
+                "users/%d/transactions/%s",
+                $client->getSession()->getUserId(),
+                $reservation->getId()
+            ),
+            200
+        );
 
         foreach ($result['tickets'] as $ticketData) {
             $ticket = new static();
@@ -378,52 +367,40 @@ class Ticket
             $retValue[] = $ticket;
         }
 
-        if ($ownSession) {
-            $session->close();
-        }
-
         return $retValue;
     }
 
     /**
      * Cancels this ticket reservation, if it has not been collected yet.
      *
-     * @param Session $session (Optional) Defaults to null
      * @return bool
      */
-    public function cancel(Session $session = null)
+    public function cancel()
     {
         if ($this->getCancelable() !== true) {
             return false;
         }
 
-        $ownSession = false;
+        $client = Client::getInstance();
 
-        if ($session === null) {
-            $session = Session::create();
-            $ownSession = true;
+        if ($client->getSession() === null) {
+            $client->createSession();
         }
 
         $success = true;
 
         try {
-            Client::getInstance()
-                  ->delete(
-                      sprintf(
-                          'users/%d/transactions/%s/tickets/%d',
-                          $session->getUserId(),
-                          $this->getReservationId(),
-                          $this->getId()
-                      ),
-                      204,
-                      $session
-                  );
+            $client->delete(
+                sprintf(
+                    'users/%d/transactions/%s/tickets/%d',
+                    $client->getSession()->getUserId(),
+                    $this->getReservationId(),
+                    $this->getId()
+                ),
+                204
+            );
         } catch (\Exception $e) {
             $success = false;
-        }
-
-        if ($ownSession) {
-            $session->close();
         }
 
         return $success;
